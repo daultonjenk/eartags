@@ -44,33 +44,26 @@ namespace EarTags
             capi.ChatCommands
                 .Create("eartags")
                 .WithDescription("Tune ear tag placement live. Subcommands: show, reload, nudge, scale, save")
-                .WithArgs(capi.ChatCommands.Parsers.OptionalAll("args"))
+                .WithArgs(
+                    capi.ChatCommands.Parsers.OptionalWord("sub"),
+                    capi.ChatCommands.Parsers.OptionalWord("arg1"),
+                    capi.ChatCommands.Parsers.OptionalWord("arg2"))
                 .HandleWith(args => Handle(capi, sys, args));
         }
 
 
         private static TextCommandResult Handle(ICoreClientAPI capi, EarTagsModSystem sys, TextCommandCallingArgs args)
         {
-            // OptionalAll's value does not reliably come back as a string through the indexer, so
-            // stringify whatever object is there.
+            // Three separate OptionalWord parsers rather than one OptionalAll: OptionalAll's value
+            // never arrived through the indexer, and ArgCount read as 0 even with arguments typed.
+            // Each slot is read defensively and independently.
             //
             // Do NOT reach for args.Parsers as a fallback: it is a List<>, and List is just as
             // unusable in a source mod as Dictionary - both live in the System.Collections facade
             // that the in-game compiler does not reference (CS0012), which takes the whole mod down.
-            string raw = null;
-
-            try
-            {
-                if (args.ArgCount > 0)
-                {
-                    object o = args[0];
-                    if (o != null) raw = o.ToString();
-                }
-            }
-            catch (Exception) { }
-
-            string[] parts = (raw ?? "").Trim().Split(' ');
-            string sub = parts.Length > 0 ? parts[0].ToLowerInvariant() : "";
+            string[] parts = new string[] { Slot(args, 0), Slot(args, 1), Slot(args, 2) };
+            string raw = (parts[0] + " " + parts[1] + " " + parts[2]).Trim();
+            string sub = parts[0].ToLowerInvariant();
 
             EarTagSpeciesConfig cfg = LookedAtConfig(capi, sys);
 
@@ -103,7 +96,7 @@ namespace EarTags
                 case "nudge":
                     {
                         if (cfg == null) return TextCommandResult.Error("Look at a taggable animal with a configured species.");
-                        if (parts.Length < 3) return TextCommandResult.Error("Usage: .eartags nudge x|y|z amount");
+                        if (parts[1] == "" || parts[2] == "") return TextCommandResult.Error("Usage: .eartags nudge x|y|z amount");
 
                         int axis = AxisIndex(parts[1]);
                         if (axis < 0) return TextCommandResult.Error("Axis must be x, y or z.");
@@ -115,10 +108,14 @@ namespace EarTags
                             return TextCommandResult.Error("Amount must be a number, e.g. 0.1 or -0.05");
                         }
 
-                        // Z is mirrored between the two ears, X and Y are not. Applying the sign
-                        // flip here means the operator never has to think about it.
+                        // On most ears Z is mirrored between the two sides and X and Y are not.
+                        // Applying the sign flip here means the operator never has to think about
+                        // it - except on the species that set mirrorZ false, where Z centres the
+                        // tag in the thickness of the ear and both sides want the same nudge.
+                        bool mirror = axis == 2 && cfg.MirrorZ;
+
                         Apply(cfg.Left, axis, delta);
-                        Apply(cfg.Right, axis, axis == 2 ? -delta : delta);
+                        Apply(cfg.Right, axis, mirror ? -delta : delta);
 
                         ReTesselateNearby(capi);
                         return TextCommandResult.Success(Describe(cfg));
@@ -127,7 +124,7 @@ namespace EarTags
                 case "scale":
                     {
                         if (cfg == null) return TextCommandResult.Error("Look at a taggable animal with a configured species.");
-                        if (parts.Length < 2) return TextCommandResult.Error("Usage: .eartags scale value");
+                        if (parts[1] == "") return TextCommandResult.Error("Usage: .eartags scale value");
 
                         double s;
                         if (!double.TryParse(parts[1], System.Globalization.NumberStyles.Any,
@@ -149,6 +146,24 @@ namespace EarTags
                     return TextCommandResult.Success(
                         "eartags [got: " + (raw == null ? "(none)" : raw) + "] | "
                         + "subcommands: show | nudge x|y|z n | scale n | save | reload");
+            }
+        }
+
+
+        /// <summary>
+        /// Reads one argument slot, returning "" for anything missing. Never throws: the indexer
+        /// has already proven it can hand back nulls and unexpected types for absent optional args.
+        /// </summary>
+        private static string Slot(TextCommandCallingArgs args, int index)
+        {
+            try
+            {
+                object o = args[index];
+                return o == null ? "" : o.ToString().Trim();
+            }
+            catch (Exception)
+            {
+                return "";
             }
         }
 
@@ -181,15 +196,30 @@ namespace EarTags
         }
 
 
+        /// <summary>
+        /// Both sides on one line. Showing only the left used to be enough - until it wasn't: the
+        /// right ear's Z was wrong on every species whose ear is not 1.2 wide, and nothing in the
+        /// tuning output would have shown it. Single line on purpose, see the default case above.
+        /// </summary>
         private static string Describe(EarTagSpeciesConfig cfg)
         {
             EarTagAnchor l = cfg.Left;
-            if (l == null) return cfg.Match + ": no left anchor";
+            EarTagAnchor r = cfg.Right;
 
-            return string.Format("{0}  offset [ {1}, {2}, {3} ]  scale {4}   (right z mirrored)",
+            return string.Format("{0}  L {1}  R {2}  scale {3}   ({4})",
                 cfg.Match,
-                l.Offset[0].ToString("0.###"), l.Offset[1].ToString("0.###"), l.Offset[2].ToString("0.###"),
-                l.Scale.ToString("0.###"));
+                Offsets(l), Offsets(r),
+                (l ?? r) == null ? "-" : (l ?? r).Scale.ToString("0.###"),
+                cfg.MirrorZ ? "z mirrored, L+R should equal earWidth - 1.2" : "z is a centring offset, not mirrored");
+        }
+
+
+        private static string Offsets(EarTagAnchor a)
+        {
+            if (a?.Offset == null || a.Offset.Length < 3) return "[ none ]";
+
+            return string.Format("[ {0}, {1}, {2} ]",
+                a.Offset[0].ToString("0.###"), a.Offset[1].ToString("0.###"), a.Offset[2].ToString("0.###"));
         }
 
 

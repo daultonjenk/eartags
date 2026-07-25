@@ -1,0 +1,38 @@
+[
+	// Hens, roosters and both poults all live in chicken-adult.json. The chicks in
+	// chicken-baby.json are left alone - they grow up into taggable birds soon enough, and their
+	// legs are half the size.
+	{
+		file: "game:entities/animal/bird/chicken-adult",
+		op: "add",
+		path: "/client/behaviors/-",
+		value: { code: "eartaggable" }
+	},
+	{
+		file: "game:entities/animal/bird/chicken-adult",
+		op: "add",
+		path: "/server/behaviors/-",
+		value: { code: "eartaggable" }
+	},
+
+	// Same texture codes as the ear tag - the legband shape reuses the "tag" texture code, so the
+	// "eartag<colour>tag" keys carry straight over. See sheep-eartag-textures.json for why these
+	// have to be declared at asset-load time.
+	{
+		file: "game:entities/animal/bird/chicken-adult",
+		op: "add",
+		path: "/client/textures",
+		value: {
+			"eartagorangetag": { base: "eartags:block/leather/orange" },
+			"eartagblacktag":  { base: "eartags:block/leather/black" },
+			"eartagredtag":    { base: "eartags:block/leather/red" },
+			"eartagbluetag":   { base: "eartags:block/leather/blue" },
+			"eartagpurpletag": { base: "eartags:block/leather/purple" },
+			"eartagpinktag":   { base: "eartags:block/leather/pink" },
+			"eartagwhitetag":  { base: "eartags:block/leather/white" },
+			"eartagyellowtag": { base: "eartags:block/leather/yellow" },
+			"eartaggraytag":   { base: "eartags:block/leather/gray" },
+			"eartaggreentag":  { base: "eartags:block/leather/green" }
+		}
+	}
+]

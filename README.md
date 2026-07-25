@@ -6,6 +6,8 @@ which sheep is the one you actually meant to shear.
 
 Ten colours, two ears per animal, so a hundred distinguishable combinations.
 
+Chickens have no ear to speak of, so the same tag goes round a leg instead, as a poultry leg band.
+
 Built for Vintage Story 1.22.
 
 ## Using it
@@ -16,7 +18,8 @@ Craft a tag, hold it, and right-click an animal to clip it to a bare ear.
 - **Sneak + right-click** — clip specifically to the right ear
 - **Sneak + right-click with an empty hand** — remove a tag and get it back
 
-Hovering a tagged animal shows what it's wearing: `Ear tags: left red, right blue`.
+Hovering a tagged animal shows what it's wearing: `Ear tags: left red, right blue`, or
+`Leg bands: left red` on a bird.
 
 ## Crafting
 
@@ -37,10 +40,15 @@ and the wax/fat/oil rub is genuine leather treatment rather than a hand-wave.
 
 | Animal | Status |
 |---|---|
-| Sheep — mouflon | Tuned |
-| Sheep — bighorn | Tuned |
-| Pigs — eurasian, red river, warthog | Tuned |
-| Goats — 11 breeds | Not yet, see below |
+| Sheep — mouflon | Tuned in game |
+| Sheep — bighorn | Left tuned; right recomputed, recheck |
+| Pigs — eurasian, red river, warthog | Left tuned; right recomputed, recheck |
+| Pigs — eurasian elder | Derived, not yet checked in game |
+| Goats — all 11 breeds | Derived; mountain, markhor, angora seen in game |
+| Chickens — hen, rooster, both poults | Leg band; not yet checked in game |
+
+"Derived" means the numbers were computed from the breed's ear box against the hand-tuned mouflon
+rather than eyeballed on a live animal. Expect to nudge.
 
 ## Adding a species
 
@@ -56,25 +64,79 @@ ear bone in this family carries a mirrored `rotationX`, which swings the local a
   **Mirrored sign.**
 - **X** — ear thickness. Only needed when an ear is thicker than the mouflon's `0.4`.
 
+Three optional per-species keys cover everything that isn't an ear on a sheep: `shape` picks a
+different attachment shape, `terms` picks a different set of lang keys, and `mirrorZ: false` turns
+off the Z sign flip for ears where Z centres the tag rather than hanging it.
+
 Adding a new species also needs a JSON patch giving it the `eartaggable` behaviour and the ten tag
 textures — see `assets/eartags/patches/`.
 
-### Goats, when someone gets to them
+### Porting the mouflon's numbers to another ear
 
-Groundwork is done, the tuning isn't:
+The mouflon is the one entry that was tuned by hand. Everything else comes off it with rules that
+hold the tag's **overhang** constant rather than scaling it — a tag is a manufactured object and
+ought to be the same size on every animal:
 
-- Bone names are lowercase `L ear` / `R ear`, unlike the sheep's `L Ear`.
-- Eleven breeds with very different ears, from `0.4 x 1.7 x 0.8` (mountain) to `1.6 x 5.0 x 0.3`
-  (sirohi). Each wants its own entry.
-- **`angora`, `nubian` and `sirohi` are thin on Z rather than X**, so the tag mounts perpendicular
-  to the ear. They need a 90° `rotation` entry.
-- `goat-adult.json` already declares `texturesByType` for `angora` and `mountain`, which may
-  override an added `textures` block for those two — untested.
+```
+offsetY       = earLength - 0.9    tag pokes 0.25 past the tip
+offsetZ left  = earWidth  - 0.6    tag hangs 0.5 clear of the lower edge
+offsetZ right = -0.6
+```
+
+`offsetY` is per side: several ears are modelled 0.1 longer on one side than the other.
+
+**The right ear is not the left ear negated.** "Down" is `+Z` on the left and `−Z` on the right, so
+the left measures depth from `Z = 0` while the right measures it from `Z = earWidth`. Negating only
+gives the right answer when the ear is exactly `1.2` wide — which the mouflon is, so the mistake
+hides on the one animal the numbers were tuned on. The invariant, which holds even for a left value
+tuned by eye rather than by the rule above:
+
+```
+offsetZ left + offsetZ right = earWidth - 1.2
+```
+
+Every entry in `attachpoints.json` satisfies this. `.eartags show` prints both sides so the sum can
+be read off in game; the ear widths themselves are listed in the header comment of the config.
+
+Nudging is safe — `.eartags nudge z` moves the sides by `+d` and `−d`, which preserves the sum.
+
+### Goats
+
+All eleven breeds are in. Eight carry a mouflon-shaped ear and just take the two rules above.
+The remaining three are thin on Z rather than X, so their tag needs `rotation: [0, 90, 0]` — a
+quarter turn about the ear's long axis, which drops the plate *into* the flap instead of across
+it. That makes Z a centring offset, hence `mirrorZ: false` on those three.
+
+- `turdag` renders with the `ibexalp` shape, so it borrows the ibexalp numbers.
+- `nubian` and `sirohi` pivot their ear bone at the **top**, so Y runs the other way — `0` is the
+  tip and the base is up at the ear's full length. Their tags sit high in Y, which is also where a
+  real tag would go: up by the head rather than swinging round the jaw.
+- `goat-adult.json` declares `texturesByType` for `angora` and `mountain`. The game resolves a
+  `*ByType` property by writing the matching branch over its plain sibling, which would drop the
+  `textures` block the patch adds — so `goat-eartaggable.json` also adds the ten codes into those
+  two branches individually. If the resolver turns out to merge rather than replace, those extra
+  ops are harmless duplicates.
+
+### Chickens
+
+Same item and same interaction, different hardware: `assets/eartags/shapes/entity/legband.json` is
+a ring of four thin plates round the shank instead of a plate through an ear.
+
+- Both chicken shapes give the shank a `1 x 1` cross-section, so one band definition serves both
+  and only the bone name and the height up the leg change.
+- The bones are `leg left` / `leg right` on the hen and `L feet` / `R feet` on the rooster — on the
+  rooster, `L leg` is the feathered thigh and the bare shank hangs underneath it.
+- Both shanks pivot at the top, so Y `0` is down at the foot and Y counts upward.
+- Poults share the adult shapes at a smaller entity size and need no entry of their own. The chicks
+  in `chicken-baby.json` are left alone — they grow up soon enough.
+- The band's inner faces stand `0.02` off the leg. Coincident faces z-fight, and a hair of
+  clearance is the cheapest fix.
 
 ## Live tuning commands
 
-- `.eartags show` — current offsets for the species you're looking at
-- `.eartags nudge x|y|z amount` — shift the tag; `z` is auto-mirrored between ears
+- `.eartags show` — current offsets for the species you're looking at, both sides
+- `.eartags nudge x|y|z amount` — shift the tag; `z` is auto-mirrored between ears, unless the
+  species sets `mirrorZ: false`
 - `.eartags scale n` — resize
 - `.eartags save` — write values back to `attachpoints.json`, preserving comments
 - `.eartags reload` — re-read the file from disk
@@ -83,11 +145,20 @@ Groundwork is done, the tuning isn't:
 Reload and save read/write the config through `Mod.SourcePath`, so they only work while the mod is
 an unpacked folder. Zip it and you're back to hand-editing plus a world reload.
 
+`save` rewrites only the `left:` / `right:` lines and leaves every other line — comments included —
+exactly as it found them. It writes the key padded out so the two anchors line up, so the matcher
+that finds those lines has to tolerate space before the colon; without that it would find a
+hand-written file once and then never find its own output again.
+
 ## How the rendering works
 
 The tag is step-parented onto the animal's ear bone at tesselation time — the same mechanism vanilla
 uses for the mouflon's mane and the boar's tusks — so it animates with the ear for free. Tag colours
-are stored per-ear in `WatchedAttributes`, so they sync to clients and survive save/load.
+are stored per-side in `WatchedAttributes`, so they sync to clients and survive save/load.
+
+Nothing in the behaviour is ear-specific. The bone, the shape and the wording all come from the
+species' entry in `attachpoints.json`, which is how a chicken gets a leg band out of the same code
+path and the same texture registration.
 
 ## Notes for anyone hacking on this
 

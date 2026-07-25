@@ -28,12 +28,41 @@ namespace EarTags
         /// <summary>Wildcard matched against the entity code path, e.g. "sheep-mouflon-adult-*".</summary>
         public string Match;
 
+        /// <summary>
+        /// Attachment shape step-parented onto the bone. Null means the ear tag plate; a chicken
+        /// points this at the legband instead.
+        /// </summary>
+        public string Shape;
+
+        /// <summary>
+        /// Lang key prefix for the chat lines and the info text, so a chicken can say "leg band"
+        /// where a sheep says "ear tag". Null means <see cref="EarTagsModSystem.DefaultTerms"/>.
+        /// </summary>
+        public string Terms;
+
+        /// <summary>
+        /// Whether ".eartags nudge z" flips the sign on the right side. True where Z is a hang
+        /// direction that the ear's mirrored rotationX has turned round, false where it is just a
+        /// centring offset into the thickness of the ear - see attachpoints.json.
+        /// </summary>
+        public bool MirrorZ = true;
+
         public EarTagAnchor Left;
         public EarTagAnchor Right;
 
         public EarTagAnchor ForSide(string side)
         {
             return side == EarTagsModSystem.SideLeft ? Left : Right;
+        }
+
+        public string ShapeOrDefault
+        {
+            get { return string.IsNullOrEmpty(Shape) ? EarTagsModSystem.DefaultShape : Shape; }
+        }
+
+        public string TermsOrDefault
+        {
+            get { return string.IsNullOrEmpty(Terms) ? EarTagsModSystem.DefaultTerms : Terms; }
         }
     }
 
@@ -44,6 +73,12 @@ namespace EarTags
         public const string AttrTree = "eartags";
         public const string SideLeft = "left";
         public const string SideRight = "right";
+
+        /// <summary>Attachment shape used by any species that does not name one of its own.</summary>
+        public const string DefaultShape = "eartags:shapes/entity/eartag.json";
+
+        /// <summary>Lang key prefix used by any species that does not name one of its own.</summary>
+        public const string DefaultTerms = "eartag";
 
         public static readonly string[] Sides = new string[] { SideLeft, SideRight };
 
@@ -143,8 +178,8 @@ namespace EarTags
 
                     if (current == null) continue;
 
-                    if (trimmed.StartsWith("left:")) lines[i] = FormatAnchorLine("left", current.Left, true);
-                    else if (trimmed.StartsWith("right:")) lines[i] = FormatAnchorLine("right", current.Right, false);
+                    if (IsKeyLine(trimmed, "left")) lines[i] = FormatAnchorLine("left", current.Left, true);
+                    else if (IsKeyLine(trimmed, "right")) lines[i] = FormatAnchorLine("right", current.Right, false);
                 }
 
                 System.IO.File.WriteAllLines(path, lines);
@@ -155,6 +190,23 @@ namespace EarTags
                 api.Logger.Warning("[eartags] Could not save config: {0}", e.Message);
                 return false;
             }
+        }
+
+
+        /// <summary>
+        /// Whether an already-left-trimmed line is "key:", allowing space before the colon. The
+        /// padding matters: FormatAnchorLine writes the key padded out to line the two anchors up,
+        /// so a matcher that insisted on "left:" would find the hand-written file and then fail to
+        /// find its own output, and every save after the first would silently do nothing.
+        /// </summary>
+        private static bool IsKeyLine(string trimmed, string key)
+        {
+            if (!trimmed.StartsWith(key, StringComparison.Ordinal)) return false;
+
+            int i = key.Length;
+            while (i < trimmed.Length && (trimmed[i] == ' ' || trimmed[i] == '\t')) i++;
+
+            return i < trimmed.Length && trimmed[i] == ':';
         }
 
 

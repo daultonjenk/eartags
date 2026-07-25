@@ -40,9 +40,13 @@ namespace EarTags
 
             string side = beh.NextFreeSide(byEntity.Controls.Sneak);
 
+            // Which words this animal's tags get called by is the species' business, not the
+            // item's - the same tag is an ear tag on a sheep and a leg band on a chicken.
+            string terms = "eartags:" + beh.Terms;
+
             if (side == null)
             {
-                Notify(splr, Lang.Get(byEntity.Controls.Sneak ? "eartags:rightearfull" : "eartags:bothearsfull", target.GetName()));
+                Notify(splr, Lang.Get(terms + (byEntity.Controls.Sneak ? "-rightfull" : "-bothfull"), target.GetName()));
                 return;
             }
 
@@ -61,7 +65,7 @@ namespace EarTags
 
             byEntity.World.PlaySoundAt(new AssetLocation("game:sounds/block/leather"), target, null, true, 16);
 
-            Notify(splr, Lang.Get("eartags:applied",
+            Notify(splr, Lang.Get(terms + "-applied",
                 Lang.Get("eartags:color-" + Color),
                 Lang.Get("eartags:side-" + side),
                 target.GetName()));

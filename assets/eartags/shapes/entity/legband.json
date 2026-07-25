@@ -1,0 +1,103 @@
+{
+	// The chicken version of the ear tag: a ring clipped round the shank rather than a plate hung
+	// through an ear. Same item, same leather, same texture code ("tag"), so it goes through the
+	// identical step-parenting and texture path - only the geometry differs.
+	//
+	// Step-parented element coordinates are LOCAL to the target bone, with [0,0,0] at the bone's
+	// own "from" corner. Both chicken shanks - the hen's "leg left"/"leg right" and the rooster's
+	// "L feet"/"R feet" - are 1 x 1 in cross section, differing only in length (4 against 3), so
+	// one band definition serves both and attachpoints.json only has to change the height.
+
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textures": {
+		"tag": "game:block/leather/plain"
+	},
+	"elements": [
+		{
+			"name": "LegOrigin",
+			"stepParentName": "leg left",
+			"from": [ 0, 0, 0 ],
+			"to": [ 1, 4, 1 ],
+			"rotationOrigin": [ 0.5, 0.3, 0.5 ],
+			"faces": {
+				"north": { "texture": "#tag", "uv": [ 7, 7, 9, 9 ], "enabled": false },
+				"east":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ], "enabled": false },
+				"south": { "texture": "#tag", "uv": [ 7, 7, 9, 9 ], "enabled": false },
+				"west":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ], "enabled": false },
+				"up":    { "texture": "#tag", "uv": [ 7, 7, 9, 9 ], "enabled": false },
+				"down":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ], "enabled": false }
+			},
+			// Four plates rather than one solid box, so the leg still shows through the top and
+			// bottom of the ring and it reads as a band rather than a bead.
+			//
+			// The inner faces stand 0.02 off the leg instead of sitting on it: coincident faces
+			// z-fight, and a hair of clearance is cheaper than any of the alternatives.
+			//
+			// All four share one rotationOrigin - the centre of the ring. ApplyAnchor scales each
+			// child about its OWN origin, so giving them separate ones would blow the ring apart
+			// the moment anyone touched the scale.
+			//
+			// The UVs sample the same deliberately tiny 2x2 patch of leather the ear tag uses, to
+			// keep the two at matching texel density.
+			"children": [
+				{
+					"name": "BandNorth",
+					"from": [ -0.17, 0, -0.17 ],
+					"to": [ 1.17, 0.6, -0.02 ],
+					"rotationOrigin": [ 0.5, 0.3, 0.5 ],
+					"faces": {
+						"north": { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"east":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"south": { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"west":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"up":    { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"down":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] }
+					}
+				},
+				{
+					"name": "BandSouth",
+					"from": [ -0.17, 0, 1.02 ],
+					"to": [ 1.17, 0.6, 1.17 ],
+					"rotationOrigin": [ 0.5, 0.3, 0.5 ],
+					"faces": {
+						"north": { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"east":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"south": { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"west":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"up":    { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"down":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] }
+					}
+				},
+				{
+					"name": "BandWest",
+					"from": [ -0.17, 0, -0.02 ],
+					"to": [ -0.02, 0.6, 1.02 ],
+					"rotationOrigin": [ 0.5, 0.3, 0.5 ],
+					"faces": {
+						"north": { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"east":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"south": { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"west":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"up":    { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"down":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] }
+					}
+				},
+				{
+					"name": "BandEast",
+					"from": [ 1.02, 0, -0.02 ],
+					"to": [ 1.17, 0.6, 1.02 ],
+					"rotationOrigin": [ 0.5, 0.3, 0.5 ],
+					"faces": {
+						"north": { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"east":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"south": { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"west":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"up":    { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"down":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] }
+					}
+				}
+			]
+		}
+	]
+}

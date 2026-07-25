@@ -12,15 +12,17 @@ using Vintagestory.API.Server;
 namespace EarTags
 {
     /// <summary>
-    /// Lets an animal wear up to two coloured ear tags. The tag colour per ear lives in the
+    /// Lets an animal wear up to two coloured tags, one per side. The colour per side lives in the
     /// entity's WatchedAttributes so it syncs to clients and survives save/load, and the tag
     /// geometry is step-parented onto the animal's ear bone at tesselation time - the same
     /// mechanism vanilla uses for the mouflon's mane and the boar's tusks.
+    ///
+    /// "Ear" is the common case rather than the only one: which bone, which shape and which words
+    /// all come from the species' entry in attachpoints.json, so the same behaviour puts a band
+    /// round a chicken's leg.
     /// </summary>
     public class EntityBehaviorEarTaggable : EntityBehavior
     {
-        private static readonly AssetLocation tagShapeLocation = new AssetLocation("eartags:shapes/entity/eartag.json");
-
         private ICoreClientAPI capi;
         private EarTagSpeciesConfig anchors;
 
@@ -99,6 +101,17 @@ namespace EarTags
         }
 
 
+        /// <summary>
+        /// Lang key prefix for anything this animal's tags need to say. Species without an entry
+        /// still have to produce a message - they get refused by the item - so this falls back
+        /// rather than returning null.
+        /// </summary>
+        public string Terms
+        {
+            get { return anchors == null ? EarTagsModSystem.DefaultTerms : anchors.TermsOrDefault; }
+        }
+
+
         // ---- rendering -------------------------------------------------------------------
 
         public override void OnTesselation(ref Shape entityShape, string shapePathForLogging, ref bool shapeIsCloned, ref string[] willDeleteElements)
@@ -138,7 +151,9 @@ namespace EarTags
                     return;
                 }
 
-                Shape tagShape = LoadTagShape();
+                AssetLocation shapeLocation = new AssetLocation(anchors.ShapeOrDefault);
+
+                Shape tagShape = LoadTagShape(shapeLocation);
                 if (tagShape?.Elements == null || tagShape.Elements.Length == 0) return;
 
                 ShapeElement el = tagShape.Elements[0];
@@ -158,7 +173,7 @@ namespace EarTags
                 entityShape.StepParentShape(
                     tagShape,
                     prefix,
-                    tagShapeLocation.ToShortString(),
+                    shapeLocation.ToShortString(),
                     shapePathForLogging,
                     capi.Logger,
                     // The callback reports the ORIGINAL texture code ("tag"), but SubclassForStepParenting
@@ -341,13 +356,13 @@ namespace EarTags
         /// accumulates on every tesselation ("eartagredeartagredeartagred...tag") and the mapping
         /// breaks. Parsing a two-element shape is cheap and tesselation is infrequent.
         /// </summary>
-        private Shape LoadTagShape()
+        private Shape LoadTagShape(AssetLocation location)
         {
-            IAsset asset = capi.Assets.TryGet(tagShapeLocation);
+            IAsset asset = capi.Assets.TryGet(location);
 
             if (asset == null)
             {
-                capi.Logger.Error("[eartags] Missing shape asset {0}", tagShapeLocation);
+                capi.Logger.Error("[eartags] Missing shape asset {0}", location);
                 return null;
             }
 
@@ -394,7 +409,7 @@ namespace EarTags
 
             (plr as IServerPlayer)?.SendMessage(
                 GlobalConstants.GeneralChatGroup,
-                Lang.Get("eartags:removed", Lang.Get("eartags:side-" + side), entity.GetName()),
+                Lang.Get("eartags:" + Terms + "-removed", Lang.Get("eartags:side-" + side), entity.GetName()),
                 EnumChatType.Notification);
         }
 
@@ -422,7 +437,7 @@ namespace EarTags
                     Lang.Get("eartags:color-" + color)));
             }
 
-            infotext.AppendLine(Lang.Get("eartags:worn", worn.ToString()));
+            infotext.AppendLine(Lang.Get("eartags:" + Terms + "-worn", worn.ToString()));
         }
 
 
@@ -437,7 +452,7 @@ namespace EarTags
             {
                 new WorldInteraction()
                 {
-                    ActionLangCode = "eartags:entityhelp-remove",
+                    ActionLangCode = "eartags:" + Terms + "-entityhelp-remove",
                     MouseButton = EnumMouseButton.Right,
                     HotKeyCode = "sneak",
                     RequireFreeHand = true

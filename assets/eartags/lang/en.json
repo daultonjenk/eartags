@@ -24,18 +24,25 @@
 	"side-left": "left",
 	"side-right": "right",
 
-	"itemdesc": "A waxed scrap of dyed leather. Right-click an animal to clip it to a bare ear.",
-
-	"applied": "Clipped the {0} tag to the {1} ear of the {2}.",
-	"removed": "Took the tag off the {1}'s {0} ear.",
-	"bothearsfull": "The {0} already has a tag in both ears.",
-	"rightearfull": "The {0} already has a tag in its right ear.",
+	"itemdesc": "A waxed scrap of dyed leather. Right-click an animal to clip it to a bare ear, or round a bird's leg.",
 	"unsupported": "You can't work out how to fit a tag to a {0} yet.",
 
-	"worn": "Ear tags: {0}",
 	"worn-entry": "{0} {1}",
 
-	"heldhelp-apply": "Clip to a bare ear",
-	"heldhelp-applyright": "Clip to the right ear",
-	"entityhelp-remove": "Remove ear tag"
+	"heldhelp-apply": "Clip to a bare ear or leg",
+	"heldhelp-applyright": "Clip to the right ear or leg",
+
+	"eartag-applied": "Clipped the {0} tag to the {1} ear of the {2}.",
+	"eartag-removed": "Took the tag off the {1}'s {0} ear.",
+	"eartag-bothfull": "The {0} already has a tag in both ears.",
+	"eartag-rightfull": "The {0} already has a tag in its right ear.",
+	"eartag-worn": "Ear tags: {0}",
+	"eartag-entityhelp-remove": "Remove ear tag",
+
+	"legband-applied": "Fitted the {0} band round the {1} leg of the {2}.",
+	"legband-removed": "Slipped the band off the {1}'s {0} leg.",
+	"legband-bothfull": "The {0} already has a band on both legs.",
+	"legband-rightfull": "The {0} already has a band on its right leg.",
+	"legband-worn": "Leg bands: {0}",
+	"legband-entityhelp-remove": "Remove leg band"
 }
