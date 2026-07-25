@@ -1,18 +1,18 @@
 {
-	ingredient: {
-		type: "item",
-		code: "game:ingot-*",
-		name: "metal",
-		allowedVariants: ["copper", "brass", "tinbronze", "bismuthbronze", "blackbronze", "cupronickel", "silver", "gold", "iron", "lead", "nickel", "tin", "zinc", "bismuth", "chromium", "electrum", "platinum", "titanium", "molybdochalkos", "meteoriciron", "steel"]
+	"ingredient": {
+		"type": "item",
+		"code": "game:ingot-*",
+		"name": "metal",
+		"allowedVariants": ["copper", "brass", "tinbronze", "bismuthbronze", "blackbronze", "cupronickel", "silver", "gold", "iron", "lead", "nickel", "tin", "zinc", "bismuth", "electrum", "molybdochalkos", "meteoriciron", "steel"]
 	},
-	pattern: [[
+	"pattern": [[
 		"##_##",
 		"##_##",
 		"_____",
 		"##_##",
 		"##_##"
 	]],
-	name: "4 Animal Tags",
-	code: "4animaltags-{metal}",
-	output: { type: "item", code: "eartags:eartagmetal-{metal}", stacksize: 4 }
+	"name": "4 Animal Tags",
+	"code": "4animaltags-{metal}",
+	"output": { "type": "item", "code": "eartags:eartagmetal-{metal}", "stacksize": 4 }
 }

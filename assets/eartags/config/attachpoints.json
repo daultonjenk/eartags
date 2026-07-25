@@ -1,120 +1,120 @@
 [
 	{
-		match: "sheep-mouflon-adult-*",
-		left  : { bone: "L Ear", offset: [ 0, 1.1, 0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
-		right : { bone: "R Ear", offset: [ 0, 1.1, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
+		"match": "sheep-mouflon-adult-*",
+		"left"  : { "bone": "L Ear", "offset": [ 0, 1.1, 0.6 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 },
+		"right" : { "bone": "R Ear", "offset": [ 0, 1.1, -0.6 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 }
 	},
 
 	{
-		match: "sheep-bighorn-adult-*",
-		left  : { bone: "L Ear", offset: [ 0, 1.1, 0.4 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
-		right : { bone: "R Ear", offset: [ 0, 1.1, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
+		"match": "sheep-bighorn-adult-*",
+		"left"  : { "bone": "L Ear", "offset": [ 0, 1.1, 0.4 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 },
+		"right" : { "bone": "R Ear", "offset": [ 0, 1.1, -0.6 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 }
 	},
 
 	{
-		match: "pig-warthog-*",
-		left  : { bone: "L Ear", offset: [ -0.05, 2.1, 0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
-		right : { bone: "R Ear", offset: [ -0.05, 2.1, -0.8 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
+		"match": "pig-warthog-*",
+		"left"  : { "bone": "L Ear", "offset": [ -0.05, 2.1, 0.6 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 },
+		"right" : { "bone": "R Ear", "offset": [ -0.05, 2.1, -0.8 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 }
 	},
 
 	{
-		match: "pig-eurasian-elder-*",
-		left  : { bone: "L Ear", offset: [ 0.25, 4.5, -0.15 ], rotation: [ 0, 0, 0 ], scale: 2 },
-		right : { bone: "R Ear", offset: [ 0.25, 4.5, 1.25 ], rotation: [ 0, 0, 0 ], scale: 2 }
+		"match": "pig-eurasian-elder-*",
+		"left"  : { "bone": "L Ear", "offset": [ 0.25, 4.5, -0.15 ], "rotation": [ 0, 0, 0 ], "scale": 2 },
+		"right" : { "bone": "R Ear", "offset": [ 0.25, 4.5, 1.25 ], "rotation": [ 0, 0, 0 ], "scale": 2 }
 	},
 
 	{
-		match: "pig-*",
-		left  : { bone: "L Ear", offset: [ 0.15, 2.7, -0.1 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
-		right : { bone: "R Ear", offset: [ 0.15, 2.7, 0.4 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
+		"match": "pig-*",
+		"left"  : { "bone": "L Ear", "offset": [ 0.15, 2.7, -0.1 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 },
+		"right" : { "bone": "R Ear", "offset": [ 0.15, 2.7, 0.4 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 }
 	},
 
 	{
-		match: "goat-angora-*",
-		mirrorZ: false,
-		left  : { bone: "L ear", offset: [ 1, 1.1, -0.4 ], rotation: [ 0, 90, 0 ], scale: 1.25 },
-		right : { bone: "R ear", offset: [ 1, 1.1, -0.4 ], rotation: [ 0, 90, 0 ], scale: 1.25 }
+		"match": "goat-angora-*",
+		"mirrorZ": false,
+		"left"  : { "bone": "L ear", "offset": [ 1, 1.1, -0.4 ], "rotation": [ 0, 90, 0 ], "scale": 1.25 },
+		"right" : { "bone": "R ear", "offset": [ 1, 1.1, -0.4 ], "rotation": [ 0, 90, 0 ], "scale": 1.25 }
 	},
 
 	{
-		match: "goat-ibexalp-*",
-		left  : { bone: "L ear", offset: [ 0, 1.1, 0.4 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
-		right : { bone: "R ear", offset: [ 0, 1.1, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
+		"match": "goat-ibexalp-*",
+		"left"  : { "bone": "L ear", "offset": [ 0, 1.1, 0.4 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 },
+		"right" : { "bone": "R ear", "offset": [ 0, 1.1, -0.6 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 }
 	},
 
 	{
-		match: "goat-ibexnub-*",
-		left  : { bone: "L ear", offset: [ 0, 1.1, 0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
-		right : { bone: "R ear", offset: [ 0, 1.1, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
+		"match": "goat-ibexnub-*",
+		"left"  : { "bone": "L ear", "offset": [ 0, 1.1, 0.6 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 },
+		"right" : { "bone": "R ear", "offset": [ 0, 1.1, -0.6 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 }
 	},
 
 	{
-		match: "goat-markhor-*",
-		left  : { bone: "L ear", offset: [ 0, 1.1, 0.4 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
-		right : { bone: "R ear", offset: [ 0, 1.1, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
+		"match": "goat-markhor-*",
+		"left"  : { "bone": "L ear", "offset": [ 0, 1.1, 0.4 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 },
+		"right" : { "bone": "R ear", "offset": [ 0, 1.1, -0.6 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 }
 	},
 
 	{
-		match: "goat-mountain-*",
-		left  : { bone: "L ear", offset: [ 0, 0.8, 0.2 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
-		right : { bone: "R ear", offset: [ 0, 0.9, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
+		"match": "goat-mountain-*",
+		"left"  : { "bone": "L ear", "offset": [ 0, 0.8, 0.2 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 },
+		"right" : { "bone": "R ear", "offset": [ 0, 0.9, -0.6 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 }
 	},
 
 	{
-		match: "goat-muskox-*",
-		left  : { bone: "L ear", offset: [ 0, 0.8, 0.4 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
-		right : { bone: "R ear", offset: [ 0, 0.9, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
+		"match": "goat-muskox-*",
+		"left"  : { "bone": "L ear", "offset": [ 0, 0.8, 0.4 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 },
+		"right" : { "bone": "R ear", "offset": [ 0, 0.9, -0.6 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 }
 	},
 
 	{
-		match: "goat-nubian-*",
-		mirrorZ: false,
-		left  : { bone: "L ear", offset: [ 1.8, 2.7, -0.45 ], rotation: [ 0, 90, 0 ], scale: 1.22 },
-		right : { bone: "R ear", offset: [ 1.8, 2.7, -0.45 ], rotation: [ 0, 90, 0 ], scale: 1.22 }
+		"match": "goat-nubian-*",
+		"mirrorZ": false,
+		"left"  : { "bone": "L ear", "offset": [ 1.8, 2.7, -0.45 ], "rotation": [ 0, 90, 0 ], "scale": 1.22 },
+		"right" : { "bone": "R ear", "offset": [ 1.8, 2.7, -0.45 ], "rotation": [ 0, 90, 0 ], "scale": 1.22 }
 	},
 
 	{
-		match: "goat-sirohi-*",
-		mirrorZ: false,
-		left  : { bone: "L ear", offset: [ 1.8, 3.6, -0.45 ], rotation: [ 0, 90, 0 ], scale: 1.25 },
-		right : { bone: "R ear", offset: [ 1.8, 3.6, -0.45 ], rotation: [ 0, 90, 0 ], scale: 1.25 }
+		"match": "goat-sirohi-*",
+		"mirrorZ": false,
+		"left"  : { "bone": "L ear", "offset": [ 1.8, 3.6, -0.45 ], "rotation": [ 0, 90, 0 ], "scale": 1.25 },
+		"right" : { "bone": "R ear", "offset": [ 1.8, 3.6, -0.45 ], "rotation": [ 0, 90, 0 ], "scale": 1.25 }
 	},
 
 	{
-		match: "goat-takingold-*",
-		left  : { bone: "L ear", offset: [ 0, 0.8, 0.4 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
-		right : { bone: "R ear", offset: [ 0, 0.9, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
+		"match": "goat-takingold-*",
+		"left"  : { "bone": "L ear", "offset": [ 0, 0.8, 0.4 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 },
+		"right" : { "bone": "R ear", "offset": [ 0, 0.9, -0.6 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 }
 	},
 
 	{
-		match: "goat-turdag-*",
-		left  : { bone: "L ear", offset: [ 0, 1.1, 0.4 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
-		right : { bone: "R ear", offset: [ 0, 1.1, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
+		"match": "goat-turdag-*",
+		"left"  : { "bone": "L ear", "offset": [ 0, 1.1, 0.4 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 },
+		"right" : { "bone": "R ear", "offset": [ 0, 1.1, -0.6 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 }
 	},
 
 	{
-		match: "goat-valais-*",
-		left  : { bone: "L ear", offset: [ 0, 1.1, 0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
-		right : { bone: "R ear", offset: [ 0, 1.1, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
+		"match": "goat-valais-*",
+		"left"  : { "bone": "L ear", "offset": [ 0, 1.1, 0.6 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 },
+		"right" : { "bone": "R ear", "offset": [ 0, 1.1, -0.6 ], "rotation": [ 0, 0, 0 ], "scale": 1.25 }
 	},
 
 	{
-		match: "chicken-hen*",
-		shape: "eartags:shapes/entity/legband.json",
-		shapeMetal: "eartags:shapes/entity/legband-metal.json",
-		terms: "legband",
-		mirrorZ: false,
-		left  : { bone: "leg left", offset: [ 0, 1.2, 0 ], rotation: [ 0, 0, 0 ], scale: 1 },
-		right : { bone: "leg right", offset: [ 0, 1.2, 0 ], rotation: [ 0, 0, 0 ], scale: 1 }
+		"match": "chicken-hen*",
+		"shape": "eartags:shapes/entity/legband.json",
+		"shapeMetal": "eartags:shapes/entity/legband-metal.json",
+		"terms": "legband",
+		"mirrorZ": false,
+		"left"  : { "bone": "leg left", "offset": [ 0, 1.2, 0 ], "rotation": [ 0, 0, 0 ], "scale": 1 },
+		"right" : { "bone": "leg right", "offset": [ 0, 1.2, 0 ], "rotation": [ 0, 0, 0 ], "scale": 1 }
 	},
 
 	{
-		match: "chicken-rooster*",
-		shape: "eartags:shapes/entity/legband.json",
-		shapeMetal: "eartags:shapes/entity/legband-metal.json",
-		terms: "legband",
-		mirrorZ: false,
-		left  : { bone: "L feet", offset: [ 0, 1, 0 ], rotation: [ 0, 0, 0 ], scale: 1 },
-		right : { bone: "R feet", offset: [ 0, 1, 0 ], rotation: [ 0, 0, 0 ], scale: 1 }
+		"match": "chicken-rooster*",
+		"shape": "eartags:shapes/entity/legband.json",
+		"shapeMetal": "eartags:shapes/entity/legband-metal.json",
+		"terms": "legband",
+		"mirrorZ": false,
+		"left"  : { "bone": "L feet", "offset": [ 0, 1, 0 ], "rotation": [ 0, 0, 0 ], "scale": 1 },
+		"right" : { "bone": "R feet", "offset": [ 0, 1, 0 ], "rotation": [ 0, 0, 0 ], "scale": 1 }
 	}
 ]

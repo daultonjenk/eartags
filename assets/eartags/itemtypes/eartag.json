@@ -1,61 +1,61 @@
 {
-	code: "eartag",
-	class: "ItemEarTag",
-	behaviors: [{
-		name: "GroundStorable",
-		properties: {
-			layout: "Stacking",
-			upSolid: true,
-			placeRemoveSound: "sounds/block/leather",
-			stackingModel: "eartags:block/eartagpile",
-			stackingTextures: {
+	"code": "eartag",
+	"class": "ItemEarTag",
+	"behaviors": [{
+		"name": "GroundStorable",
+		"properties": {
+			"layout": "Stacking",
+			"upSolid": true,
+			"placeRemoveSound": "sounds/block/leather",
+			"stackingModel": "eartags:block/eartagpile",
+			"stackingTextures": {
 				"tag": "eartags:block/leather/{color}"
 			},
-			collisionBox: { x1: 0.03, y1: 0, z1: 0.03, x2: 0.97, y2: 0.0625, z2: 0.97 },
-			cbScaleYByLayer: 0.25,
-			modelItemsToStackSizeRatio: 4,
-			stackingCapacity: 32,
-			transferQuantity: 1,
-			bulkTransferQuantity: 4
+			"collisionBox": { "x1": 0.03, "y1": 0, "z1": 0.03, "x2": 0.97, "y2": 0.0625, "z2": 0.97 },
+			"cbScaleYByLayer": 0.25,
+			"modelItemsToStackSizeRatio": 4,
+			"stackingCapacity": 32,
+			"transferQuantity": 1,
+			"bulkTransferQuantity": 4
 		}
 	}],
-	variantgroups: [
-		{ code: "color", states: [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ] }
+	"variantgroups": [
+		{ "code": "color", "states": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ] }
 	],
-	shape: { base: "eartags:item/eartag" },
-	textures: {
-		"tag": { base: "eartags:block/leather/{color}" }
+	"shape": { "base": "eartags:item/eartag" },
+	"textures": {
+		"tag": { "base": "eartags:block/leather/{color}" }
 	},
-	creativeinventory: { "general": ["*"], "items": ["*"] },
-	maxstacksize: 64,
-	materialDensity: 300,
-	attributes: {
-		handbook: {
-			groupBy: ["eartag-*"]
+	"creativeinventory": { "general": ["*"], "items": ["*"] },
+	"maxstacksize": 64,
+	"materialDensity": 300,
+	"attributes": {
+		"handbook": {
+			"groupBy": ["eartag-*"]
 		}
 	},
-	guiTransform: {
-		translation: { x: 0, y: 0, z: 0 },
-		rotation: { x: -72, y: 18, z: -6 },
-		origin: { x: 0.5, y: 0.023, z: 0.5 },
-		scale: 1.9
+	"guiTransform": {
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": -72, "y": 18, "z": -6 },
+		"origin": { "x": 0.5, "y": 0.023, "z": 0.5 },
+		"scale": 1.9
 	},
-	fpHandTransform: {
-		translation: { x: 0.1, y: 0.2, z: -0.4 },
-		rotation: { x: 0, y: -80, z: -20 },
-		origin: { x: 0.5, y: 0, z: 0.5 },
-		scale: 1
+	"fpHandTransform": {
+		"translation": { "x": 0.1, "y": 0.2, "z": -0.4 },
+		"rotation": { "x": 0, "y": -80, "z": -20 },
+		"origin": { "x": 0.5, "y": 0, "z": 0.5 },
+		"scale": 1
 	},
-	tpHandTransform: {
-		translation: { x: -0.15, y: 0.05, z: -0.5 },
-		rotation: { x: 0, y: 0, z: 0 },
-		origin: { x: 0.5, y: 0, z: 0.5 },
-		scale: 0.5
+	"tpHandTransform": {
+		"translation": { "x": -0.15, "y": 0.05, "z": -0.5 },
+		"rotation": { "x": 0, "y": 0, "z": 0 },
+		"origin": { "x": 0.5, "y": 0, "z": 0.5 },
+		"scale": 0.5
 	},
-	groundTransform: {
-		translation: { x: 0, y: 0, z: 0 },
-		rotation: { x: 0, y: 0, z: 0 },
-		origin: { x: 0.5, y: 0, z: 0.5 },
-		scale: 1.55
+	"groundTransform": {
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": 0, "y": 0, "z": 0 },
+		"origin": { "x": 0.5, "y": 0, "z": 0.5 },
+		"scale": 1.55
 	}
 }

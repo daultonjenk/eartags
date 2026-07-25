@@ -1,14 +1,14 @@
 [
 	{
-		file: "game:entities/animal/bird/chicken-adult",
-		op: "add",
-		path: "/client/behaviors/0",
-		value: { code: "eartaggable" }
+		"file": "game:entities/animal/bird/chicken-adult",
+		"op": "add",
+		"path": "/client/behaviors/0",
+		"value": { "code": "eartaggable" }
 	},
 	{
-		file: "game:entities/animal/bird/chicken-adult",
-		op: "add",
-		path: "/server/behaviors/0",
-		value: { code: "eartaggable" }
+		"file": "game:entities/animal/bird/chicken-adult",
+		"op": "add",
+		"path": "/server/behaviors/0",
+		"value": { "code": "eartaggable" }
 	}
 ]

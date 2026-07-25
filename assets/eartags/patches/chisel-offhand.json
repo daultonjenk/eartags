@@ -1,8 +1,8 @@
 [
 	{
-		file: "game:itemtypes/tool/chisel.json",
-		op: "add",
-		path: "/storageFlags",
-		value: 257
+		"file": "game:itemtypes/tool/chisel.json",
+		"op": "add",
+		"path": "/storageFlags",
+		"value": 257
 	}
 ]

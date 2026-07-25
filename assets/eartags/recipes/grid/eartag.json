@@ -1,40 +1,40 @@
 [
 	{
-		ingredientPattern: "KLW",
-		width: 3,
-		height: 1,
-		shapeless: true,
-		recipeGroup: 1,
-		ingredients: {
-			"K": { type: "item", tags: ["tool-knife"], isTool: true },
+		"ingredientPattern": "KLW",
+		"width": 3,
+		"height": 1,
+		"shapeless": true,
+		"recipeGroup": 1,
+		"ingredients": {
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
 			"L": {
-				type: "item",
-				code: "game:leather-normal-*",
-				name: "color",
-				allowedVariants: [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ],
-				quantity: 1
+				"type": "item",
+				"code": "game:leather-normal-*",
+				"name": "color",
+				"allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ],
+				"quantity": 1
 			},
-			"W": { type: "item", code: "game:beeswax", quantity: 1 }
+			"W": { "type": "item", "code": "game:beeswax", "quantity": 1 }
 		},
-		output: { type: "item", code: "eartags:eartag-{color}", quantity: 8 }
+		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
 	},
 	{
-		ingredientPattern: "KLW",
-		width: 3,
-		height: 1,
-		shapeless: true,
-		recipeGroup: 1,
-		ingredients: {
-			"K": { type: "item", tags: ["tool-knife"], isTool: true },
+		"ingredientPattern": "KLW",
+		"width": 3,
+		"height": 1,
+		"shapeless": true,
+		"recipeGroup": 1,
+		"ingredients": {
+			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
 			"L": {
-				type: "item",
-				code: "game:leather-normal-*",
-				name: "color",
-				allowedVariants: [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ],
-				quantity: 1
+				"type": "item",
+				"code": "game:leather-normal-*",
+				"name": "color",
+				"allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ],
+				"quantity": 1
 			},
-			"W": { type: "item", code: "game:fat-rendered", quantity: 1 }
+			"W": { "type": "item", "code": "game:fat-rendered", "quantity": 1 }
 		},
-		output: { type: "item", code: "eartags:eartag-{color}", quantity: 8 }
+		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
 	}
 ]

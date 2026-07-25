@@ -1,64 +1,64 @@
 {
-	code: "eartagmetal",
-	class: "ItemEarTag",
-	behaviors: [{
-		name: "GroundStorable",
-		properties: {
-			layout: "Stacking",
-			upSolid: true,
-			placeRemoveSound: "sounds/block/ingot",
-			stackingModelByType: {
+	"code": "eartagmetal",
+	"class": "ItemEarTag",
+	"behaviors": [{
+		"name": "GroundStorable",
+		"properties": {
+			"layout": "Stacking",
+			"upSolid": true,
+			"placeRemoveSound": "sounds/block/ingot",
+			"stackingModelByType": {
 				"*-gold": "eartags:block/eartagpile-shiny",
 				"*": "eartags:block/eartagpile-metal"
 			},
-			stackingTextures: {
+			"stackingTextures": {
 				"tag": "game:block/metal/ingot/{metal}"
 			},
-			collisionBox: { x1: 0.03, y1: 0, z1: 0.03, x2: 0.97, y2: 0.0625, z2: 0.97 },
-			cbScaleYByLayer: 0.25,
-			modelItemsToStackSizeRatio: 4,
-			stackingCapacity: 32,
-			transferQuantity: 1,
-			bulkTransferQuantity: 4
+			"collisionBox": { "x1": 0.03, "y1": 0, "z1": 0.03, "x2": 0.97, "y2": 0.0625, "z2": 0.97 },
+			"cbScaleYByLayer": 0.25,
+			"modelItemsToStackSizeRatio": 4,
+			"stackingCapacity": 32,
+			"transferQuantity": 1,
+			"bulkTransferQuantity": 4
 		}
 	}],
-	variantgroups: [
-		{ code: "metal", loadFromProperties: "block/metal" }
+	"variantgroups": [
+		{ "code": "metal", "states": ["bismuth", "bismuthbronze", "blackbronze", "brass", "copper", "cupronickel", "electrum", "gold", "iron", "lead", "meteoriciron", "molybdochalkos", "nickel", "silver", "steel", "tin", "tinbronze", "zinc"] }
 	],
-	shape: { base: "eartags:item/eartag" },
-	textures: {
-		"tag": { base: "game:block/metal/ingot/{metal}" }
+	"shape": { "base": "eartags:item/eartag" },
+	"textures": {
+		"tag": { "base": "game:block/metal/ingot/{metal}" }
 	},
-	creativeinventory: { "general": ["*"], "items": ["*"] },
-	maxstacksize: 64,
-	materialDensity: 600,
-	attributes: {
-		handbook: {
-			groupBy: ["eartagmetal-*"]
+	"creativeinventory": { "general": ["*"], "items": ["*"] },
+	"maxstacksize": 64,
+	"materialDensity": 600,
+	"attributes": {
+		"handbook": {
+			"groupBy": ["eartagmetal-*"]
 		}
 	},
-	guiTransform: {
-		translation: { x: 0, y: 0, z: 0 },
-		rotation: { x: -72, y: 18, z: -6 },
-		origin: { x: 0.5, y: 0.023, z: 0.5 },
-		scale: 1.9
+	"guiTransform": {
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": -72, "y": 18, "z": -6 },
+		"origin": { "x": 0.5, "y": 0.023, "z": 0.5 },
+		"scale": 1.9
 	},
-	fpHandTransform: {
-		translation: { x: 0.1, y: 0.2, z: -0.4 },
-		rotation: { x: 0, y: -80, z: -20 },
-		origin: { x: 0.5, y: 0, z: 0.5 },
-		scale: 1
+	"fpHandTransform": {
+		"translation": { "x": 0.1, "y": 0.2, "z": -0.4 },
+		"rotation": { "x": 0, "y": -80, "z": -20 },
+		"origin": { "x": 0.5, "y": 0, "z": 0.5 },
+		"scale": 1
 	},
-	tpHandTransform: {
-		translation: { x: -0.15, y: 0.05, z: -0.5 },
-		rotation: { x: 0, y: 0, z: 0 },
-		origin: { x: 0.5, y: 0, z: 0.5 },
-		scale: 0.5
+	"tpHandTransform": {
+		"translation": { "x": -0.15, "y": 0.05, "z": -0.5 },
+		"rotation": { "x": 0, "y": 0, "z": 0 },
+		"origin": { "x": 0.5, "y": 0, "z": 0.5 },
+		"scale": 0.5
 	},
-	groundTransform: {
-		translation: { x: 0, y: 0, z: 0 },
-		rotation: { x: 0, y: 0, z: 0 },
-		origin: { x: 0.5, y: 0, z: 0.5 },
-		scale: 1.55
+	"groundTransform": {
+		"translation": { "x": 0, "y": 0, "z": 0 },
+		"rotation": { "x": 0, "y": 0, "z": 0 },
+		"origin": { "x": 0.5, "y": 0, "z": 0.5 },
+		"scale": 1.55
 	}
 }
