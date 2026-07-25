@@ -1,16 +1,4 @@
 {
-	// The metal leg band. Geometry identical to legband.json - keep the two in step - with every
-	// face carrying "reflectiveMode": 4. See eartag-metal.json for what that is and how to dial it.
-	//
-	// The chicken version of the ear tag: a ring clipped round the shank rather than a plate hung
-	// through an ear. Same item, same leather, same texture code ("tag"), so it goes through the
-	// identical step-parenting and texture path - only the geometry differs.
-	//
-	// Step-parented element coordinates are LOCAL to the target bone, with [0,0,0] at the bone's
-	// own "from" corner. Both chicken shanks - the hen's "leg left"/"leg right" and the rooster's
-	// "L feet"/"R feet" - are 1 x 1 in cross section, differing only in length (4 against 3), so
-	// one band definition serves both and attachpoints.json only has to change the height.
-
 	"textureWidth": 16,
 	"textureHeight": 16,
 	"textures": {
@@ -31,23 +19,6 @@
 				"up":    { "reflectiveMode": 4, "texture": "#tag", "uv": [ 7, 7, 9, 9 ], "enabled": false },
 				"down":  { "reflectiveMode": 4, "texture": "#tag", "uv": [ 7, 7, 9, 9 ], "enabled": false }
 			},
-			// Four plates rather than one solid box, so the leg still shows through the top and
-			// bottom of the ring and it reads as a band rather than a bead.
-			//
-			// 0.9 tall, which is one and a half of the 0.6 it started at - a single band read as a
-			// bead at chicken scale and was easy to miss. It grows UPWARD from Y 0: the bottom edge
-			// is where the offsetY in attachpoints.json puts it, and that placement was already
-			// right, so the extra height goes up the shank rather than down toward the foot.
-			//
-			// The inner faces stand 0.02 off the leg instead of sitting on it: coincident faces
-			// z-fight, and a hair of clearance is cheaper than any of the alternatives.
-			//
-			// All four share one rotationOrigin - the centre of the ring. ApplyAnchor scales each
-			// child about its OWN origin, so giving them separate ones would blow the ring apart
-			// the moment anyone touched the scale.
-			//
-			// The UVs sample the same deliberately tiny 2x2 patch of leather the ear tag uses, to
-			// keep the two at matching texel density.
 			"children": [
 				{
 					"name": "BandNorth",

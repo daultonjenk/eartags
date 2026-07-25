@@ -1,24 +1,6 @@
 {
-	// The metal tag. Same class, same shape, same interaction as the leather one - ItemEarTag reads
-	// the material off the last code part and the kind off the first, so "eartagmetal-copper" needs
-	// no code of its own.
-	//
-	// The variant list is loaded from the same world property vanilla metalplate uses, so the two
-	// cannot drift apart: every metal you can beat into a plate, you can cut a tag from.
-	//
-	// Texture is the ingot art rather than the plate art. That is what metalplate itself uses, and
-	// it is the one metal folder with an image for every variant of the property.
 	code: "eartagmetal",
 	class: "ItemEarTag",
-	// See eartag.json.
-	//
-	// Gold gets its own pile shape at reflectiveMode 3 where everything else sits at 2, which is
-	// exactly how vanilla singles out gold ingot piles - stackingModelByType, same as ingot.json.
-	// There is no shininess property on a metal to read; vanilla hard-codes gold and so do we.
-	//
-	// Note the drop from the 4 the tag wears on an animal. On an ear it hangs vertically and moves;
-	// on the ground every tag is a flat face pointed straight at the sky, and 4 turned a stack of
-	// silver into a mirror. Vanilla does the same thing - a held gold ingot is 4, its pile is 3.
 	behaviors: [{
 		name: "GroundStorable",
 		properties: {

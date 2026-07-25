@@ -1,59 +1,4 @@
 [
-	// Per-species placement of the ear tag. "match" is a wildcard against the entity code, and the
-	// FIRST matching entry wins - so put narrow patterns above broad ones.
-	//
-	// Coordinates in the tag shape are LOCAL to the named bone ([0,0,0] is the bone's own "from"
-	// corner), so the offsets here are pure nudges on top of that.
-	//
-	// Axis meanings in the ear's local frame, confirmed in game on the mouflon. Every ear bone in
-	// this family carries a mirrored rotationX (+n on the left, -n on the right), which swings the
-	// local axes round the same way:
-	//
-	//   Y = along the ear, 0 at the base by the skull. Positive moves toward the tip.
-	//       SAME sign on both ears.
-	//   Z = vertical once rotated. Positive hangs the tag down on the left ear but UP on the right.
-	//       MIRRORED sign - if one side hangs the wrong way, flip that side only.
-	//   X = ear thickness. Only needed when an ear is thicker than the mouflon's 0.4.
-	//
-	// Optional per-species keys:
-	//   shape      - which attachment shape to step-parent on. Defaults to the tag plate.
-	//   shapeMetal - the same for a metal tag, which is a separate file only because it carries the
-	//                per-face reflectiveMode that makes metal shine. Defaults to the metal plate.
-	//   terms      - lang key prefix for the chat and info text. Defaults to "eartag".
-	//   mirrorZ    - whether ".eartags nudge z" flips the sign on the right side. Defaults to true.
-	//                Set false when Z is a centring offset rather than a hang direction, i.e. on
-	//                any ear that is thin on Z, and on the chickens.
-	//
-	// Both shapes for a species share one set of offsets, so tuning placement stays a single job.
-	//
-	// To nudge a tag: edit the numbers and reload the world. No recompile needed.
-	//
-	// Ear box sizes (X thickness, Y length, Z width) for reference when adding a species:
-	//   mouflon 0.4 x 2.0 x 1.2   bighorn 0.4 x 2.0 x 1.0
-	//   pig eurasian/redriver 0.5 x 1.5 x 1.5   pig warthog 0.5 x 1.5 x 1.0
-	//   pig eurasian ELDER 0.8 x 2.5 x 2.3 - elders have their own shape and are roughly 1.6x the
-	//   adult in every dimension, so they need their own entry rather than sharing "pig-*".
-	//
-	// The mouflon numbers below are the tuned reference every other entry is derived from. Two
-	// rules port them to another ear of the same family, both chosen to hold the tag's OVERHANG
-	// constant rather than scaling it, so the tag stays a fixed-size manufactured object:
-	//
-	//   offsetY       = earLength - 0.9      tag pokes 0.25 past the tip. Per side, using that
-	//                                        side's own length - some ears differ by 0.1.
-	//   offsetZ left  = earWidth - 0.6       tag hangs 0.5 clear of the lower edge
-	//   offsetZ right = -0.6
-	//
-	// MIND THE RIGHT EAR. "Down" is +Z on the left but -Z on the right, so the left measures depth
-	// from Z 0 while the right measures it from Z = earWidth. Mirroring by just negating the left
-	// value is therefore WRONG on every ear that is not 1.2 wide, and the mouflon is 1.2 wide - so
-	// the mistake hides on the one animal the numbers were tuned on and shows up everywhere else.
-	// The invariant, which also holds for a left value tuned by eye rather than by the rule:
-	//
-	//   offsetZ left + offsetZ right = earWidth - 1.2
-	//
-	// Nudging is safe: ".eartags nudge z" moves the two sides by +d and -d, which preserves that
-	// sum. It was only ever the starting values that were wrong.
-
 	{
 		match: "sheep-mouflon-adult-*",
 		left  : { bone: "L Ear", offset: [ 0, 1.1, 0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
@@ -61,76 +6,30 @@
 	},
 
 	{
-		// Same ear length and thickness as the mouflon, but 0.2 narrower, so the LEFT Z comes in by
-		// 0.2. The right stays at -0.6: 0.4 + -0.6 = -0.2 = earWidth - 1.2. It used to read -0.4,
-		// which sat the right tag 0.2 higher than the left.
 		match: "sheep-bighorn-adult-*",
 		left  : { bone: "L Ear", offset: [ 0, 1.1, 0.4 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
 		right : { bone: "R Ear", offset: [ 0, 1.1, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
 	},
 
 	{
-		// Warthog ears are the same as the other pigs' but 0.5 narrower. Must sit above "pig-*".
-		// Left was tuned by eye; right follows from it: 0.6 + -0.8 = -0.2 = 1.0 - 1.2.
 		match: "pig-warthog-*",
 		left  : { bone: "L Ear", offset: [ -0.05, 2.1, 0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
 		right : { bone: "R Ear", offset: [ -0.05, 2.1, -0.8 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
 	},
 
 	{
-		// "Large gray boar" - the elder eurasian, which uses eurasian/elder.json rather than the
-		// adult shape. Its ears are 0.8 x 2.5 x 2.3 against the adult's 0.5 x 1.5 x 1.5, so these
-		// offsets are the tuned adult values scaled by the per-axis ear ratio, and the tag itself
-		// is scaled up to match. Starting estimates - expect to nudge.
-		// Must sit above "pig-*".
-		// Widest ear in the mod at 2.3, so the right-ear correction bites hardest here:
-		// -0.15 + 1.25 = 1.1 = 2.3 - 1.2. It used to read 0.15, a full 1.1 out.
 		match: "pig-eurasian-elder-*",
 		left  : { bone: "L Ear", offset: [ 0.25, 4.5, -0.15 ], rotation: [ 0, 0, 0 ], scale: 2 },
 		right : { bone: "R Ear", offset: [ 0.25, 4.5, 1.25 ], rotation: [ 0, 0, 0 ], scale: 2 }
 	},
 
 	{
-		// "Gray boar" - eurasian and red river adults. Shorter, wider, slightly thicker ears than a sheep's:
-		// Y pulls back to suit the 1.5 length, Z pushes out for the 1.5 width, X centres the tag
-		// in the thicker 0.5 ear. Right follows the left: -0.1 + 0.4 = 0.3 = 1.5 - 1.2.
 		match: "pig-*",
 		left  : { bone: "L Ear", offset: [ 0.15, 2.7, -0.1 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
 		right : { bone: "R Ear", offset: [ 0.15, 2.7, 0.4 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
 	},
 
-	// ---- goats -------------------------------------------------------------------------------
-	//
-	// Bone names are lowercase "L ear" / "R ear", unlike the sheep's "L Ear".
-	//
-	// Eight of the eleven breeds carry a mouflon-shaped ear - thin on X, mirrored rotationX - and
-	// just need the two porting rules above applied to their own box:
-	//
-	//   ibexalp   0.4 x 2.0 x 1.0        markhor   0.4 x 2.0 x 1.0
-	//   ibexnub   0.4 x 2.0 x 1.2        valais    0.4 x 2.0 x 1.2   (identical to the mouflon)
-	//   mountain  0.4 x 1.8 x 0.8        muskox    0.4 x 1.8 x 1.0
-	//   takingold 0.4 x 1.8 x 1.0        turdag    uses the ibexalp shape, so ibexalp's numbers
-	//
-	// Left and right ears are modelled 0.1 apart in length on the mountain, muskox and takingold,
-	// hence the 0.8/0.9 split on those.
-	//
-	// The other three are the awkward ones: their ear is thin on Z instead of X, so the tag plate
-	// has to be turned a quarter turn about the ear's long axis to end up in the flap rather than
-	// across it. That is what the rotation entry does, and it makes Z a centring offset - which is
-	// why those entries also carry mirrorZ: false.
-	//
-	//   angora  1.2 x 2.0 x 0.4, rotationX +-110 - a horizontal flap
-	//   nubian  1.6 x 4.0 x 0.3, rotationZ 40    - the long pendulous ear
-	//   sirohi  1.6 x 5.0 x 0.3, rotationZ 36    - longer again
-	//
-	// On the nubian and the sirohi the bone pivots at its TOP, so Y runs the other way: 0 is the
-	// tip and the base is up at earLength. Their tags therefore sit near the high end of Y, which
-	// is also where you would really put a tag - up by the head, not swinging round the jaw.
-
 	{
-		// Horizontal flap, thin on Z. Rotated a quarter turn so the tag lies in the flap; X then
-		// carries it back past the trailing edge the way Z does on a mouflon, and Z centres it in
-		// the 0.4 thickness. Both ears take the same numbers - neither axis is mirrored here.
 		match: "goat-angora-*",
 		mirrorZ: false,
 		left  : { bone: "L ear", offset: [ 1, 1.1, -0.4 ], rotation: [ 0, 90, 0 ], scale: 1.25 },
@@ -144,7 +43,6 @@
 	},
 
 	{
-		// Same box as the mouflon's, only laid back further. Straight copy of its numbers.
 		match: "goat-ibexnub-*",
 		left  : { bone: "L ear", offset: [ 0, 1.1, 0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
 		right : { bone: "R ear", offset: [ 0, 1.1, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
@@ -157,26 +55,18 @@
 	},
 
 	{
-		// Shortest ear of the family at 1.7/1.8, and the narrowest at 0.8. Being the narrowest, it
-		// is also the ear the right-side Z mistake showed up on first: 0.2 and -0.2 summed to 0
-		// where they should sum to -0.4, which left the right tag sitting on the ear rather than
-		// hanging off it.
 		match: "goat-mountain-*",
 		left  : { bone: "L ear", offset: [ 0, 0.8, 0.2 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
 		right : { bone: "R ear", offset: [ 0, 0.9, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
 	},
 
 	{
-		// A big animal on a small ear - the entity's own size multiplier scales the tag with it,
-		// so the tag stays at 1.25 like everything else rather than being scaled up here.
 		match: "goat-muskox-*",
 		left  : { bone: "L ear", offset: [ 0, 0.8, 0.4 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
 		right : { bone: "R ear", offset: [ 0, 0.9, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
 	},
 
 	{
-		// Long pendulous ear pivoting at the top, so Y 0 is the tip: 2.5 puts the tag up near the
-		// base. X carries it back off the trailing edge, Z centres it in the 0.3 thickness.
 		match: "goat-nubian-*",
 		mirrorZ: false,
 		left  : { bone: "L ear", offset: [ 1.8, 2.7, -0.45 ], rotation: [ 0, 90, 0 ], scale: 1.22 },
@@ -184,7 +74,6 @@
 	},
 
 	{
-		// As the nubian but a whole unit longer, so Y goes up by the same unit.
 		match: "goat-sirohi-*",
 		mirrorZ: false,
 		left  : { bone: "L ear", offset: [ 1.8, 3.6, -0.45 ], rotation: [ 0, 90, 0 ], scale: 1.25 },
@@ -192,42 +81,24 @@
 	},
 
 	{
-		// Golden takin. Same ear box as the muskox.
 		match: "goat-takingold-*",
 		left  : { bone: "L ear", offset: [ 0, 0.8, 0.4 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
 		right : { bone: "R ear", offset: [ 0, 0.9, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
 	},
 
 	{
-		// Tur. goat-adult.json points it at the ibexalp shape, so it takes the ibexalp numbers.
 		match: "goat-turdag-*",
 		left  : { bone: "L ear", offset: [ 0, 1.1, 0.4 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
 		right : { bone: "R ear", offset: [ 0, 1.1, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
 	},
 
 	{
-		// Identical ear box to the mouflon's, same as the ibexnub.
 		match: "goat-valais-*",
 		left  : { bone: "L ear", offset: [ 0, 1.1, 0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
 		right : { bone: "R ear", offset: [ 0, 1.1, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
 	},
 
-	// ---- chickens ----------------------------------------------------------------------------
-	//
-	// Same item, same interaction, different hardware: a ring round the shank instead of a plate
-	// through the ear, so these entries name the legband shape and its own lang keys.
-	//
-	// The band shape is built round a 1 x 1 shank and both chicken shapes have exactly that, so
-	// only the bone name and the height up the leg change between hen and rooster. The shank bone
-	// pivots at the top on both, so Y 0 is down at the foot and Y counts upward.
-	//
-	// Hens and their poults share chicken-hen.json, roosters and theirs chicken-rooster.json; the
-	// poults are the same model at a smaller entity size, so they need no entry of their own.
-	// Neither X nor Z is mirrored - the two legs are modelled facing the same way.
-
 	{
-		// Shank is "leg left"/"leg right" here and runs 4 long. 1.2 sits it in the lower half,
-		// clear of the feathering on the thigh above.
 		match: "chicken-hen*",
 		shape: "eartags:shapes/entity/legband.json",
 		shapeMetal: "eartags:shapes/entity/legband-metal.json",
@@ -238,8 +109,6 @@
 	},
 
 	{
-		// The rooster splits the leg differently: "L leg" is the feathered thigh and the bare
-		// shank underneath it is "L feet", 3 long rather than 4.
 		match: "chicken-rooster*",
 		shape: "eartags:shapes/entity/legband.json",
 		shapeMetal: "eartags:shapes/entity/legband-metal.json",

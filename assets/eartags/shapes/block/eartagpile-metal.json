@@ -1,15 +1,4 @@
 {
-	// The metal pile, at reflectiveMode 2 - what vanilla's ingotpile uses, and the value that makes
-	// a pile of silver read as metal rather than as a light source. 4 is right on an animal, where
-	// the tag hangs vertically and moves; on the ground every tag is a flat face pointed straight
-	// at the sky, and 4 turned a stack of silver into a mirror.
-	//
-	// Gold gets eartagpile-shiny at 3 instead, picked by stackingModelByType in the itemtype -
-	// exactly how vanilla singles out gold ingot piles. Note that even gold only goes to 3 on the
-	// floor, where the held ingot is 4.
-	//
-	// Geometry is identical to eartagpile.json. Keep them in step.
-
 	"textureWidth": 16,
 	"textureHeight": 16,
 	"textures": {

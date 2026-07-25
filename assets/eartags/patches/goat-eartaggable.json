@@ -1,5 +1,4 @@
 [
-	// Server copy at index 0 - see sheep-eartaggable.json. Textures live in goat-eartag-textures.json.
 	{
 		file: "game:entities/animal/mammal/hooved/goat-adult",
 		op: "add",

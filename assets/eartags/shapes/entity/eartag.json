@@ -1,12 +1,4 @@
 {
-	// Step-parented element coordinates are LOCAL to the target bone, with [0,0,0] at the bone's
-	// own "from" corner - they are NOT in the parent shape's coordinate space. Vanilla's boar
-	// tusks follow the same idiom: an invisible origin element mirroring the bone's box, with the
-	// real geometry hung underneath it as children.
-	//
-	// The mouflon's "L Ear" and "R Ear" are both 0.4 x 2.0 x 1.2, so this one definition serves
-	// both ears unchanged.
-
 	"textureWidth": 16,
 	"textureHeight": 16,
 	"textures": {
@@ -30,21 +22,6 @@
 			"children": [
 				{
 					"name": "Tag",
-					// A plate centred on the ear's mid-plane (the ear spans X 0..0.4, so 0.2 is its
-					// centre). X here is 0.24, which the 1.25 scale in attachpoints.json takes to
-					// 0.3 - three quarters of the ear's thickness. It was 0.15, which looked right
-					// standing still but barely caught the light on the metal version: a thin plate
-					// has two big parallel faces and four slivers, so it only flashes when the sun
-					// is square on. Crystallised ore chunks use the same reflectiveMode we do (4) -
-					// what they have that we did not is edges. Being coplanar with the ear, the tag
-					// is still hidden inside the flap where the two overlap, which is what you want.
-					//
-					// Y and Z placement is left neutral here - attachpoints.json does the placing,
-					// because the ears' rotationX rotates their local axes and mirrors Z.
-					//
-					// The UVs sample a deliberately tiny 2x2 patch of the leather. Blowing up a
-					// few texels over the whole tag keeps its texel density near the mouflon's own,
-					// so it reads as a piece cut from the hide rather than a shrunken HD decal.
 					"from": [ 0.08, 0.25, 0.2 ],
 					"to": [ 0.32, 1.15, 1.0 ],
 					"rotationOrigin": [ 0.2, 1.15, 0.6 ],

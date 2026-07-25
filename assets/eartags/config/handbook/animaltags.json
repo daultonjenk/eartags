@@ -1,11 +1,5 @@
 {
-	// A guide page in the handbook, alongside vanilla's "Crafting Mechanic: Knapping" and friends.
-	// The game builds its guide list from every assets/<domain>/config/handbook/*.json it can find,
-	// so this needs no code at all.
-	//
-	// Both fields below are lang keys, not text. The prose lives in assets/eartags/lang/en.json
-	// under "guide-title" and "guide-text", which is the file to edit.
-	pageCode: "animaltags-guide",
-	title: "eartags:guide-title",
-	text: "eartags:guide-text"
+	"pageCode": "animaltags-guide",
+	"title": "eartags:guide-title",
+	"text": "eartags:guide-text"
 }

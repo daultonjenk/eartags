@@ -1,15 +1,4 @@
 [
-	// See sheep-eartag-textures.json for why these have to be declared at asset-load time.
-	//
-	// The angora and the mountain goat are the only two breeds goat-adult.json gives a
-	// texturesByType entry, and the game resolves a *ByType property by picking the matching branch
-	// and writing it over its plain sibling. On those two breeds that would drop the block below
-	// and the tags would render blank, so the same codes are added into their branches as well.
-	// Adding each key on its own rather than replacing the whole branch leaves the vanilla
-	// hide/hair entries alone, so this survives a change to them upstream.
-	//
-	// Belt and braces: if the resolver turns out to merge rather than replace, the per-branch ops
-	// duplicate values already present and cost nothing.
 	{
 		file: "game:entities/animal/mammal/hooved/goat-adult",
 		op: "add",

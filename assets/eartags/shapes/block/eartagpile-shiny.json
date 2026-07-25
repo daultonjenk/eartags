@@ -1,7 +1,4 @@
 {
-	// The gold pile, at reflectiveMode 3 - vanilla's ingotpileshiny value. Geometry identical to
-	// eartagpile.json. Keep all three in step.
-
 	"textureWidth": 16,
 	"textureHeight": 16,
 	"textures": {

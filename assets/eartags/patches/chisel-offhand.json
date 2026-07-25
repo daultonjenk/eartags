@@ -1,19 +1,4 @@
 [
-	// Vanilla will not let a chisel go in the off hand, which makes requireChiselForEarTags
-	// impossible to satisfy. This adds the Offhand storage flag to it.
-	//
-	// 257 = General (1) + Offhand (256), which is exactly what a shield and a raw fish carry. The
-	// chisel had no storageFlags at all, so it was on the default - and the default is General on
-	// its own, which is why vanilla's off-hand items read 257 rather than 259. Nothing is lost:
-	// backpacks and chests accept General, so the chisel still stores everywhere it used to.
-	//
-	// This is NOT conditional on the setting, because a JSON patch cannot read a mod config - it
-	// only knows world config. Leaving it always on is the harmless direction: with the setting off
-	// the only difference is that a chisel may sit in a slot it previously could not, and nothing
-	// in the game reads the off hand for chiselling.
-	//
-	// Only vanilla chisels are covered. A modded chisel needs the same flag from its own mod before
-	// it can be held there - the tag check itself accepts any item whose code starts with "chisel".
 	{
 		file: "game:itemtypes/tool/chisel.json",
 		op: "add",

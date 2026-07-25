@@ -1,17 +1,6 @@
 {
 	code: "eartag",
 	class: "ItemEarTag",
-	// Sneak + place to stack tags on the ground, four to a layer, up to 32. Pure JSON - vanilla
-	// metalplate does exactly this, so no block and no code is needed.
-	//
-	// THE RATIO IS 4 BECAUSE A TAG IS FOUR BOXES. The renderer walks the pile shape's elements
-	// FLATTENED - children count the same as parents - and reveals stackSize x ratio of them. At
-	// ratio 1 a tag came out a quarter at a time: one box for one tag, four tags' worth of items
-	// for the first whole one.
-	//
-	// The rule vanilla follows is: total flattened elements = stackingCapacity x ratio. Here that
-	// is 32 x 4 = 128, which is what the pile shape has (32 tags of 4 boxes). beeswax-pile is the
-	// same idea at 24 boxes a lump; platepile is the trivial case at one box a plate.
 	behaviors: [{
 		name: "GroundStorable",
 		properties: {

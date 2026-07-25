@@ -1,17 +1,4 @@
 {
-	// A pile of tags on the ground: four to a layer in a 2x2, eight layers, 32 tags - which is what
-	// stackingCapacity in the itemtype is set to. They must agree.
-	//
-	// ELEMENT ORDER IS STACK ORDER. GroundStorable reveals one TOP-LEVEL element per item as the
-	// pile grows, so these run bottom layer first. Each tag is one top-level element - the body -
-	// with three children making the strip and shoulders round the hole, which is the only way to
-	// give a tag a hole without a stack of one showing a quarter of a tag.
-	//
-	// UVs keep the item shape's 1:1 texel rule. Positions carry a little jitter so a full pile does
-	// not look machined.
-	//
-	// Generated. Change one tag and you have to change all 32, so regenerate instead.
-
 	"textureWidth": 16,
 	"textureHeight": 16,
 	"textures": {
