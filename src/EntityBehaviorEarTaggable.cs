@@ -517,6 +517,11 @@ namespace EarTags
         ///
         /// Renders whenever there is anything at all to say, so a tamed but untagged animal still
         /// gets its badge, and an animal with neither takes up no room.
+        ///
+        /// No blank line after it. The panel already puts a gap between the title and the first
+        /// body line - which a mod cannot change, it is the panel's own padding - and adding one
+        /// below as well left the row floating in the middle of two gaps instead of sitting under
+        /// the name. One gap above, none below, and it reads as a subtitle.
         /// </summary>
         private void StatusLine(StringBuilder infotext)
         {
@@ -538,7 +543,6 @@ namespace EarTags
             line.Append(badges);
 
             infotext.AppendLine(line.ToString());
-            infotext.AppendLine();
         }
 
 

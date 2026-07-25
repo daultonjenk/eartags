@@ -80,14 +80,14 @@
 	"worn-entry": "{0} {1}",
 
 	"info-swatch": "■",
-	"info-swatch-bare": "▫",
+	"info-swatch-bare": "□",
 	"info-gap": "     ",
 	"info-badge-sep": " | ",
 
-	"info-protected": "<icon>medal</icon>",
+	"info-protected": "<font color=\"#e0b83c\">◆</font>",
 	"info-tamed-wild": "<font color=\"#8a8a8a\">○</font>",
 	"info-tamed-taming": "<font color=\"#d9a02e\">◐</font>",
-	"info-tamed-tame": "<font color=\"#e06c8a\">♥</font>",
+	"info-tamed-tame": "<font color=\"#e06c8a\">●</font>",
 
 	"status-tamed-wild": "Wild",
 	"status-tamed-taming": "Becoming tame",

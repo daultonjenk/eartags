@@ -32,21 +32,22 @@ the left, status badges on the right, then a blank line before the game's own de
 
 ```
 Large gray boar
-■ ■     🏅 | ♥
-
+■ □     ◆ | ●
 Creature Weight: Low
 Health: 45/45
 Damage tier: 2
 ```
 
-A bare side keeps its place as a hollow `▫`, because *which* side a tag is on is half the
+A bare side keeps its place as a hollow `□`, because *which* side a tag is on is half the
 information. The line only appears when there's something on it, so an ordinary animal costs no
 space at all.
 
-Two things make this read as a subtitle rather than an interruption. It's **first** — the behaviour
-is patched in at `/client/behaviors/0`, since `Entity.GetInfoText` walks the behaviour list in
-order. And badges go on the **end**, never between the squares: between reads as a third tag and
-shoves the pair apart, and the pair is what you're scanning for.
+Three things make this read as a subtitle rather than an interruption. It's **first** — the
+behaviour is patched in at `/client/behaviors/0`, since `Entity.GetInfoText` walks the behaviour
+list in order. Badges go on the **end**, never between the squares: between reads as a third tag
+and shoves the pair apart, and the pair is what you're scanning for. And there's **no blank line
+after it** — the panel already puts a gap between the title and the first body line, which a mod
+can't change, and adding one below as well left the row floating between two gaps.
 
 The split is deliberate: **state gets a badge, quantity gets a number.** Protected, tame — those are
 yes/no, and a badge that only appears when true means visual weight tracks how interesting the
@@ -88,41 +89,37 @@ Slots currently defined:
 
 | Slot | Values | Rendered as |
 |---|---|---|
-| `tamed` | `wild` / `taming` / `tame` | `○` grey / `◐` amber / `♥` pink |
+| `tamed` | `wild` / `taming` / `tame` | `○` grey / `◐` amber / `●` pink |
 
 Adding a slot is a constant and a lang key. Keep badges to icons and glyphs — anything with a number
 in it belongs on a line of its own.
 
-### The info panel speaks VTML
+**Trough Tamed** implements this, and is the worked example: it publishes `tamed` from state it was
+already tracking (the trough-meal counter gives `taming` for free), suppresses its own overlay line
+when `HasBehavior("eartaggable")` says we're drawing one, and falls back to rendering the same three
+states through `extraInfoText` when Animal Tags isn't installed. Neither mod references the other's
+types and either can be installed alone.
+
+### The info panel speaks VTML — but not `<icon>`
 
 Worth writing down, because it isn't documented and no vanilla entity uses it: **the entity hover
-panel parses VTML**, the same markup as chat and the handbook. That's where the coloured swatches
-come from — `<font color="#e0b83c">■</font>`.
+panel parses `<font>`**, the same markup as chat and the handbook. That's where the coloured
+swatches come from — `<font color="#e0b83c">■</font>`.
 
-It also means `<icon>name</icon>` works, which is a real drawn icon rather than a font glyph — no
-tofu boxes when the font is missing a character. Vanilla's tutorial text uses the same tag. The
-names the game ships:
+`<icon>name</icon>` does **not** work here, though it does in tutorial text. Tried and reverted, so
+nobody has to try it twice. The badges are font glyphs, which means glyph coverage matters:
 
-```
-wpCross  line  ring  dice  move  lake  tree  undo  redo  cape  belt  mask  plus
-paintbrush  trousers  necklace  pullover  handheld  shirt  boots  medal  eraser
-select  gloves  basket  bracers  offhand  floodfill  erode  raiselower  growshrink
-airbrush  import  repeat  wpLadder  wpCircle  wpPlayer  wpSpiral  wpTrader  wpVessel
-wpBee  wpCave  wpHome  wpPick  wpRocks  wpRuins  wpStar1  wpStar2
-leftmousebutton  rightmousebutton
-```
+**Stay in Geometric Shapes, U+25A0–U+25FF.** `■ □ ◆ ○ ◐ ●` all render. `⛊` (U+26CA, Miscellaneous
+Symbols) came out as an empty box, which is why the protected badge is a gold `◆` and the tame one
+a pink `●` rather than a shield and a heart. `♥` is a card suit and probably fine, but it's in the
+same riskier block — if you want it, try it and be ready to swap back.
 
-`<itemstack type="item">code</itemstack>` renders an actual item too, if you ever want the panel to
-show the tag itself.
+Also mind the *size*: `▫` is literally WHITE SMALL SQUARE and looked shrunken next to `■`. `□`
+(U+25A1) is the one that matches.
 
-All the glyphs and icon names live in `assets/eartags/lang/en.json` under `info-*`, so trying a
-different one is a lang edit and a reload. `info-gap` and `info-badge-sep` control the spacing
-between the swatches and the badges, and between badges.
-
-One caution learned the hard way: `■ ▫ ○ ◐ ●` are all Geometric Shapes (U+25xx) and render fine.
-`⛊` is Miscellaneous Symbols (U+26xx) and came out as an empty box. `♥` is a card suit, which is far
-more widely included than a shogi piece — but it's in that same riskier block, so if it tofus, `●`
-is the safe swap.
+All the glyphs live in `assets/eartags/lang/en.json` under `info-*`, so trying a different one is a
+lang edit and a reload. `info-gap` and `info-badge-sep` control the spacing between the swatches and
+the badges, and between badges.
 
 ### Why not the name line
 
