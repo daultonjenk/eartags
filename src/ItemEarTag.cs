@@ -9,16 +9,23 @@ using Vintagestory.API.Server;
 namespace EarTags
 {
     /// <summary>
-    /// A small dyed-leather tag. Right-click an animal to clip it on the first bare ear,
-    /// sneak + right-click to put it specifically on the right ear.
+    /// A small dyed-leather or beaten-metal tag. Right-click an animal to clip it on the first bare
+    /// ear, sneak + right-click to put it specifically on the right ear.
+    ///
+    /// One class serves both items: everything that differs between them is read off the code, so
+    /// "eartagmetal-copper" needs no class of its own.
     /// </summary>
     public class ItemEarTag : Item
     {
         /// <summary>
-        /// The colour variant, e.g. "red" from "eartag-red". Read off the code rather than via
-        /// Variant, which is a Dictionary&lt;,&gt; and so unusable in a source mod (see EarTagsModSystem).
+        /// The material variant, e.g. "red" from "eartag-red" or "copper" from
+        /// "eartagmetal-copper". Read off the code rather than via Variant, which is a
+        /// Dictionary&lt;,&gt; and so unusable in a source mod (see EarTagsModSystem).
         /// </summary>
-        public string Color { get { return LastCodePart(); } }
+        public string Material { get { return LastCodePart(); } }
+
+        /// <summary>"eartag" or "eartagmetal" - which of the two items this is.</summary>
+        public string Kind { get { return FirstCodePart(); } }
 
 
         public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
@@ -58,7 +65,7 @@ namespace EarTags
                 return;
             }
 
-            beh.SetTag(side, Color);
+            beh.SetTag(side, Kind, Material);
 
             slot.TakeOut(1);
             slot.MarkDirty();
@@ -66,7 +73,7 @@ namespace EarTags
             byEntity.World.PlaySoundAt(new AssetLocation("game:sounds/block/leather"), target, null, true, 16);
 
             Notify(splr, Lang.Get(terms + "-applied",
-                Lang.Get("eartags:color-" + Color),
+                EarTagsModSystem.MaterialName(Kind, Material),
                 Lang.Get("eartags:side-" + side),
                 target.GetName()));
         }
@@ -82,7 +89,7 @@ namespace EarTags
         {
             base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
 
-            dsc.AppendLine(Lang.Get("eartags:itemdesc"));
+            dsc.AppendLine(Lang.Get("eartags:" + Kind + "-itemdesc"));
         }
 
 

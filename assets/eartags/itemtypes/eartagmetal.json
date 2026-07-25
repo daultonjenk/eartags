@@ -1,0 +1,52 @@
+{
+	// The metal tag. Same class, same shape, same interaction as the leather one - ItemEarTag reads
+	// the material off the last code part and the kind off the first, so "eartagmetal-copper" needs
+	// no code of its own.
+	//
+	// The variant list is loaded from the same world property vanilla metalplate uses, so the two
+	// cannot drift apart: every metal you can beat into a plate, you can cut a tag from.
+	//
+	// Texture is the ingot art rather than the plate art. That is what metalplate itself uses, and
+	// it is the one metal folder with an image for every variant of the property.
+	code: "eartagmetal",
+	class: "ItemEarTag",
+	variantgroups: [
+		{ code: "metal", loadFromProperties: "block/metal" }
+	],
+	shape: { base: "eartags:item/eartag" },
+	textures: {
+		"tag": { base: "game:block/metal/ingot/{metal}" }
+	},
+	creativeinventory: { "general": ["*"], "items": ["*"] },
+	maxstacksize: 64,
+	materialDensity: 600,
+	attributes: {
+		handbook: {
+			groupBy: ["eartagmetal-*"]
+		}
+	},
+	guiTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: -72, y: 18, z: -6 },
+		origin: { x: 0.5, y: 0.023, z: 0.5 },
+		scale: 2.9
+	},
+	fpHandTransform: {
+		translation: { x: 0.1, y: 0.2, z: -0.4 },
+		rotation: { x: 0, y: -80, z: -20 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 1.6
+	},
+	tpHandTransform: {
+		translation: { x: -0.15, y: 0.05, z: -0.5 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 0.8
+	},
+	groundTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 2.5
+	}
+}

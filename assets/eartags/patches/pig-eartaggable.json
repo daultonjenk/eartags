@@ -1,4 +1,5 @@
 [
+	// Server copy at index 0 - see sheep-eartaggable.json. Textures live in pig-eartag-textures.json.
 	{
 		file: "game:entities/animal/mammal/hooved/pig-adult",
 		op: "add",
@@ -8,24 +9,7 @@
 	{
 		file: "game:entities/animal/mammal/hooved/pig-adult",
 		op: "add",
-		path: "/server/behaviors/-",
+		path: "/server/behaviors/0",
 		value: { code: "eartaggable" }
-	},
-	{
-		file: "game:entities/animal/mammal/hooved/pig-adult",
-		op: "add",
-		path: "/client/textures",
-		value: {
-			"eartagorangetag": { base: "eartags:block/leather/orange" },
-			"eartagblacktag":  { base: "eartags:block/leather/black" },
-			"eartagredtag":    { base: "eartags:block/leather/red" },
-			"eartagbluetag":   { base: "eartags:block/leather/blue" },
-			"eartagpurpletag": { base: "eartags:block/leather/purple" },
-			"eartagpinktag":   { base: "eartags:block/leather/pink" },
-			"eartagwhitetag":  { base: "eartags:block/leather/white" },
-			"eartagyellowtag": { base: "eartags:block/leather/yellow" },
-			"eartaggraytag":   { base: "eartags:block/leather/gray" },
-			"eartaggreentag":  { base: "eartags:block/leather/green" }
-		}
 	}
 ]

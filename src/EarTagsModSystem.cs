@@ -74,6 +74,17 @@ namespace EarTags
         public const string SideLeft = "left";
         public const string SideRight = "right";
 
+        /// <summary>
+        /// Suffix on the side key for the kind of tag worn, e.g. "leftkind". Written alongside the
+        /// material rather than folded into it so that saves made before metal tags existed still
+        /// read correctly - an absent kind means leather.
+        /// </summary>
+        public const string AttrKindSuffix = "kind";
+
+        /// <summary>Item code prefixes, which double as the tag kind stored per side.</summary>
+        public const string KindLeather = "eartag";
+        public const string KindMetal = "eartagmetal";
+
         /// <summary>Attachment shape used by any species that does not name one of its own.</summary>
         public const string DefaultShape = "eartags:shapes/entity/eartag.json";
 
@@ -85,6 +96,26 @@ namespace EarTags
         private EarTagSpeciesConfig[] speciesConfigs = new EarTagSpeciesConfig[0];
 
         public EarTagSpeciesConfig[] SpeciesConfigs { get { return speciesConfigs; } }
+
+
+        /// <summary>
+        /// Where a tag of this kind gets its colour from. Metal borrows the ingot art rather than
+        /// the plate art, matching what vanilla metalplate does with its own texture and covering
+        /// every variant of the block/metal property.
+        /// </summary>
+        public static AssetLocation MaterialTexture(string kind, string material)
+        {
+            return kind == KindMetal
+                ? new AssetLocation("game", "block/metal/ingot/" + material)
+                : new AssetLocation("game", "block/leather/" + material);
+        }
+
+
+        /// <summary>The material's name for chat and info text - "copper", "red".</summary>
+        public static string MaterialName(string kind, string material)
+        {
+            return Lang.Get("eartags:" + (kind == KindMetal ? "metal-" : "color-") + material);
+        }
 
 
         public override void Start(ICoreAPI api)

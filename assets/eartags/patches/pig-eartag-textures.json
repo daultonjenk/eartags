@@ -1,21 +1,7 @@
 ﻿[
-	// Declares the ear tag textures on the animal itself so the engine BAKES them into the entity
-	// texture atlas at asset-load time, exactly as it does for the animal's own hide.
-	//
-	// Registering a texture at runtime (atlas insert + a hand-built BakedCompositeTexture) produces
-	// an entry that looks correct in every observable way - asset resolves, real atlas position,
-	// no missing-mapping error - but still does not render. Declaring it here instead means we
-	// never do runtime texture work at all; the behavior's registration path no-ops because the
-	// code is already present.
-	//
-	// The key must match texturePrefixCode + the tag shape's texture code, i.e. the tag item's own
-	// code ("eartag" or "eartagmetal") + the material + "tag".
-	//
-	// Metal tags borrow the ingot textures rather than the plate ones, because that is what vanilla
-	// metalplate uses for itself and it is the one metal folder that covers every variant of the
-	// block/metal world property.
+	// See sheep-eartag-textures.json for why these have to be declared at asset-load time.
 	{
-		file: "game:entities/animal/mammal/hooved/sheep-adult",
+		file: "game:entities/animal/mammal/hooved/pig-adult",
 		op: "add",
 		path: "/client/textures",
 		value: {

@@ -58,26 +58,61 @@ namespace EarTags
 
         // ---- tag state -------------------------------------------------------------------
 
-        /// <summary>Colour worn on the given ear, or null if that ear is bare.</summary>
+        /// <summary>Material worn on the given ear - a colour or a metal - or null if it is bare.</summary>
         public string GetTag(string side)
         {
             ITreeAttribute tree = entity.WatchedAttributes.GetTreeAttribute(EarTagsModSystem.AttrTree);
             if (tree == null) return null;
 
-            string color = tree.GetString(side);
-            return string.IsNullOrEmpty(color) ? null : color;
+            string material = tree.GetString(side);
+            return string.IsNullOrEmpty(material) ? null : material;
         }
 
 
-        /// <summary>Sets or (with a null colour) clears the tag on one ear. Server side only.</summary>
-        public void SetTag(string side, string color)
+        /// <summary>
+        /// Which item is on that ear, "eartag" or "eartagmetal". Tags saved before metal existed
+        /// carry no kind, so an absent value reads as leather rather than as nothing.
+        /// </summary>
+        public string GetTagKind(string side)
+        {
+            ITreeAttribute tree = entity.WatchedAttributes.GetTreeAttribute(EarTagsModSystem.AttrTree);
+            if (tree == null) return EarTagsModSystem.KindLeather;
+
+            string kind = tree.GetString(side + EarTagsModSystem.AttrKindSuffix);
+            return string.IsNullOrEmpty(kind) ? EarTagsModSystem.KindLeather : kind;
+        }
+
+
+        /// <summary>Sets or (with a null material) clears the tag on one ear. Server side only.</summary>
+        public void SetTag(string side, string kind, string material)
         {
             ITreeAttribute tree = entity.WatchedAttributes.GetOrAddTreeAttribute(EarTagsModSystem.AttrTree);
 
-            if (color == null) tree.RemoveAttribute(side);
-            else tree.SetString(side, color);
+            if (material == null)
+            {
+                tree.RemoveAttribute(side);
+                tree.RemoveAttribute(side + EarTagsModSystem.AttrKindSuffix);
+            }
+            else
+            {
+                tree.SetString(side, material);
+                tree.SetString(side + EarTagsModSystem.AttrKindSuffix, kind ?? EarTagsModSystem.KindLeather);
+            }
 
             entity.WatchedAttributes.MarkPathDirty(EarTagsModSystem.AttrTree);
+        }
+
+
+        /// <summary>Whether any ear carries a metal tag, which is what grants the protection.</summary>
+        public bool WearsMetalTag()
+        {
+            for (int i = 0; i < EarTagsModSystem.Sides.Length; i++)
+            {
+                string side = EarTagsModSystem.Sides[i];
+                if (GetTag(side) != null && GetTagKind(side) == EarTagsModSystem.KindMetal) return true;
+            }
+
+            return false;
         }
 
 
@@ -112,6 +147,48 @@ namespace EarTags
         }
 
 
+        // ---- protection ------------------------------------------------------------------
+
+        /// <summary>
+        /// A metal tag makes its wearer immune to anything the player does to it. The point is the
+        /// accidents - the cleaver swung one animal too far at harvest time, the punch that lands
+        /// on a sheep instead of the block behind it - so a prize breeder can be marked as
+        /// off limits and stay that way.
+        ///
+        /// Only the player is blocked. Wolves, falls and drowning still work, so a tagged animal
+        /// is protected rather than immortal, and to slaughter one you take the tag off first.
+        ///
+        /// ORDER MATTERS. Entity.ReceiveDamage hands the damage to each behaviour by ref in list
+        /// order, and EntityBehaviorHealth is the one that subtracts it, so zeroing the damage only
+        /// works if this behaviour comes first. That is why the patches insert the server copy at
+        /// /server/behaviors/0 rather than appending it.
+        /// </summary>
+        public override void OnEntityReceiveDamage(DamageSource damageSource, ref float damage)
+        {
+            base.OnEntityReceiveDamage(damageSource, ref damage);
+
+            if (damageSource == null || damage <= 0) return;
+            if (damageSource.Type == EnumDamageType.Heal) return;
+            if (!IsPlayerCaused(damageSource)) return;
+            if (!WearsMetalTag()) return;
+
+            damage = 0;
+        }
+
+
+        /// <summary>
+        /// Whether the player is behind this damage. Source covers a direct hit; the two entity
+        /// fields catch anything the player set going, an arrow being the obvious one - CauseEntity
+        /// is the archer where SourceEntity is the arrow.
+        /// </summary>
+        private static bool IsPlayerCaused(DamageSource damageSource)
+        {
+            if (damageSource.Source == EnumDamageSource.Player) return true;
+
+            return damageSource.SourceEntity is EntityPlayer || damageSource.CauseEntity is EntityPlayer;
+        }
+
+
         // ---- rendering -------------------------------------------------------------------
 
         public override void OnTesselation(ref Shape entityShape, string shapePathForLogging, ref bool shapeIsCloned, ref string[] willDeleteElements)
@@ -136,7 +213,7 @@ namespace EarTags
         }
 
 
-        private void AttachTag(Shape entityShape, string side, string color, string shapePathForLogging)
+        private void AttachTag(Shape entityShape, string side, string material, string shapePathForLogging)
         {
             try
             {
@@ -161,14 +238,16 @@ namespace EarTags
                 el.StepParentName = anchor.Bone;
                 ApplyAnchor(el, anchor);
 
-                // The tag borrows vanilla's dyed leather textures, so the colour costs us no art.
-                SetShapeTexture(tagShape, "tag", new AssetLocation("game", "block/leather/" + color));
+                // The tag borrows vanilla's own dyed leather and ingot textures, so neither the
+                // colours nor the twenty-three metals cost us any art.
+                string kind = GetTagKind(side);
+                SetShapeTexture(tagShape, "tag", EarTagsModSystem.MaterialTexture(kind, material));
 
                 // texturePrefixCode keeps our texture key from colliding with the animal's own
-                // ("hide"). Keying it by colour rather than by side means the two ears share one
-                // atlas entry when they match, and re-tagging an ear a different colour lands on
-                // a different key instead of silently reusing the old colour.
-                string prefix = "eartag" + color;
+                // ("hide"). Keying it by kind and material rather than by side means the two ears
+                // share one atlas entry when they match, and re-tagging an ear lands on a different
+                // key instead of silently reusing the old material.
+                string prefix = kind + material;
 
                 entityShape.StepParentShape(
                     tagShape,
@@ -390,10 +469,11 @@ namespace EarTags
                 ? EarTagsModSystem.SideRight
                 : EarTagsModSystem.SideLeft;
 
-            string color = GetTag(side);
-            SetTag(side, null);
+            string material = GetTag(side);
+            string kind = GetTagKind(side);
+            SetTag(side, null, null);
 
-            Item item = entity.World.GetItem(new AssetLocation("eartags:eartag-" + color));
+            Item item = entity.World.GetItem(new AssetLocation("eartags:" + kind + "-" + material));
             IPlayer plr = (byEntity as EntityPlayer)?.Player;
 
             if (item != null)
@@ -427,17 +507,21 @@ namespace EarTags
             for (int i = 0; i < EarTagsModSystem.Sides.Length; i++)
             {
                 string side = EarTagsModSystem.Sides[i];
-                string color = GetTag(side);
-                if (color == null) continue;
+                string material = GetTag(side);
+                if (material == null) continue;
 
                 if (worn.Length > 0) worn.Append(", ");
 
                 worn.Append(Lang.Get("eartags:worn-entry",
                     Lang.Get("eartags:side-" + side),
-                    Lang.Get("eartags:color-" + color)));
+                    EarTagsModSystem.MaterialName(GetTagKind(side), material)));
             }
 
             infotext.AppendLine(Lang.Get("eartags:" + Terms + "-worn", worn.ToString()));
+
+            // Without this the protection is invisible: an animal that quietly refuses to die
+            // reads as a bug rather than as a decision someone made about it on purpose.
+            if (WearsMetalTag()) infotext.AppendLine(Lang.Get("eartags:protected"));
         }
 
 

@@ -8,6 +8,11 @@ Ten colours, two ears per animal, so a hundred distinguishable combinations.
 
 Chickens have no ear to speak of, so the same tag goes round a leg instead, as a poultry leg band.
 
+There is also a **metal** tag, in all twenty-three vanilla metals, which does one thing more:
+nothing the player does can hurt the animal wearing it. No cleaver at harvest time, no stray punch
+while mining the block behind it. Mark your prize breeder and it stays alive until you take the tag
+back off. Wolves, falls and drowning are unaffected — it is protection, not immortality.
+
 Built for Vintage Story 1.22.
 
 ## Using it
@@ -19,11 +24,12 @@ Craft a tag, hold it, and right-click an animal to clip it to a bare ear.
 - **Sneak + right-click with an empty hand** — remove a tag and get it back
 
 Hovering a tagged animal shows what it's wearing: `Ear tags: left red, right blue`, or
-`Leg bands: left red` on a bird.
+`Leg bands: left red` on a bird. A metal tag adds a line saying the animal is protected, so an
+animal that refuses to die reads as a decision rather than a bug.
 
 ## Crafting
 
-Shapeless, in any three slots:
+Leather, shapeless in any three slots:
 
 ```
 knife  +  dyed leather  +  beeswax | rendered fat | 0.25 L oil   →   8 tags
@@ -35,6 +41,16 @@ olive oil plus all seven Expanded Foods oils if that mod is installed.
 
 Leather is the right material here: pre-plastic livestock tags really were leather or punched metal,
 and the wax/fat/oil rub is genuine leather treatment rather than a hand-wave.
+
+Metal, shapeless in any two slots:
+
+```
+hammer  +  metal plate   →   8 tags
+```
+
+The tag takes the metal of the plate. The item's variant list is loaded from the same
+`block/metal` world property that vanilla `metalplate` uses, so the two can't drift apart: any
+metal you can beat into a plate, you can cut a tag from.
 
 ## Supported animals
 
@@ -68,8 +84,10 @@ Three optional per-species keys cover everything that isn't an ear on a sheep: `
 different attachment shape, `terms` picks a different set of lang keys, and `mirrorZ: false` turns
 off the Z sign flip for ears where Z centres the tag rather than hanging it.
 
-Adding a new species also needs a JSON patch giving it the `eartaggable` behaviour and the ten tag
-textures — see `assets/eartags/patches/`.
+Adding a new species also needs two JSON patches: one giving it the `eartaggable` behaviour, one
+declaring the thirty-three tag textures (ten leathers, twenty-three metals). They are split into
+`*-eartaggable.json` and `*-eartag-textures.json` under `assets/eartags/patches/` because the
+texture half is generated bulk and nobody should have to read past it.
 
 ### Porting the mouflon's numbers to another ear
 
@@ -127,6 +145,8 @@ a ring of four thin plates round the shank instead of a plate through an ear.
 - The bones are `leg left` / `leg right` on the hen and `L feet` / `R feet` on the rooster — on the
   rooster, `L leg` is the feathered thigh and the bare shank hangs underneath it.
 - Both shanks pivot at the top, so Y `0` is down at the foot and Y counts upward.
+- The band is `0.9` tall, one and a half of the `0.6` it started at — a single band read as a bead
+  at chicken scale. It grows upward from `Y 0`, so `offsetY` still places its bottom edge.
 - Poults share the adult shapes at a smaller entity size and need no entry of their own. The chicks
   in `chicken-baby.json` are left alone — they grow up soon enough.
 - The band's inner faces stand `0.02` off the leg. Coincident faces z-fight, and a hair of
@@ -149,6 +169,20 @@ an unpacked folder. Zip it and you're back to hand-editing plus a world reload.
 exactly as it found them. It writes the key padded out so the two anchors line up, so the matcher
 that finds those lines has to tolerate space before the colon; without that it would find a
 hand-written file once and then never find its own output again.
+
+## How the protection works
+
+`EntityBehaviorEarTaggable.OnEntityReceiveDamage` zeroes the damage when the animal wears a metal
+tag and the player is behind it — directly, or as `CauseEntity` behind an arrow.
+
+**The behaviour has to run before `health`.** `Entity.ReceiveDamage` hands the damage to each
+behaviour by ref in list order and `EntityBehaviorHealth` is the one that subtracts it, so zeroing
+the damage afterwards achieves nothing. The patches therefore insert the *server* copy at
+`/server/behaviors/0` rather than appending it — vanilla puts `health` fifth, appending would put
+us around twentieth. The client copy only renders the tag, so its position doesn't matter.
+
+`add` at a numeric array index inserting rather than replacing is RFC 6902 behaviour; the game
+patches through `Tavis.JsonPatch`, which implements it.
 
 ## How the rendering works
 

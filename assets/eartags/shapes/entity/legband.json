@@ -31,6 +31,11 @@
 			// Four plates rather than one solid box, so the leg still shows through the top and
 			// bottom of the ring and it reads as a band rather than a bead.
 			//
+			// 0.9 tall, which is one and a half of the 0.6 it started at - a single band read as a
+			// bead at chicken scale and was easy to miss. It grows UPWARD from Y 0: the bottom edge
+			// is where the offsetY in attachpoints.json puts it, and that placement was already
+			// right, so the extra height goes up the shank rather than down toward the foot.
+			//
 			// The inner faces stand 0.02 off the leg instead of sitting on it: coincident faces
 			// z-fight, and a hair of clearance is cheaper than any of the alternatives.
 			//
@@ -44,8 +49,8 @@
 				{
 					"name": "BandNorth",
 					"from": [ -0.17, 0, -0.17 ],
-					"to": [ 1.17, 0.6, -0.02 ],
-					"rotationOrigin": [ 0.5, 0.3, 0.5 ],
+					"to": [ 1.17, 0.9, -0.02 ],
+					"rotationOrigin": [ 0.5, 0.45, 0.5 ],
 					"faces": {
 						"north": { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
 						"east":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
@@ -58,8 +63,8 @@
 				{
 					"name": "BandSouth",
 					"from": [ -0.17, 0, 1.02 ],
-					"to": [ 1.17, 0.6, 1.17 ],
-					"rotationOrigin": [ 0.5, 0.3, 0.5 ],
+					"to": [ 1.17, 0.9, 1.17 ],
+					"rotationOrigin": [ 0.5, 0.45, 0.5 ],
 					"faces": {
 						"north": { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
 						"east":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
@@ -72,8 +77,8 @@
 				{
 					"name": "BandWest",
 					"from": [ -0.17, 0, -0.02 ],
-					"to": [ -0.02, 0.6, 1.02 ],
-					"rotationOrigin": [ 0.5, 0.3, 0.5 ],
+					"to": [ -0.02, 0.9, 1.02 ],
+					"rotationOrigin": [ 0.5, 0.45, 0.5 ],
 					"faces": {
 						"north": { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
 						"east":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
@@ -86,8 +91,8 @@
 				{
 					"name": "BandEast",
 					"from": [ 1.02, 0, -0.02 ],
-					"to": [ 1.17, 0.6, 1.02 ],
-					"rotationOrigin": [ 0.5, 0.3, 0.5 ],
+					"to": [ 1.17, 0.9, 1.02 ],
+					"rotationOrigin": [ 0.5, 0.45, 0.5 ],
 					"faces": {
 						"north": { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
 						"east":  { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
