@@ -81,7 +81,7 @@
 
 	"info-swatch": "■",
 	"info-swatch-bare": "▫",
-	"info-protected": "⛊",
+	"info-protected": "<icon>medal</icon>",
 
 	"heldhelp-apply": "Clip to a bare ear or leg",
 	"heldhelp-applyright": "Clip to the right ear or leg",
@@ -90,13 +90,13 @@
 	"eartag-removed": "Took the tag off the {1}'s {0} ear.",
 	"eartag-bothfull": "The {0} already has a tag in both ears.",
 	"eartag-rightfull": "The {0} already has a tag in its right ear.",
-	"eartag-worn": "Animal Tags: {0}",
+	"eartag-worn": "Tags: {0}",
 	"eartag-entityhelp-remove": "Remove Animal Tag",
 
 	"legband-applied": "Fitted the {0} band round the {1} leg of the {2}.",
 	"legband-removed": "Slipped the band off the {1}'s {0} leg.",
 	"legband-bothfull": "The {0} already has a band on both legs.",
 	"legband-rightfull": "The {0} already has a band on its right leg.",
-	"legband-worn": "Leg bands: {0}",
+	"legband-worn": "Bands: {0}",
 	"legband-entityhelp-remove": "Remove leg band"
 }

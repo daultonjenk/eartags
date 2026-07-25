@@ -545,30 +545,34 @@ namespace EarTags
 
 
         /// <summary>
-        /// A coloured square per side, left to right as you look at the panel, with the protection
-        /// shield between them - so the whole of what this mod knows about an animal fits on the
-        /// one line the species already had.
+        /// A coloured square per side, left to right as you look at the panel, then any status
+        /// badges - so the whole of what this mod knows about an animal fits on the one line the
+        /// species already had.
         ///
         /// A bare side keeps its place with a hollow marker rather than collapsing, because which
         /// side a tag is on is half the information.
         ///
-        /// Every glyph comes from the lang file. If the font has no square in it, or the shield
-        /// lands as an empty box, swapping them is an edit to en.json rather than to code.
+        /// Badges go on the END, not between the squares. Between reads as a third tag and shoves
+        /// the pair apart, and the pair is the thing you are actually trying to read at a glance.
+        /// Putting them last also leaves room to grow: a tamed badge sits next to the protected one
+        /// without disturbing anything.
+        ///
+        /// Every glyph and icon comes from the lang file, so a font with no square in it, or an
+        /// icon name that turns out to look wrong, is an edit to en.json rather than to code.
         /// </summary>
         private string VisualSummary()
         {
             StringBuilder line = new StringBuilder();
 
             line.Append(Swatch(EarTagsModSystem.SideLeft));
+            line.Append(' ');
+            line.Append(Swatch(EarTagsModSystem.SideRight));
 
             if (WearsMetalTag())
             {
-                line.Append(' ');
+                line.Append("  ");
                 line.Append(Lang.Get("eartags:info-protected"));
             }
-
-            line.Append(' ');
-            line.Append(Swatch(EarTagsModSystem.SideRight));
 
             return line.ToString();
         }

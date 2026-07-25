@@ -27,23 +27,55 @@ Craft a tag, hold it, and right-click an animal to clip it to a bare ear.
 - **Sneak + right-click** — clip specifically to the right ear
 - **Sneak + right-click with an empty hand** — remove a tag and get it back
 
-Hovering a tagged animal shows what it's wearing as a coloured square per side, with a shield
-between them if it's protected — `Animal Tags: ■ ⛊ ■`, or `Leg bands: ■ ■` on a bird. A bare side
-keeps its place as a hollow `▫`, because *which* side a tag is on is half the information.
+Hovering a tagged animal shows what it's wearing as a coloured square per side, then any status
+badges — `Tags: ■ ■ 🏅`, or `Bands: ■ ■` on a bird. A bare side keeps its place as a hollow `▫`,
+because *which* side a tag is on is half the information.
+
+Badges go on the **end**, not between the squares. Between reads as a third tag and shoves the pair
+apart, and the pair is what you're actually trying to read at a glance. Last also leaves room to
+grow — a tamed badge sits beside the protected one without disturbing anything.
 
 That's one line for everything this mod knows about an animal. Set `visualInfo: false` in
 `ModConfig/eartags.json` for the older wording (`left red, right blue` plus a separate protection
 line) — do that if the squares come out as literal `<font>` markup, which would mean the info panel
 doesn't parse VTML on your version.
 
-The glyphs live in `assets/eartags/lang/en.json` as `info-swatch`, `info-swatch-bare` and
-`info-protected`. If your font renders any of them as an empty box, swapping it is a lang edit
-rather than a code change.
+### The info panel speaks VTML
 
-The entity's **name** is deliberately untouched. `EntityBehavior` has no `GetName` hook, so
-decorating the title would mean either replacing the entity `class` — which collides with any other
-mod wanting that slot — or Harmony-patching a method every mod reads. Neither is worth one line of
-polish, so the mod says everything it has to say on its own line.
+Worth writing down, because it isn't documented and no vanilla entity uses it: **the entity hover
+panel parses VTML**, the same markup as chat and the handbook. That's where the coloured swatches
+come from — `<font color="#e0b83c">■</font>`.
+
+It also means `<icon>name</icon>` works, which is a real drawn icon rather than a font glyph — no
+tofu boxes when the font is missing a character. Vanilla's tutorial text uses the same tag. The
+names the game ships:
+
+```
+wpCross  line  ring  dice  move  lake  tree  undo  redo  cape  belt  mask  plus
+paintbrush  trousers  necklace  pullover  handheld  shirt  boots  medal  eraser
+select  gloves  basket  bracers  offhand  floodfill  erode  raiselower  growshrink
+airbrush  import  repeat  wpLadder  wpCircle  wpPlayer  wpSpiral  wpTrader  wpVessel
+wpBee  wpCave  wpHome  wpPick  wpRocks  wpRuins  wpStar1  wpStar2
+leftmousebutton  rightmousebutton
+```
+
+`<itemstack type="item">code</itemstack>` renders an actual item too, if you ever want the panel to
+show the tag itself.
+
+All the glyphs and icon names live in `assets/eartags/lang/en.json` as `info-swatch`,
+`info-swatch-bare` and `info-protected`, so trying a different one is a lang edit and a reload.
+
+### Why not the name line
+
+`EntityBehavior` has no `GetName` hook — only `GetInfoText`. Decorating the title would mean
+replacing the entity `class`, which collides with any other mod wanting that slot, or
+Harmony-patching a method every mod reads. Neither is worth one line of polish.
+
+The tool-mode icon at the top of the screen is a `HudElement` bound to the held item's tool modes,
+so it can't be borrowed for entities — though a mod *can* register its own `HudElement`. It isn't
+done here because the entity info panel's position and size aren't exposed, so an icon could only
+be pinned to a fixed spot on screen, which reads as bolted-on and fights other mods' HUDs. The
+badge on our own line gets the same information across without any of that.
 
 Swatch colours are a `switch` in `EarTagsModSystem.MaterialHex` — thirty-three fixed values, one
 per dye and per metal.
