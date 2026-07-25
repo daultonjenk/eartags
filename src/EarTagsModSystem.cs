@@ -129,6 +129,57 @@ namespace EarTags
         public const string KindLeather = "eartag";
         public const string KindMetal = "eartagmetal";
 
+        // ---- the shared status line ------------------------------------------------------
+        //
+        // One line under the animal's name, owned by whichever mod is present:
+        //
+        //     Large gray boar
+        //     # #     [medal] | [heart]
+        //
+        //     Creature Weight: Low
+        //     Health: 45/45
+        //
+        // Swatches on the left are this mod's. Badges on the right are open: any mod can publish
+        // into the WatchedAttributes tree below and its badge appears, without either mod knowing
+        // the other's types. There is no shared assembly and no hard dependency - just a tree name,
+        // a slot name and a small vocabulary of values.
+        //
+        // A publisher writes its slot server side and renders nothing itself when this mod is
+        // already drawing the line for that entity. The per-entity check is
+        // entity.HasBehavior("eartaggable"), not IsModEnabled - this mod only covers livestock, so
+        // a tamed wolf still needs its own mod to draw the line.
+
+        /// <summary>WatchedAttributes tree the status line is assembled from.</summary>
+        public const string AttrStatusTree = "animalstatus";
+
+        /// <summary>Slot for how tame the animal is. Values below.</summary>
+        public const string StatusTamed = "tamed";
+
+        public const string TamedWild = "wild";
+        public const string TamedTaming = "taming";
+        public const string TamedTame = "tame";
+
+        private static readonly string[] TamedStates = new string[] { TamedWild, TamedTaming, TamedTame };
+
+
+        /// <summary>The published tame state, or null if nothing published one we recognise.</summary>
+        public static string ReadTamedState(Entity entity)
+        {
+            ITreeAttribute tree = entity?.WatchedAttributes?.GetTreeAttribute(AttrStatusTree);
+            if (tree == null) return null;
+
+            string state = tree.GetString(StatusTamed);
+
+            for (int i = 0; i < TamedStates.Length; i++)
+            {
+                if (TamedStates[i] == state) return state;
+            }
+
+            // An unknown value means a newer publisher than this renderer. Drawing the raw string
+            // in the middle of a row of icons would look broken, so show nothing.
+            return null;
+        }
+
         /// <summary>Attachment shapes used by any species that does not name one of its own.</summary>
         public const string DefaultShape = "eartags:shapes/entity/eartag.json";
         public const string DefaultShapeMetal = "eartags:shapes/entity/eartag-metal.json";

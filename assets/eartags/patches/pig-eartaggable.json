@@ -3,7 +3,7 @@
 	{
 		file: "game:entities/animal/mammal/hooved/pig-adult",
 		op: "add",
-		path: "/client/behaviors/-",
+		path: "/client/behaviors/0",
 		value: { code: "eartaggable" }
 	},
 	{

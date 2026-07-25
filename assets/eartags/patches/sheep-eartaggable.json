@@ -1,15 +1,18 @@
 [
-	// The server copy goes in at index 0, not appended. Entity.ReceiveDamage walks the behaviour
-	// list in order handing each one the damage by ref, and EntityBehaviorHealth is the one that
-	// actually subtracts it - so a metal tag can only zero the damage if this behaviour is reached
-	// first. Vanilla puts "health" fifth in the list; appending would put us about twentieth, well
-	// after the animal had already taken the hit.
+	// Both copies go in at index 0, not appended, for two unrelated reasons.
 	//
-	// The client copy is only there to render the tag, so its position does not matter.
+	// SERVER: Entity.ReceiveDamage walks the behaviour list in order handing each one the damage by
+	// ref, and EntityBehaviorHealth is the one that actually subtracts it - so a metal tag can only
+	// zero the damage if this behaviour is reached first. Vanilla puts "health" fifth in the list;
+	// appending would put us about twentieth, well after the animal had already taken the hit.
+	//
+	// CLIENT: Entity.GetInfoText walks the same list, so index 0 puts the status line at the top of
+	// the hover panel, directly under the animal's name. That position is the whole design - first,
+	// it reads as a subtitle of the name; halfway down, it reads as an interruption in a list.
 	{
 		file: "game:entities/animal/mammal/hooved/sheep-adult",
 		op: "add",
-		path: "/client/behaviors/-",
+		path: "/client/behaviors/0",
 		value: { code: "eartaggable" }
 	},
 	{

@@ -27,18 +27,71 @@ Craft a tag, hold it, and right-click an animal to clip it to a bare ear.
 - **Sneak + right-click** — clip specifically to the right ear
 - **Sneak + right-click with an empty hand** — remove a tag and get it back
 
-Hovering a tagged animal shows what it's wearing as a coloured square per side, then any status
-badges — `Tags: ■ ■ 🏅`, or `Bands: ■ ■` on a bird. A bare side keeps its place as a hollow `▫`,
-because *which* side a tag is on is half the information.
+Hovering an animal puts a **status line** directly under its name — a coloured square per side on
+the left, status badges on the right, then a blank line before the game's own details:
 
-Badges go on the **end**, not between the squares. Between reads as a third tag and shoves the pair
-apart, and the pair is what you're actually trying to read at a glance. Last also leaves room to
-grow — a tamed badge sits beside the protected one without disturbing anything.
+```
+Large gray boar
+■ ■     🏅 | ♥
 
-That's one line for everything this mod knows about an animal. Set `visualInfo: false` in
-`ModConfig/eartags.json` for the older wording (`left red, right blue` plus a separate protection
-line) — do that if the squares come out as literal `<font>` markup, which would mean the info panel
-doesn't parse VTML on your version.
+Creature Weight: Low
+Health: 45/45
+Damage tier: 2
+```
+
+A bare side keeps its place as a hollow `▫`, because *which* side a tag is on is half the
+information. The line only appears when there's something on it, so an ordinary animal costs no
+space at all.
+
+Two things make this read as a subtitle rather than an interruption. It's **first** — the behaviour
+is patched in at `/client/behaviors/0`, since `Entity.GetInfoText` walks the behaviour list in
+order. And badges go on the **end**, never between the squares: between reads as a third tag and
+shoves the pair apart, and the pair is what you're scanning for.
+
+The split is deliberate: **state gets a badge, quantity gets a number.** Protected, tame — those are
+yes/no, and a badge that only appears when true means visual weight tracks how interesting the
+animal is. Health, weight, generation, "lactating for 3 more days" are quantities and stay as text,
+because an icon can't say any of that.
+
+Set `visualInfo: false` in `ModConfig/eartags.json` for the older wording (`left red, right blue`
+plus separate protection and tame lines) — do that if the squares come out as literal `<font>`
+markup, which would mean the info panel doesn't parse VTML on your version.
+
+### Sharing the status line with another mod
+
+The badge half is open. Any mod can publish into a `WatchedAttributes` tree and its badge appears on
+the line, with **no shared assembly, no hard dependency and no load-order requirement** — just a
+tree name, a slot name and a small vocabulary.
+
+**To publish**, write the slot server-side:
+
+```csharp
+ITreeAttribute tree = entity.WatchedAttributes.GetOrAddTreeAttribute("animalstatus");
+tree.SetString("tamed", "wild");   // or "taming", or "tame"
+entity.WatchedAttributes.MarkPathDirty("animalstatus");
+```
+
+That's the whole integration. Animal Tags renders `○`, `◐` or `♥` from it and needs to know nothing
+about your mod. An unrecognised value renders nothing rather than dumping a raw string into a row
+of icons.
+
+**To draw the line yourself when Animal Tags isn't there**, guard per entity, not per mod:
+
+```csharp
+if (!entity.HasBehavior("eartaggable")) { /* draw your own status line */ }
+```
+
+`HasBehavior`, not `IsModEnabled` — Animal Tags only covers livestock, so a tamed wolf still needs
+its own mod to draw the line even when both mods are installed.
+
+Slots currently defined:
+
+| Slot | Values | Rendered as |
+|---|---|---|
+| `tamed` | `wild` / `taming` / `tame` | `○` grey / `◐` amber / `♥` pink |
+
+Adding a slot is a constant and a lang key. Keep badges to icons and glyphs — anything with a number
+in it belongs on a line of its own.
 
 ### The info panel speaks VTML
 
@@ -62,8 +115,14 @@ leftmousebutton  rightmousebutton
 `<itemstack type="item">code</itemstack>` renders an actual item too, if you ever want the panel to
 show the tag itself.
 
-All the glyphs and icon names live in `assets/eartags/lang/en.json` as `info-swatch`,
-`info-swatch-bare` and `info-protected`, so trying a different one is a lang edit and a reload.
+All the glyphs and icon names live in `assets/eartags/lang/en.json` under `info-*`, so trying a
+different one is a lang edit and a reload. `info-gap` and `info-badge-sep` control the spacing
+between the swatches and the badges, and between badges.
+
+One caution learned the hard way: `■ ▫ ○ ◐ ●` are all Geometric Shapes (U+25xx) and render fine.
+`⛊` is Miscellaneous Symbols (U+26xx) and came out as an empty box. `♥` is a card suit, which is far
+more widely included than a shogi piece — but it's in that same riskier block, so if it tofus, `●`
+is the safe swap.
 
 ### Why not the name line
 

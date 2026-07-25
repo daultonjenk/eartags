@@ -503,19 +503,86 @@ namespace EarTags
         {
             base.GetInfoText(infotext);
 
-            string left = GetTag(EarTagsModSystem.SideLeft);
-            string right = GetTag(EarTagsModSystem.SideRight);
-            if (left == null && right == null) return;
+            if (system == null || system.VisualInfo) StatusLine(infotext);
+            else WordyLines(infotext);
+        }
 
-            bool visual = system == null || system.VisualInfo;
 
-            infotext.AppendLine(Lang.Get("eartags:" + Terms + "-worn",
-                visual ? VisualSummary() : WordySummary()));
+        /// <summary>
+        /// The shared status line, directly under the animal's name: this mod's swatches on the
+        /// left, everyone's badges on the right, then a blank line to hold it apart from the
+        /// numbers below. Sitting first is what makes it read as a subtitle of the name rather
+        /// than as an interruption halfway down a list - see the client behaviour patch, which
+        /// puts this behaviour at index 0 for exactly that reason.
+        ///
+        /// Renders whenever there is anything at all to say, so a tamed but untagged animal still
+        /// gets its badge, and an animal with neither takes up no room.
+        /// </summary>
+        private void StatusLine(StringBuilder infotext)
+        {
+            bool tagged = GetTag(EarTagsModSystem.SideLeft) != null || GetTag(EarTagsModSystem.SideRight) != null;
 
-            // The protection has to be visible somewhere: an animal that quietly refuses to die
-            // reads as a bug rather than as a decision someone made about it on purpose. In visual
-            // mode the shield on the line above says it, so this second line is not needed.
-            if (!visual && WearsMetalTag()) infotext.AppendLine(Lang.Get("eartags:protected"));
+            string badges = Badges();
+            if (!tagged && badges.Length == 0) return;
+
+            StringBuilder line = new StringBuilder();
+
+            if (tagged)
+            {
+                line.Append(Swatch(EarTagsModSystem.SideLeft));
+                line.Append(' ');
+                line.Append(Swatch(EarTagsModSystem.SideRight));
+            }
+
+            if (tagged && badges.Length > 0) line.Append(Lang.Get("eartags:info-gap"));
+            line.Append(badges);
+
+            infotext.AppendLine(line.ToString());
+            infotext.AppendLine();
+        }
+
+
+        /// <summary>
+        /// The badge cluster. Protection is ours; the tame state is whatever another mod published
+        /// into the shared tree. Both are whole VTML fragments out of the lang file, so a mod that
+        /// wants a different icon changes en.json rather than code.
+        /// </summary>
+        private string Badges()
+        {
+            StringBuilder badges = new StringBuilder();
+
+            if (WearsMetalTag()) badges.Append(Lang.Get("eartags:info-protected"));
+
+            string tamed = EarTagsModSystem.ReadTamedState(entity);
+
+            if (tamed != null)
+            {
+                if (badges.Length > 0) badges.Append(Lang.Get("eartags:info-badge-sep"));
+                badges.Append(Lang.Get("eartags:info-tamed-" + tamed));
+            }
+
+            return badges.ToString();
+        }
+
+
+        /// <summary>
+        /// The original wording, for anyone who turns the swatches off or whose font has no square
+        /// in it. It has to carry the published tame state too, or switching to this mode would
+        /// silently drop something a sibling mod is relying on us to show.
+        /// </summary>
+        private void WordyLines(StringBuilder infotext)
+        {
+            if (GetTag(EarTagsModSystem.SideLeft) != null || GetTag(EarTagsModSystem.SideRight) != null)
+            {
+                infotext.AppendLine(Lang.Get("eartags:" + Terms + "-worn", WordySummary()));
+
+                // An animal that quietly refuses to die reads as a bug rather than as a decision
+                // someone made about it on purpose.
+                if (WearsMetalTag()) infotext.AppendLine(Lang.Get("eartags:protected"));
+            }
+
+            string tamed = EarTagsModSystem.ReadTamedState(entity);
+            if (tamed != null) infotext.AppendLine(Lang.Get("eartags:status-tamed-" + tamed));
         }
 
 
@@ -545,42 +612,9 @@ namespace EarTags
 
 
         /// <summary>
-        /// A coloured square per side, left to right as you look at the panel, then any status
-        /// badges - so the whole of what this mod knows about an animal fits on the one line the
-        /// species already had.
-        ///
-        /// A bare side keeps its place with a hollow marker rather than collapsing, because which
-        /// side a tag is on is half the information.
-        ///
-        /// Badges go on the END, not between the squares. Between reads as a third tag and shoves
-        /// the pair apart, and the pair is the thing you are actually trying to read at a glance.
-        /// Putting them last also leaves room to grow: a tamed badge sits next to the protected one
-        /// without disturbing anything.
-        ///
-        /// Every glyph and icon comes from the lang file, so a font with no square in it, or an
-        /// icon name that turns out to look wrong, is an edit to en.json rather than to code.
-        /// </summary>
-        private string VisualSummary()
-        {
-            StringBuilder line = new StringBuilder();
-
-            line.Append(Swatch(EarTagsModSystem.SideLeft));
-            line.Append(' ');
-            line.Append(Swatch(EarTagsModSystem.SideRight));
-
-            if (WearsMetalTag())
-            {
-                line.Append("  ");
-                line.Append(Lang.Get("eartags:info-protected"));
-            }
-
-            return line.ToString();
-        }
-
-
-        /// <summary>
         /// One side's square, wrapped in the VTML the info panel colours it by. Bare sides get the
-        /// hollow glyph and no colour, so they read as absence rather than as a grey tag.
+        /// hollow glyph and no colour, so they read as absence rather than as a grey tag - which
+        /// matters, because which side a tag is on is half the information.
         /// </summary>
         private string Swatch(string side)
         {

@@ -81,7 +81,17 @@
 
 	"info-swatch": "■",
 	"info-swatch-bare": "▫",
+	"info-gap": "     ",
+	"info-badge-sep": " | ",
+
 	"info-protected": "<icon>medal</icon>",
+	"info-tamed-wild": "<font color=\"#8a8a8a\">○</font>",
+	"info-tamed-taming": "<font color=\"#d9a02e\">◐</font>",
+	"info-tamed-tame": "<font color=\"#e06c8a\">♥</font>",
+
+	"status-tamed-wild": "Wild",
+	"status-tamed-taming": "Becoming tame",
+	"status-tamed-tame": "Tame",
 
 	"heldhelp-apply": "Clip to a bare ear or leg",
 	"heldhelp-applyright": "Clip to the right ear or leg",
