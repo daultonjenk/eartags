@@ -179,8 +179,8 @@
 		// base. X carries it back off the trailing edge, Z centres it in the 0.3 thickness.
 		match: "goat-nubian-*",
 		mirrorZ: false,
-		left  : { bone: "L ear", offset: [ 1.8, 2.7, -0.45 ], rotation: [ 0, 90, 0 ], scale: 1.25 },
-		right : { bone: "R ear", offset: [ 1.8, 2.7, -0.45 ], rotation: [ 0, 90, 0 ], scale: 1.25 }
+		left  : { bone: "L ear", offset: [ 1.8, 2.7, -0.45 ], rotation: [ 0, 90, 0 ], scale: 1.22 },
+		right : { bone: "R ear", offset: [ 1.8, 2.7, -0.45 ], rotation: [ 0, 90, 0 ], scale: 1.22 }
 	},
 
 	{

@@ -49,6 +49,10 @@ namespace EarTags
         /// durability - ear cartilage is not what blunts a bronze tip - and the animal takes no
         /// damage and does not take offence, so this is a tool requirement rather than a new way
         /// to hurt something.
+        ///
+        /// Vanilla will not let a chisel into the off hand at all, so the mod patches the Offhand
+        /// storage flag onto it - see patches/chisel-offhand.json. That patch is unconditional,
+        /// because a JSON patch cannot read this file.
         /// </summary>
         public bool RequireChiselForEarTags = false;
     }

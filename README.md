@@ -33,6 +33,13 @@ and needs nothing. The chisel loses no durability, the animal takes no damage an
 offence: it's a tool requirement, not a new way to hurt something. Off by default, since it changes
 how an established world plays.
 
+Vanilla won't let a chisel into the off hand at all, so the mod patches the Offhand storage flag
+onto it (`257` = General + Offhand, the same as a shield). That patch is **unconditional** — a JSON
+patch can only read world config, not a mod config, so it can't follow the setting. With the setting
+off the only difference is that a chisel may occupy a slot it previously couldn't; nothing reads the
+off hand for chiselling. Only vanilla chisels are covered; a modded one needs the same flag from its
+own mod, though the tag check accepts any item whose code starts with `chisel`.
+
 Hovering an animal puts a **status line** directly under its name:
 
 ```
