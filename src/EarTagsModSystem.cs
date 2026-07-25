@@ -23,6 +23,26 @@ namespace EarTags
         public double Scale = 1.0;
     }
 
+    /// <summary>
+    /// Settings that live outside the assets, in ModConfig/eartags.json, because they are the
+    /// server operator's business rather than the mod's.
+    /// </summary>
+    public class EarTagsConfig
+    {
+        /// <summary>
+        /// Whether applying and removing a tag announces itself in chat. Off by default: tagging a
+        /// flock one animal at a time would bury the chat, and the leather sound already confirms
+        /// the tag went on. Turn it on with .eartagmessages while working out why a tag will not
+        /// stick.
+        ///
+        /// Only the success lines are covered. Refusals - both ears full, species not supported -
+        /// are always sent, because those fire once and only when something did not work, and a
+        /// silent refusal is indistinguishable from a broken mod.
+        /// </summary>
+        public bool TagMessages = false;
+    }
+
+
     public class EarTagSpeciesConfig
     {
         /// <summary>Wildcard matched against the entity code path, e.g. "sheep-mouflon-adult-*".</summary>
@@ -33,6 +53,13 @@ namespace EarTags
         /// points this at the legband instead.
         /// </summary>
         public string Shape;
+
+        /// <summary>
+        /// The same shape for a metal tag. A separate file rather than a flag because the only
+        /// difference is the per-face reflectiveMode that gives metal its shine, and faces live in
+        /// a Dictionary&lt;,&gt; that a source mod cannot reach into.
+        /// </summary>
+        public string ShapeMetal;
 
         /// <summary>
         /// Lang key prefix for the chat lines and the info text, so a chicken can say "leg band"
@@ -55,9 +82,15 @@ namespace EarTags
             return side == EarTagsModSystem.SideLeft ? Left : Right;
         }
 
-        public string ShapeOrDefault
+        /// <summary>Which shape file a tag of this kind hangs on this species.</summary>
+        public string ShapeFor(string kind)
         {
-            get { return string.IsNullOrEmpty(Shape) ? EarTagsModSystem.DefaultShape : Shape; }
+            if (kind == EarTagsModSystem.KindMetal)
+            {
+                return string.IsNullOrEmpty(ShapeMetal) ? EarTagsModSystem.DefaultShapeMetal : ShapeMetal;
+            }
+
+            return string.IsNullOrEmpty(Shape) ? EarTagsModSystem.DefaultShape : Shape;
         }
 
         public string TermsOrDefault
@@ -85,17 +118,64 @@ namespace EarTags
         public const string KindLeather = "eartag";
         public const string KindMetal = "eartagmetal";
 
-        /// <summary>Attachment shape used by any species that does not name one of its own.</summary>
+        /// <summary>Attachment shapes used by any species that does not name one of its own.</summary>
         public const string DefaultShape = "eartags:shapes/entity/eartag.json";
+        public const string DefaultShapeMetal = "eartags:shapes/entity/eartag-metal.json";
 
         /// <summary>Lang key prefix used by any species that does not name one of its own.</summary>
         public const string DefaultTerms = "eartag";
 
         public static readonly string[] Sides = new string[] { SideLeft, SideRight };
 
+        private const string SettingsFile = "eartags.json";
+
         private EarTagSpeciesConfig[] speciesConfigs = new EarTagSpeciesConfig[0];
+        private EarTagsConfig settings = new EarTagsConfig();
 
         public EarTagSpeciesConfig[] SpeciesConfigs { get { return speciesConfigs; } }
+        public EarTagsConfig Settings { get { return settings; } }
+
+
+        /// <summary>
+        /// Whether to announce a tag going on or coming off. Read through the mod system rather
+        /// than a static so that a dedicated server and an integrated one behave the same way.
+        /// </summary>
+        public bool TagMessages { get { return settings != null && settings.TagMessages; } }
+
+
+        /// <summary>Reads ModConfig/eartags.json, writing a default one if it is missing.</summary>
+        public void LoadSettings(ICoreAPI api)
+        {
+            try
+            {
+                settings = api.LoadModConfig<EarTagsConfig>(SettingsFile);
+
+                if (settings == null)
+                {
+                    settings = new EarTagsConfig();
+                    api.StoreModConfig(settings, SettingsFile);
+                }
+            }
+            catch (Exception e)
+            {
+                // A typo in the config must not take the mod down with it.
+                api.Logger.Warning("[eartags] Could not read {0}, using defaults: {1}", SettingsFile, e.Message);
+                settings = new EarTagsConfig();
+            }
+        }
+
+
+        public void SaveSettings(ICoreAPI api)
+        {
+            try
+            {
+                api.StoreModConfig(settings, SettingsFile);
+            }
+            catch (Exception e)
+            {
+                api.Logger.Warning("[eartags] Could not write {0}: {1}", SettingsFile, e.Message);
+            }
+        }
 
 
         /// <summary>
@@ -137,7 +217,10 @@ namespace EarTags
         public override void StartServerSide(ICoreServerAPI api)
         {
             base.StartServerSide(api);
-            EarTagsCommands.RegisterServer(api);
+
+            // Messages are sent server side, so the server is the only side that needs the setting.
+            LoadSettings(api);
+            EarTagsCommands.RegisterServer(api, this);
         }
 
 

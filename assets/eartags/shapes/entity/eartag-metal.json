@@ -1,0 +1,73 @@
+﻿{
+	// The metal tag. Geometry identical to eartag.json - keep the two in step - with one addition:
+	// every face carries "reflectiveMode": 4, the same EnumReflectiveMode.Sparkly that vanilla puts
+	// on a gold ingot. That is where the shine comes from; it is a vertex flag the shader reads,
+	// not anything the mod does at runtime, and it works on entities as well as blocks - vanilla's
+	// own gold waist chain is an entity shape that uses it.
+	//
+	// Drop it to 2 for the duller glint of a plain ingot, or 0 to turn it off. Face-by-face, so a
+	// find and replace on the number is the whole job.
+	//
+	// Reflection lives on the shape rather than in code because ShapeElement.Faces is a
+	// Dictionary<,>, which a source mod cannot touch (see EarTagsModSystem) - a second shape file
+	// is duplication, but it is honest duplication rather than a reflection hack.
+	//
+	// Step-parented element coordinates are LOCAL to the target bone, with [0,0,0] at the bone's
+	// own "from" corner - they are NOT in the parent shape's coordinate space. Vanilla's boar
+	// tusks follow the same idiom: an invisible origin element mirroring the bone's box, with the
+	// real geometry hung underneath it as children.
+	//
+	// The mouflon's "L Ear" and "R Ear" are both 0.4 x 2.0 x 1.2, so this one definition serves
+	// both ears unchanged.
+
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textures": {
+		"tag": "game:block/leather/plain"
+	},
+	"elements": [
+		{
+			"name": "EarOrigin",
+			"stepParentName": "L Ear",
+			"from": [ 0, 0, 0 ],
+			"to": [ 0.4, 2.0, 1.2 ],
+			"rotationOrigin": [ 0.2, 1.35, 0.6 ],
+			"faces": {
+				"north": { "reflectiveMode": 4, "texture": "#tag", "uv": [ 7, 7, 9, 9 ], "enabled": false },
+				"east":  { "reflectiveMode": 4, "texture": "#tag", "uv": [ 7, 7, 9, 9 ], "enabled": false },
+				"south": { "reflectiveMode": 4, "texture": "#tag", "uv": [ 7, 7, 9, 9 ], "enabled": false },
+				"west":  { "reflectiveMode": 4, "texture": "#tag", "uv": [ 7, 7, 9, 9 ], "enabled": false },
+				"up":    { "reflectiveMode": 4, "texture": "#tag", "uv": [ 7, 7, 9, 9 ], "enabled": false },
+				"down":  { "reflectiveMode": 4, "texture": "#tag", "uv": [ 7, 7, 9, 9 ], "enabled": false }
+			},
+			"children": [
+				{
+					"name": "Tag",
+					// A thin plate centred on the ear's mid-plane (the ear spans X 0..0.4, so 0.2 is
+					// its centre). X here is 0.15, which the 1.25 scale in attachpoints.json takes
+					// to 0.1875 - a quarter of the ear's thickness, so it reads as a tag rather
+					// than a block. Being coplanar with the ear, it is hidden inside the flap where
+					// the two overlap at the corner, which is what you want.
+					//
+					// Y and Z placement is left neutral here - attachpoints.json does the placing,
+					// because the ears' rotationX rotates their local axes and mirrors Z.
+					//
+					// The UVs sample a deliberately tiny 2x2 patch of the leather. Blowing up a
+					// few texels over the whole tag keeps its texel density near the mouflon's own,
+					// so it reads as a piece cut from the hide rather than a shrunken HD decal.
+					"from": [ 0.125, 0.25, 0.2 ],
+					"to": [ 0.275, 1.15, 1.0 ],
+					"rotationOrigin": [ 0.2, 1.15, 0.6 ],
+					"faces": {
+						"north": { "reflectiveMode": 4, "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"east":  { "reflectiveMode": 4, "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"south": { "reflectiveMode": 4, "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"west":  { "reflectiveMode": 4, "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"up":    { "reflectiveMode": 4, "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
+						"down":  { "reflectiveMode": 4, "texture": "#tag", "uv": [ 7, 7, 9, 9 ] }
+					}
+				}
+			]
+		}
+	]
+}

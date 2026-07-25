@@ -1,6 +1,6 @@
-# Ear Tags
+# Animal Tags
 
-A Vintage Story mod that lets you clip small dyed-leather ear tags onto your livestock, so you can
+A Vintage Story mod that lets you clip small dyed-leather tags onto your livestock, so you can
 tell individual animals apart at a glance — which generation is which, who's your best breeder, and
 which sheep is the one you actually meant to shear.
 
@@ -8,12 +8,16 @@ Ten colours, two ears per animal, so a hundred distinguishable combinations.
 
 Chickens have no ear to speak of, so the same tag goes round a leg instead, as a poultry leg band.
 
-There is also a **metal** tag, in all twenty-three vanilla metals, which does one thing more:
-nothing the player does can hurt the animal wearing it. No cleaver at harvest time, no stray punch
-while mining the block behind it. Mark your prize breeder and it stays alive until you take the tag
-back off. Wolves, falls and drowning are unaffected — it is protection, not immortality.
+There is also a **metal** tag, smithed on an anvil, which does two things more. It catches the light
+the way an ingot does. And nothing the player does can hurt the animal wearing it — no cleaver at
+harvest time, no stray punch while mining the block behind it. Mark your prize breeder and it stays
+alive until you take the tag back off. Wolves, falls and drowning are unaffected: protection, not
+immortality.
 
 Built for Vintage Story 1.22.
+
+> The mod id and every item code still read `eartags`. They are what's already saved on your
+> animals and sitting in your chests, so only the display name changed.
 
 ## Using it
 
@@ -23,9 +27,15 @@ Craft a tag, hold it, and right-click an animal to clip it to a bare ear.
 - **Sneak + right-click** — clip specifically to the right ear
 - **Sneak + right-click with an empty hand** — remove a tag and get it back
 
-Hovering a tagged animal shows what it's wearing: `Ear tags: left red, right blue`, or
+Hovering a tagged animal shows what it's wearing: `Animal Tags: left red, right blue`, or
 `Leg bands: left red` on a bird. A metal tag adds a line saying the animal is protected, so an
 animal that refuses to die reads as a decision rather than a bug.
+
+Applying and removing a tag is **silent** by default — the leather sound is the confirmation.
+Tagging a whole flock would otherwise bury the chat. `.eartagmessages` turns the chat lines on and
+off and remembers the choice in `ModConfig/eartags.json`. Refusals (both ears full, species not
+supported) are always shown: they fire once, only when something didn't work, and a silent refusal
+is indistinguishable from a broken mod.
 
 ## Crafting
 
@@ -42,15 +52,20 @@ olive oil plus all seven Expanded Foods oils if that mod is installed.
 Leather is the right material here: pre-plastic livestock tags really were leather or punched metal,
 and the wax/fat/oil rub is genuine leather treatment rather than a hand-wave.
 
-Metal, shapeless in any two slots:
+Metal, on an anvil — four small squares beaten out of one hot ingot:
 
 ```
-hammer  +  metal plate   →   8 tags
+##_##
+##_##
+_____      →   4 tags
+##_##
+##_##
 ```
 
-The tag takes the metal of the plate. The item's variant list is loaded from the same
-`block/metal` world property that vanilla `metalplate` uses, so the two can't drift apart: any
-metal you can beat into a plate, you can cut a tag from.
+16 voxels of the ingot, so there's plenty left to split away. The recipe accepts the same
+21 metals vanilla's own `plate` recipe does, which is its definition of *can be beaten flat* and
+exactly what a tag is. Stainless steel and uranium tags exist as items but have no recipe, matching
+vanilla — nothing else is smithable from them either.
 
 ## Supported animals
 
@@ -80,9 +95,10 @@ ear bone in this family carries a mirrored `rotationX`, which swings the local a
   **Mirrored sign.**
 - **X** — ear thickness. Only needed when an ear is thicker than the mouflon's `0.4`.
 
-Three optional per-species keys cover everything that isn't an ear on a sheep: `shape` picks a
-different attachment shape, `terms` picks a different set of lang keys, and `mirrorZ: false` turns
-off the Z sign flip for ears where Z centres the tag rather than hanging it.
+Four optional per-species keys cover everything that isn't an ear on a sheep: `shape` and
+`shapeMetal` pick different attachment shapes, `terms` picks a different set of lang keys, and
+`mirrorZ: false` turns off the Z sign flip for ears where Z centres the tag rather than hanging it.
+Both shapes share one set of offsets, so tuning placement stays a single job.
 
 Adding a new species also needs two JSON patches: one giving it the `eartaggable` behaviour, one
 declaring the thirty-three tag textures (ten leathers, twenty-three metals). They are split into
@@ -161,6 +177,7 @@ a ring of four thin plates round the shank instead of a plate through an ear.
 - `.eartags save` — write values back to `attachpoints.json`, preserving comments
 - `.eartags reload` — re-read the file from disk
 - `.eartagfreeze` — pin the animal you're looking at and stop its animations while you tune
+- `.eartagmessages` — toggle the apply/remove chat lines, saved to `ModConfig/eartags.json`
 
 Reload and save read/write the config through `Mod.SourcePath`, so they only work while the mod is
 an unpacked folder. Zip it and you're back to hand-editing plus a world reload.
@@ -169,6 +186,20 @@ an unpacked folder. Zip it and you're back to hand-editing plus a world reload.
 exactly as it found them. It writes the key padded out so the two anchors line up, so the matcher
 that finds those lines has to tolerate space before the colon; without that it would find a
 hand-written file once and then never find its own output again.
+
+## How the shine works
+
+`"reflectiveMode": 4` on every face of `shapes/entity/eartag-metal.json` — the same
+`EnumReflectiveMode.Sparkly` vanilla puts on a gold ingot. It's a vertex flag the shader reads, so
+it costs nothing at runtime, and it works on entities as well as blocks: vanilla's own gold waist
+chain is an entity shape that uses it.
+
+Drop the number to `2` for the duller glint of a plain ingot, or `0` to switch it off. It's
+face-by-face, so a find-and-replace on the number is the whole job.
+
+The metal tag is a **separate shape file** rather than a flag on the leather one because
+`ShapeElement.Faces` is a `Dictionary<,>`, which a source mod can't touch (see below). Keep the two
+geometries in step; placement is shared, since both read the same offsets from `attachpoints.json`.
 
 ## How the protection works
 

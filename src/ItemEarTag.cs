@@ -72,10 +72,15 @@ namespace EarTags
 
             byEntity.World.PlaySoundAt(new AssetLocation("game:sounds/block/leather"), target, null, true, 16);
 
-            Notify(splr, Lang.Get(terms + "-applied",
-                EarTagsModSystem.MaterialName(Kind, Material),
-                Lang.Get("eartags:side-" + side),
-                target.GetName()));
+            // Off unless someone asked for it - see EarTagsConfig. Tagging a flock one animal at a
+            // time would otherwise bury the chat, and the leather sound already says it worked.
+            if (api.ModLoader.GetModSystem<EarTagsModSystem>()?.TagMessages == true)
+            {
+                Notify(splr, Lang.Get(terms + "-applied",
+                    EarTagsModSystem.MaterialName(Kind, Material),
+                    Lang.Get("eartags:side-" + side),
+                    target.GetName()));
+            }
         }
 
 

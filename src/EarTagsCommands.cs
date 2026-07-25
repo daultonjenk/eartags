@@ -21,6 +21,7 @@ namespace EarTags
         private const float ReTesselateRange = 32f;
 
         private static ICoreServerAPI sapi;
+        private static EarTagsModSystem system;
         private static long frozenEntityId;
         private static double frozenX, frozenY, frozenZ;
 
@@ -242,9 +243,16 @@ namespace EarTags
 
         // ---- server: freeze --------------------------------------------------------------
 
-        public static void RegisterServer(ICoreServerAPI api)
+        public static void RegisterServer(ICoreServerAPI api, EarTagsModSystem sys)
         {
             sapi = api;
+            system = sys;
+
+            api.ChatCommands
+                .Create("eartagmessages")
+                .WithDescription("Toggle the chat line that announces every tag applied and removed. Off by default so tagging a whole flock does not bury the chat. Refusals are always shown.")
+                .RequiresPrivilege("controlserver")
+                .HandleWith(OnToggleMessages);
 
             api.ChatCommands
                 .Create("eartagfreeze")
@@ -254,6 +262,23 @@ namespace EarTags
                 .HandleWith(OnFreeze);
 
             api.Event.RegisterGameTickListener(OnServerTick, 20);
+        }
+
+
+        /// <summary>
+        /// Flips the tag chat lines on or off and writes the choice to ModConfig/eartags.json, so
+        /// it survives a restart without anyone having to find the file.
+        /// </summary>
+        private static TextCommandResult OnToggleMessages(TextCommandCallingArgs args)
+        {
+            if (system?.Settings == null) return TextCommandResult.Error("Ear tag settings are not loaded.");
+
+            system.Settings.TagMessages = !system.Settings.TagMessages;
+            system.SaveSettings(sapi);
+
+            return TextCommandResult.Success(system.Settings.TagMessages
+                ? "Tag messages ON. Every tag applied and removed will be announced."
+                : "Tag messages OFF. Refusals are still shown.");
         }
 
 

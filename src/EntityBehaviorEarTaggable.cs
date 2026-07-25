@@ -25,6 +25,7 @@ namespace EarTags
     {
         private ICoreClientAPI capi;
         private EarTagSpeciesConfig anchors;
+        private EarTagsModSystem system;
 
 
         public EntityBehaviorEarTaggable(Entity entity) : base(entity) { }
@@ -36,8 +37,8 @@ namespace EarTags
         {
             base.Initialize(properties, attributes);
 
-            EarTagsModSystem sys = entity.Api.ModLoader.GetModSystem<EarTagsModSystem>();
-            anchors = sys?.ResolveAnchors(entity.Code?.Path);
+            system = entity.Api.ModLoader.GetModSystem<EarTagsModSystem>();
+            anchors = system?.ResolveAnchors(entity.Code?.Path);
 
             capi = entity.Api as ICoreClientAPI;
 
@@ -228,7 +229,8 @@ namespace EarTags
                     return;
                 }
 
-                AssetLocation shapeLocation = new AssetLocation(anchors.ShapeOrDefault);
+                string kind = GetTagKind(side);
+                AssetLocation shapeLocation = new AssetLocation(anchors.ShapeFor(kind));
 
                 Shape tagShape = LoadTagShape(shapeLocation);
                 if (tagShape?.Elements == null || tagShape.Elements.Length == 0) return;
@@ -240,7 +242,6 @@ namespace EarTags
 
                 // The tag borrows vanilla's own dyed leather and ingot textures, so neither the
                 // colours nor the twenty-three metals cost us any art.
-                string kind = GetTagKind(side);
                 SetShapeTexture(tagShape, "tag", EarTagsModSystem.MaterialTexture(kind, material));
 
                 // texturePrefixCode keeps our texture key from colliding with the animal's own
@@ -487,10 +488,14 @@ namespace EarTags
 
             entity.World.PlaySoundAt(new AssetLocation("game:sounds/block/leather"), entity, null, true, 16);
 
-            (plr as IServerPlayer)?.SendMessage(
-                GlobalConstants.GeneralChatGroup,
-                Lang.Get("eartags:" + Terms + "-removed", Lang.Get("eartags:side-" + side), entity.GetName()),
-                EnumChatType.Notification);
+            // Off unless someone asked for it - see EarTagsConfig. The sound is the real feedback.
+            if (system != null && system.TagMessages)
+            {
+                (plr as IServerPlayer)?.SendMessage(
+                    GlobalConstants.GeneralChatGroup,
+                    Lang.Get("eartags:" + Terms + "-removed", Lang.Get("eartags:side-" + side), entity.GetName()),
+                    EnumChatType.Notification);
+            }
         }
 
 

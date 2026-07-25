@@ -16,11 +16,15 @@
 	//   X = ear thickness. Only needed when an ear is thicker than the mouflon's 0.4.
 	//
 	// Optional per-species keys:
-	//   shape   - which attachment shape to step-parent on. Defaults to the ear tag plate.
-	//   terms   - lang key prefix for the chat and info text. Defaults to "eartag".
-	//   mirrorZ - whether ".eartags nudge z" flips the sign on the right side. Defaults to true.
-	//             Set false when Z is a centring offset rather than a hang direction, i.e. on any
-	//             ear that is thin on Z, and on the chickens.
+	//   shape      - which attachment shape to step-parent on. Defaults to the tag plate.
+	//   shapeMetal - the same for a metal tag, which is a separate file only because it carries the
+	//                per-face reflectiveMode that makes metal shine. Defaults to the metal plate.
+	//   terms      - lang key prefix for the chat and info text. Defaults to "eartag".
+	//   mirrorZ    - whether ".eartags nudge z" flips the sign on the right side. Defaults to true.
+	//                Set false when Z is a centring offset rather than a hang direction, i.e. on
+	//                any ear that is thin on Z, and on the chickens.
+	//
+	// Both shapes for a species share one set of offsets, so tuning placement stays a single job.
 	//
 	// To nudge a tag: edit the numbers and reload the world. No recompile needed.
 	//
@@ -226,6 +230,7 @@
 		// clear of the feathering on the thigh above.
 		match: "chicken-hen*",
 		shape: "eartags:shapes/entity/legband.json",
+		shapeMetal: "eartags:shapes/entity/legband-metal.json",
 		terms: "legband",
 		mirrorZ: false,
 		left  : { bone: "leg left", offset: [ 0, 1.2, 0 ], rotation: [ 0, 0, 0 ], scale: 1 },
@@ -237,6 +242,7 @@
 		// shank underneath it is "L feet", 3 long rather than 4.
 		match: "chicken-rooster*",
 		shape: "eartags:shapes/entity/legband.json",
+		shapeMetal: "eartags:shapes/entity/legband-metal.json",
 		terms: "legband",
 		mirrorZ: false,
 		left  : { bone: "L feet", offset: [ 0, 1, 0 ], rotation: [ 0, 0, 0 ], scale: 1 },
