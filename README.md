@@ -279,12 +279,27 @@ the light nicely.
 This is **pure JSON**: a `GroundStorable` behaviour with `layout: "Stacking"` on the itemtype, which
 is exactly what vanilla `metalplate` does. No block, no block entity, no code.
 
-Two things have to agree, or a pile of three will float or a pile of thirty will be missing tags:
-`stackingCapacity` on the item must equal the **top-level** element count in the pile shape, and
-**element order is stack order** — `GroundStorable` reveals one top-level element per item, so the
-shape lists its tags bottom layer first. Each tag is one top-level element (the body) with three
-children making the strip and shoulders around the hole; nesting is what lets a tag have a hole
-without a stack of one showing a quarter of a tag.
+### How `GroundStorable` counts
+
+Undocumented and easy to get wrong, so: the renderer walks the pile shape's elements **flattened** —
+children count exactly the same as parents — and reveals `stackSize × modelItemsToStackSizeRatio`
+of them, in file order.
+
+The rule that follows is:
+
+```
+total flattened elements = stackingCapacity × modelItemsToStackSizeRatio
+```
+
+A tag is four boxes (a body plus three children making the strip and shoulders round the hole), so
+the ratio is **4**: 32 tags × 4 = 128 elements. At ratio 1 the pile built a tag a *quarter at a
+time* — one box per item, four items before the first whole tag.
+
+Vanilla's own range makes the rule obvious once you look: `platepile` is 16 elements at capacity 16
+ratio 1 (one box per plate); `beeswax-pile` is 288 elements at capacity 12 ratio **24** (one lump of
+24 boxes per item); `firewoodpile` is 16 at capacity 32 ratio **0.5** (one log per *two* items).
+
+**Element order is stack order**, so the shape lists its tags bottom layer first.
 
 ### Reflection on the ground
 

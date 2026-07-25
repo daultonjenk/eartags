@@ -34,7 +34,7 @@
 			},
 			collisionBox: { x1: 0.03, y1: 0, z1: 0.03, x2: 0.97, y2: 0.0625, z2: 0.97 },
 			cbScaleYByLayer: 0.25,
-			modelItemsToStackSizeRatio: 1,
+			modelItemsToStackSizeRatio: 4,
 			stackingCapacity: 32,
 			transferQuantity: 1,
 			bulkTransferQuantity: 4
