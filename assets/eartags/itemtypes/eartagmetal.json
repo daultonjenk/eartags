@@ -10,15 +10,25 @@
 	// it is the one metal folder with an image for every variant of the property.
 	code: "eartagmetal",
 	class: "ItemEarTag",
-	// See eartag.json. The metal pile has its own shape purely so the tags on the floor keep their
-	// shine, and the ingot textures come along with them.
+	// See eartag.json.
+	//
+	// Gold gets its own pile shape at reflectiveMode 3 where everything else sits at 2, which is
+	// exactly how vanilla singles out gold ingot piles - stackingModelByType, same as ingot.json.
+	// There is no shininess property on a metal to read; vanilla hard-codes gold and so do we.
+	//
+	// Note the drop from the 4 the tag wears on an animal. On an ear it hangs vertically and moves;
+	// on the ground every tag is a flat face pointed straight at the sky, and 4 turned a stack of
+	// silver into a mirror. Vanilla does the same thing - a held gold ingot is 4, its pile is 3.
 	behaviors: [{
 		name: "GroundStorable",
 		properties: {
 			layout: "Stacking",
 			upSolid: true,
 			placeRemoveSound: "sounds/block/ingot",
-			stackingModel: "eartags:block/eartagpile-metal",
+			stackingModelByType: {
+				"*-gold": "eartags:block/eartagpile-shiny",
+				"*": "eartags:block/eartagpile-metal"
+			},
 			stackingTextures: {
 				"tag": "game:block/metal/ingot/{metal}"
 			},

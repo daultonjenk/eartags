@@ -33,41 +33,36 @@ and needs nothing. The chisel loses no durability, the animal takes no damage an
 offence: it's a tool requirement, not a new way to hurt something. Off by default, since it changes
 how an established world plays.
 
-Hovering an animal puts a **status line** directly under its name — a coloured square per side on
-the left, status badges on the right, then a blank line before the game's own details:
+Hovering an animal puts a **status line** directly under its name:
 
 ```
 Large gray boar
-■ orange  □     protected · tame
+protected · tame
 Creature Weight: Low
 Health: 45/45
 Damage tier: 2
 ```
 
-**Every mark carries its own word.** A bare row of glyphs looked tidy and told a first-time player
-nothing — symbols are a private language until someone hands you the key. So the square and the
-colour's name are the same colour and sit together: the square is its own legend. The colour still
-does the scanning; the word does the explaining.
+**The line does not list the tags.** It used to, through several increasingly clever iterations, and
+all of them were solving the wrong problem: the animal is wearing two coloured markers on its head.
+That is a better display than any line of text, and restating it in the panel was describing
+something you could already see. What goes on the line is only what the model *can't* show —
+whether the animal is protected, and how tame it is. On an ordinary animal it doesn't appear at all.
 
-A bare side keeps its place as a hollow `□` with no word, because an empty box beside a full one
-reads as absence without being told — and *which* side a tag is on is half the information. The line
-only appears when there's something on it, so an ordinary animal costs no space at all.
+Two things make it read as a subtitle rather than an interruption. It's **first** — the behaviour is
+patched in at `/client/behaviors/0`, since `Entity.GetInfoText` walks the behaviour list in order.
+And there's **no blank line after it** — the panel already puts a gap between the title and the
+first body line, which a mod can't change, and adding one below as well left the row floating
+between two gaps.
 
-Three things make this read as a subtitle rather than an interruption. It's **first** — the
-behaviour is patched in at `/client/behaviors/0`, since `Entity.GetInfoText` walks the behaviour
-list in order. Badges go on the **end**, never between the squares: between reads as a third tag
-and shoves the pair apart, and the pair is what you're scanning for. And there's **no blank line
-after it** — the panel already puts a gap between the title and the first body line, which a mod
-can't change, and adding one below as well left the row floating between two gaps.
+The split is deliberate: **state gets a word, quantity gets a number.** Protected, tame — those are
+yes/no, and a mark that only appears when true means the line's weight tracks how interesting the
+animal is. Health, weight, generation, "lactating for 3 more days" are quantities and stay as
+ordinary text lines, because no marker can say any of that.
 
-The split is deliberate: **state gets a badge, quantity gets a number.** Protected, tame — those are
-yes/no, and a badge that only appears when true means visual weight tracks how interesting the
-animal is. Health, weight, generation, "lactating for 3 more days" are quantities and stay as text,
-because an icon can't say any of that.
-
-Set `visualInfo: false` in `ModConfig/eartags.json` for the older wording (`left red, right blue`
-plus separate protection and tame lines) — do that if the squares come out as literal `<font>`
-markup, which would mean the info panel doesn't parse VTML on your version.
+Words rather than icons, in the end. Symbols are a private language until someone hands you the key,
+and a mod other people install can't assume they have it. Colour does the scanning; the word does
+the explaining.
 
 ### Sharing the status line with another mod
 
@@ -114,23 +109,18 @@ types and either can be installed alone.
 ### The info panel speaks VTML — but not `<icon>`
 
 Worth writing down, because it isn't documented and no vanilla entity uses it: **the entity hover
-panel parses `<font>`**, the same markup as chat and the handbook. That's where the coloured
-swatches come from — `<font color="#e0b83c">■</font>`.
+panel parses `<font>`**, the same markup as chat and the handbook. That's what colours the status
+words — `<font color="#e0b83c">protected</font>`.
 
 `<icon>name</icon>` does **not** work here, though it does in tutorial text. Tried and reverted, so
-nobody has to try it twice. The badges are font glyphs, which means glyph coverage matters:
+nobody has to try it twice.
 
-**Stay in Geometric Shapes, U+25A0–U+25FF.** `■ □ ◆ ○ ◐ ●` all render. `⛊` (U+26CA, Miscellaneous
-Symbols) came out as an empty box, which is why the protected badge is a gold `◆` and the tame one
-a pink `●` rather than a shield and a heart. `♥` is a card suit and probably fine, but it's in the
-same riskier block — if you want it, try it and be ready to swap back.
+If you ever go back to glyphs: **stay in Geometric Shapes, U+25A0–U+25FF.** `■ □ ◆ ○ ◐ ●` render;
+`⛊` (U+26CA, Miscellaneous Symbols) came out as an empty box, and so did `◆`. Mind the size too —
+`▫` is literally WHITE SMALL SQUARE and looked shrunken beside `■`.
 
-Also mind the *size*: `▫` is literally WHITE SMALL SQUARE and looked shrunken next to `■`. `□`
-(U+25A1) is the one that matches.
-
-All the glyphs live in `assets/eartags/lang/en.json` under `info-*`, so trying a different one is a
-lang edit and a reload. `info-gap` and `info-badge-sep` control the spacing between the swatches and
-the badges, and between badges.
+The status words live in `assets/eartags/lang/en.json` under `info-*`, so rewording or recolouring
+one is a lang edit and a reload. `info-badge-sep` is what sits between them.
 
 ### Why not the name line
 
@@ -143,9 +133,6 @@ so it can't be borrowed for entities — though a mod *can* register its own `Hu
 done here because the entity info panel's position and size aren't exposed, so an icon could only
 be pinned to a fixed spot on screen, which reads as bolted-on and fights other mods' HUDs. The
 badge on our own line gets the same information across without any of that.
-
-Swatch colours are a `switch` in `EarTagsModSystem.MaterialHex` — thirty-three fixed values, one
-per dye and per metal.
 
 Applying and removing a tag is **silent** by default — the leather sound is the confirmation.
 Tagging a whole flock would otherwise bury the chat. `.eartagmessages` turns the chat lines on and
@@ -293,11 +280,26 @@ This is **pure JSON**: a `GroundStorable` behaviour with `layout: "Stacking"` on
 is exactly what vanilla `metalplate` does. No block, no block entity, no code.
 
 Two things have to agree, or a pile of three will float or a pile of thirty will be missing tags:
-`stackingCapacity` on the item must equal the element count in the pile shape, and **element order
-in the shape is stack order** — `GroundStorable` reveals one element per item, so the shape lists
-its tags bottom layer first.
+`stackingCapacity` on the item must equal the **top-level** element count in the pile shape, and
+**element order is stack order** — `GroundStorable` reveals one top-level element per item, so the
+shape lists its tags bottom layer first. Each tag is one top-level element (the body) with three
+children making the strip and shoulders around the hole; nesting is what lets a tag have a hole
+without a stack of one showing a quarter of a tag.
 
-`shapes/block/eartagpile.json` is generated. If you change one of the 32 tags, change all of them.
+### Reflection on the ground
+
+Metal piles sit at `reflectiveMode: 2`, and gold gets its own shape at `3` via `stackingModelByType`
+— which is exactly what vanilla does for ingot piles, down to the values. There is **no shininess
+property on a metal** to read; the `block/metal` world property has melt point, density and tier and
+nothing about shine, so vanilla hard-codes gold and so do we.
+
+Note the drop from the `4` the tag wears on an animal. On an ear it hangs vertically and moves; on
+the ground every tag is a flat face pointed straight at the sky, and `4` turned a stack of silver
+into a mirror. Vanilla makes the same adjustment — a held gold ingot is `4`, its pile is `3`. And a
+metal *plate*, item or pile, has no reflectivity at all.
+
+The three pile shapes are generated and geometrically identical. If you change one of the 32 tags,
+change all three files — or regenerate.
 
 ## Editing the handbook entries
 

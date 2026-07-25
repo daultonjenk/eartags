@@ -503,46 +503,31 @@ namespace EarTags
         {
             base.GetInfoText(infotext);
 
-            if (system == null || system.VisualInfo) StatusLine(infotext);
-            else WordyLines(infotext);
+            StatusLine(infotext);
         }
 
 
         /// <summary>
-        /// The shared status line, directly under the animal's name: this mod's swatches on the
-        /// left, everyone's badges on the right, then a blank line to hold it apart from the
-        /// numbers below. Sitting first is what makes it read as a subtitle of the name rather
-        /// than as an interruption halfway down a list - see the client behaviour patch, which
-        /// puts this behaviour at index 0 for exactly that reason.
+        /// The shared status line, directly under the animal's name. Sitting first is what makes it
+        /// read as a subtitle of the name rather than as an interruption halfway down a list - see
+        /// the client behaviour patch, which puts this behaviour at index 0 for exactly that reason.
         ///
-        /// Renders whenever there is anything at all to say, so a tamed but untagged animal still
-        /// gets its badge, and an animal with neither takes up no room.
+        /// It does NOT list the tags. The animal is wearing two of them, in colour, on its head -
+        /// that is a better display than any line of text could be, and repeating it in the panel
+        /// was only ever restating what you could already see. What goes here is the things the
+        /// model cannot show: whether the animal is protected, and how tame it is.
         ///
         /// No blank line after it. The panel already puts a gap between the title and the first
         /// body line - which a mod cannot change, it is the panel's own padding - and adding one
         /// below as well left the row floating in the middle of two gaps instead of sitting under
-        /// the name. One gap above, none below, and it reads as a subtitle.
+        /// the name.
         /// </summary>
         private void StatusLine(StringBuilder infotext)
         {
-            bool tagged = GetTag(EarTagsModSystem.SideLeft) != null || GetTag(EarTagsModSystem.SideRight) != null;
-
             string badges = Badges();
-            if (!tagged && badges.Length == 0) return;
+            if (badges.Length == 0) return;
 
-            StringBuilder line = new StringBuilder();
-
-            if (tagged)
-            {
-                line.Append(TagEntry(EarTagsModSystem.SideLeft));
-                line.Append("  ");
-                line.Append(TagEntry(EarTagsModSystem.SideRight));
-            }
-
-            if (tagged && badges.Length > 0) line.Append(Lang.Get("eartags:info-gap"));
-            line.Append(badges);
-
-            infotext.AppendLine(line.ToString());
+            infotext.AppendLine(badges);
         }
 
 
@@ -566,78 +551,6 @@ namespace EarTags
             }
 
             return badges.ToString();
-        }
-
-
-        /// <summary>
-        /// The original wording, for anyone who turns the swatches off or whose font has no square
-        /// in it. It has to carry the published tame state too, or switching to this mode would
-        /// silently drop something a sibling mod is relying on us to show.
-        /// </summary>
-        private void WordyLines(StringBuilder infotext)
-        {
-            if (GetTag(EarTagsModSystem.SideLeft) != null || GetTag(EarTagsModSystem.SideRight) != null)
-            {
-                infotext.AppendLine(Lang.Get("eartags:" + Terms + "-worn", WordySummary()));
-
-                // An animal that quietly refuses to die reads as a bug rather than as a decision
-                // someone made about it on purpose.
-                if (WearsMetalTag()) infotext.AppendLine(Lang.Get("eartags:protected"));
-            }
-
-            string tamed = EarTagsModSystem.ReadTamedState(entity);
-            if (tamed != null) infotext.AppendLine(Lang.Get("eartags:status-tamed-" + tamed));
-        }
-
-
-        /// <summary>
-        /// "left red, right blue" - the original wording, kept for anyone who turns the swatches
-        /// off or whose font has no square in it.
-        /// </summary>
-        private string WordySummary()
-        {
-            StringBuilder worn = new StringBuilder();
-
-            for (int i = 0; i < EarTagsModSystem.Sides.Length; i++)
-            {
-                string side = EarTagsModSystem.Sides[i];
-                string material = GetTag(side);
-                if (material == null) continue;
-
-                if (worn.Length > 0) worn.Append(", ");
-
-                worn.Append(Lang.Get("eartags:worn-entry",
-                    Lang.Get("eartags:side-" + side),
-                    EarTagsModSystem.MaterialName(GetTagKind(side), material)));
-            }
-
-            return worn.ToString();
-        }
-
-
-        /// <summary>
-        /// One side: a filled square and the material's name, both in the tag's own colour, so the
-        /// square is its own legend. A row of bare glyphs looked tidy and said nothing to anyone
-        /// who had not been told what they meant - the word is what makes it self-explanatory, and
-        /// the colour is what keeps it scannable.
-        ///
-        /// Bare sides get the hollow glyph and no word, because an empty box beside a full one
-        /// reads as absence without needing to be told either - and which side a tag is on is half
-        /// the information.
-        /// </summary>
-        private string TagEntry(string side)
-        {
-            string material = GetTag(side);
-
-            if (material == null)
-            {
-                return "<font color=\"#6a6a6a\">" + Lang.Get("eartags:info-swatch-bare") + "</font>";
-            }
-
-            return "<font color=\"" + EarTagsModSystem.MaterialHex(material) + "\">"
-                + Lang.Get("eartags:info-swatch") + " "
-                + EarTagsModSystem.MaterialName(GetTagKind(side), material)
-                + "</font>";
         }
 
 

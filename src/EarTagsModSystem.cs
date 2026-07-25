@@ -42,17 +42,6 @@ namespace EarTags
         public bool TagMessages = false;
 
         /// <summary>
-        /// Whether the hover panel shows tags as coloured swatches on one line instead of naming
-        /// them on one line and the protection on another. Two lines become one and the colours
-        /// read at a glance, which is the whole point of tagging an animal.
-        ///
-        /// Turn it off if the swatches come out as literal &lt;font&gt; markup - that would mean the
-        /// entity info panel does not parse VTML on this version, and the wordy lines still work.
-        /// Client side setting: it only affects what you see.
-        /// </summary>
-        public bool VisualInfo = true;
-
-        /// <summary>
         /// Whether punching a tag through an ear needs a chisel held in the off hand. Off by
         /// default, because it changes how an established world plays.
         ///
@@ -215,8 +204,6 @@ namespace EarTags
         /// </summary>
         public bool TagMessages { get { return settings != null && settings.TagMessages; } }
 
-        public bool VisualInfo { get { return settings == null || settings.VisualInfo; } }
-
         public bool RequireChisel { get { return settings != null && settings.RequireChiselForEarTags; } }
 
 
@@ -275,56 +262,6 @@ namespace EarTags
         }
 
 
-        /// <summary>
-        /// Swatch colour for the hover panel, roughly matching the dye or the ingot it is cut from.
-        /// A switch rather than a config file: thirty-three fixed values that nobody tunes twice,
-        /// and a switch cannot be a Dictionary by accident (see the note at the top of this file).
-        /// </summary>
-        public static string MaterialHex(string material)
-        {
-            switch (material)
-            {
-                // dyed leather
-                case "orange": return "#d2762a";
-                case "black":  return "#2b2b2b";
-                case "red":    return "#a83232";
-                case "blue":   return "#3a5fa8";
-                case "purple": return "#7a4a9e";
-                case "pink":   return "#d97fa8";
-                case "white":  return "#e8e2d5";
-                case "yellow": return "#d9c02e";
-                case "gray":   return "#8a8a8a";
-                case "green":  return "#4a8a3c";
-
-                // metals
-                case "bismuth":        return "#b0a8b8";
-                case "bismuthbronze":  return "#a08a5e";
-                case "blackbronze":    return "#6b5a4a";
-                case "brass":          return "#c9a227";
-                case "chromium":       return "#b8bcc0";
-                case "copper":         return "#c07a3e";
-                case "cupronickel":    return "#c4b5a0";
-                case "electrum":       return "#d9c87a";
-                case "gold":           return "#e0b83c";
-                case "iron":           return "#a8a29a";
-                case "lead":           return "#6e6e78";
-                case "meteoriciron":   return "#7a7168";
-                case "molybdochalkos": return "#8a7a5a";
-                case "nickel":         return "#b5b2a5";
-                case "platinum":       return "#d0d4d8";
-                case "silver":         return "#cdd1d4";
-                case "stainlesssteel": return "#c0c4c6";
-                case "steel":          return "#9ea3a8";
-                case "tin":            return "#cfd2d6";
-                case "tinbronze":      return "#b08a4a";
-                case "titanium":       return "#b6bcc2";
-                case "uranium":        return "#7e8a5e";
-                case "zinc":           return "#b9c0c4";
-            }
-
-            // An unknown material still gets a swatch, just a neutral one.
-            return "#999999";
-        }
 
 
         public override void Start(ICoreAPI api)
