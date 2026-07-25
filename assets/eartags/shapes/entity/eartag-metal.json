@@ -55,8 +55,8 @@
 					// The UVs sample a deliberately tiny 2x2 patch of the leather. Blowing up a
 					// few texels over the whole tag keeps its texel density near the mouflon's own,
 					// so it reads as a piece cut from the hide rather than a shrunken HD decal.
-					"from": [ 0.125, 0.25, 0.2 ],
-					"to": [ 0.275, 1.15, 1.0 ],
+					"from": [ 0.08, 0.25, 0.2 ],
+					"to": [ 0.32, 1.15, 1.0 ],
 					"rotationOrigin": [ 0.2, 1.15, 0.6 ],
 					"faces": {
 						"north": { "reflectiveMode": 4, "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },

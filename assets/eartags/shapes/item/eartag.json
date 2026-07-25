@@ -1,4 +1,20 @@
 {
+	// The in-hand and in-inventory tag.
+	//
+	// TEXEL DENSITY. This used to be a 5x5 plate with every face mapped to the whole 16x16 texture,
+	// which crammed 3.2 texels into every voxel. Vanilla items are 1:1, so next to a mineral chunk
+	// or a plate this one read as unnaturally fine-grained - the shape of the thing was right but
+	// the surface looked like a photograph of leather rather than leather. Every face below now
+	// samples exactly as many texels as it is voxels wide, which is the whole fix.
+	//
+	// It is also 8x8 rather than 5x5 and a full voxel thick, so it has some presence in the slot
+	// and enough edge to catch the light. guiTransform scale came down to suit.
+	//
+	// THE HOLE is what makes it read as a tag rather than a small metal plate stood on its end:
+	// four elements around a 2x2 gap near the top, which is where the pin goes through. Nothing
+	// clever - a plate cannot have a hole, so it is a plate with a bite out of it and a strip put
+	// back across the top.
+
 	"textureWidth": 16,
 	"textureHeight": 16,
 	"textures": {
@@ -6,17 +22,55 @@
 	},
 	"elements": [
 		{
-			"name": "EarTag",
-			"from": [ 5.5, 0, 5.5 ],
-			"to": [ 10.5, 0.75, 10.5 ],
-			"rotationOrigin": [ 8, 0.375, 8 ],
+			"name": "TagTop",
+			"from": [ 4, 0, 4 ],
+			"to": [ 12, 1, 5 ],
 			"faces": {
-				"north": { "texture": "#tag", "uv": [ 0, 0, 16, 16 ] },
-				"east":  { "texture": "#tag", "uv": [ 0, 0, 16, 16 ] },
-				"south": { "texture": "#tag", "uv": [ 0, 0, 16, 16 ] },
-				"west":  { "texture": "#tag", "uv": [ 0, 0, 16, 16 ] },
-				"up":    { "texture": "#tag", "uv": [ 0, 0, 16, 16 ] },
-				"down":  { "texture": "#tag", "uv": [ 0, 0, 16, 16 ] }
+				"north": { "texture": "#tag", "uv": [ 4, 4, 12, 5 ] },
+				"east":  { "texture": "#tag", "uv": [ 4, 4, 5, 5 ] },
+				"south": { "texture": "#tag", "uv": [ 4, 4, 12, 5 ] },
+				"west":  { "texture": "#tag", "uv": [ 4, 4, 5, 5 ] },
+				"up":    { "texture": "#tag", "uv": [ 4, 4, 12, 5 ] },
+				"down":  { "texture": "#tag", "uv": [ 4, 4, 12, 5 ] }
+			}
+		},
+		{
+			"name": "TagLeft",
+			"from": [ 4, 0, 5 ],
+			"to": [ 7, 1, 7 ],
+			"faces": {
+				"north": { "texture": "#tag", "uv": [ 4, 5, 7, 6 ] },
+				"east":  { "texture": "#tag", "uv": [ 5, 5, 7, 6 ] },
+				"south": { "texture": "#tag", "uv": [ 4, 5, 7, 6 ] },
+				"west":  { "texture": "#tag", "uv": [ 5, 5, 7, 6 ] },
+				"up":    { "texture": "#tag", "uv": [ 4, 5, 7, 7 ] },
+				"down":  { "texture": "#tag", "uv": [ 4, 5, 7, 7 ] }
+			}
+		},
+		{
+			"name": "TagRight",
+			"from": [ 9, 0, 5 ],
+			"to": [ 12, 1, 7 ],
+			"faces": {
+				"north": { "texture": "#tag", "uv": [ 9, 5, 12, 6 ] },
+				"east":  { "texture": "#tag", "uv": [ 5, 5, 7, 6 ] },
+				"south": { "texture": "#tag", "uv": [ 9, 5, 12, 6 ] },
+				"west":  { "texture": "#tag", "uv": [ 5, 5, 7, 6 ] },
+				"up":    { "texture": "#tag", "uv": [ 9, 5, 12, 7 ] },
+				"down":  { "texture": "#tag", "uv": [ 9, 5, 12, 7 ] }
+			}
+		},
+		{
+			"name": "TagBody",
+			"from": [ 4, 0, 7 ],
+			"to": [ 12, 1, 12 ],
+			"faces": {
+				"north": { "texture": "#tag", "uv": [ 4, 7, 12, 8 ] },
+				"east":  { "texture": "#tag", "uv": [ 7, 7, 12, 8 ] },
+				"south": { "texture": "#tag", "uv": [ 4, 7, 12, 8 ] },
+				"west":  { "texture": "#tag", "uv": [ 7, 7, 12, 8 ] },
+				"up":    { "texture": "#tag", "uv": [ 4, 7, 12, 12 ] },
+				"down":  { "texture": "#tag", "uv": [ 4, 7, 12, 12 ] }
 			}
 		}
 	]

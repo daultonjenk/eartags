@@ -51,6 +51,17 @@ namespace EarTags
         /// Client side setting: it only affects what you see.
         /// </summary>
         public bool VisualInfo = true;
+
+        /// <summary>
+        /// Whether punching a tag through an ear needs a chisel held in the off hand. Off by
+        /// default, because it changes how an established world plays.
+        ///
+        /// Ears only. A chicken's band goes round the leg and needs nothing. The chisel takes no
+        /// durability - ear cartilage is not what blunts a bronze tip - and the animal takes no
+        /// damage and does not take offence, so this is a tool requirement rather than a new way
+        /// to hurt something.
+        /// </summary>
+        public bool RequireChiselForEarTags = false;
     }
 
 
@@ -205,6 +216,8 @@ namespace EarTags
         public bool TagMessages { get { return settings != null && settings.TagMessages; } }
 
         public bool VisualInfo { get { return settings == null || settings.VisualInfo; } }
+
+        public bool RequireChisel { get { return settings != null && settings.RequireChiselForEarTags; } }
 
 
         /// <summary>Reads ModConfig/eartags.json, writing a default one if it is missing.</summary>

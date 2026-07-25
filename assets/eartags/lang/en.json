@@ -76,6 +76,11 @@
 	"eartagmetal-itemdesc": "A tag beaten from sheet metal. Right-click an animal to clip it to a bare ear, or round a bird's leg. Nothing you do can hurt an animal wearing one - no cleaver, no stray punch - so mark the ones you mean to keep.",
 	"protected": "Protected by a metal tag - you cannot harm it.",
 	"unsupported": "You can't work out how to fit a tag to a {0} yet.",
+	"needchisel": "You'd want a chisel in your off hand before punching a tag through a {0}'s ear.",
+
+	"item-handbooktext-eartag-*": "A scrap of dyed leather, waxed against the weather and cut small enough to hang from an ear without troubling the animal.\n\nClip one to a bare ear, or round a bird's leg, and it stays there until you take it off again. Ten colours across two sides is a hundred combinations, which is more animals than most farms will ever hold — so the ewe you keep meaning to shear, the sow with the good litters and the cockerel worth breeding from stop looking like every other one.\n\nHovering a tagged animal shows what it's wearing.",
+
+	"item-handbooktext-eartagmetal-*": "The same idea in metal: four tags beaten from a single ingot on the anvil, and they catch the light the way an ingot does.\n\nWhat they do that leather does not is keep the animal alive. Nothing you do can harm one wearing a metal tag — not a cleaver swung one animal too far at harvest time, not a stray punch aimed at the block behind it. Mark the breeder you mean to keep and it stays marked until the tag comes off.\n\nThe protection is against you, not the world. Wolves are unmoved, and so is a long fall.",
 
 	"worn-entry": "{0} {1}",
 

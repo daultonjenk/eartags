@@ -20,24 +20,24 @@
 		translation: { x: 0, y: 0, z: 0 },
 		rotation: { x: -72, y: 18, z: -6 },
 		origin: { x: 0.5, y: 0.023, z: 0.5 },
-		scale: 2.9
+		scale: 1.9
 	},
 	fpHandTransform: {
 		translation: { x: 0.1, y: 0.2, z: -0.4 },
 		rotation: { x: 0, y: -80, z: -20 },
 		origin: { x: 0.5, y: 0, z: 0.5 },
-		scale: 1.6
+		scale: 1
 	},
 	tpHandTransform: {
 		translation: { x: -0.15, y: 0.05, z: -0.5 },
 		rotation: { x: 0, y: 0, z: 0 },
 		origin: { x: 0.5, y: 0, z: 0.5 },
-		scale: 0.8
+		scale: 0.5
 	},
 	groundTransform: {
 		translation: { x: 0, y: 0, z: 0 },
 		rotation: { x: 0, y: 0, z: 0 },
 		origin: { x: 0.5, y: 0, z: 0.5 },
-		scale: 2.5
+		scale: 1.55
 	}
 }

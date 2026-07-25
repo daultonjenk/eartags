@@ -65,6 +65,12 @@ namespace EarTags
                 return;
             }
 
+            if (!HasChiselIfNeeded(byEntity, beh))
+            {
+                Notify(splr, Lang.Get("eartags:needchisel", target.GetName()));
+                return;
+            }
+
             beh.SetTag(side, Kind, Material);
 
             slot.TakeOut(1);
@@ -81,6 +87,30 @@ namespace EarTags
                     Lang.Get("eartags:side-" + side),
                     target.GetName()));
             }
+        }
+
+
+        /// <summary>
+        /// Whether the off hand is holding what this animal needs. Ears want a chisel to punch the
+        /// tag through when the setting is on; a chicken's leg band clips shut and wants nothing,
+        /// which the species' own lang prefix tells us without hard-coding a list of birds.
+        ///
+        /// Nothing is taken from the chisel and nothing is done to the animal. The tool has to be
+        /// in hand, that is all - ear cartilage will not blunt a bronze tip, and an ear tag is not
+        /// a wound the game should be modelling.
+        /// </summary>
+        private static bool HasChiselIfNeeded(EntityAgent byEntity, EntityBehaviorEarTaggable beh)
+        {
+            EarTagsModSystem sys = byEntity.Api.ModLoader.GetModSystem<EarTagsModSystem>();
+
+            if (sys == null || !sys.RequireChisel) return true;
+            if (beh.Terms != EarTagsModSystem.DefaultTerms) return true;
+
+            ItemStack offhand = byEntity.LeftHandItemSlot?.Itemstack;
+
+            return offhand?.Collectible != null
+                && offhand.Collectible.Code != null
+                && offhand.Collectible.Code.Path.StartsWith("chisel", StringComparison.Ordinal);
         }
 
 

@@ -30,11 +30,14 @@
 			"children": [
 				{
 					"name": "Tag",
-					// A thin plate centred on the ear's mid-plane (the ear spans X 0..0.4, so 0.2 is
-					// its centre). X here is 0.15, which the 1.25 scale in attachpoints.json takes
-					// to 0.1875 - a quarter of the ear's thickness, so it reads as a tag rather
-					// than a block. Being coplanar with the ear, it is hidden inside the flap where
-					// the two overlap at the corner, which is what you want.
+					// A plate centred on the ear's mid-plane (the ear spans X 0..0.4, so 0.2 is its
+					// centre). X here is 0.24, which the 1.25 scale in attachpoints.json takes to
+					// 0.3 - three quarters of the ear's thickness. It was 0.15, which looked right
+					// standing still but barely caught the light on the metal version: a thin plate
+					// has two big parallel faces and four slivers, so it only flashes when the sun
+					// is square on. Crystallised ore chunks use the same reflectiveMode we do (4) -
+					// what they have that we did not is edges. Being coplanar with the ear, the tag
+					// is still hidden inside the flap where the two overlap, which is what you want.
 					//
 					// Y and Z placement is left neutral here - attachpoints.json does the placing,
 					// because the ears' rotationX rotates their local axes and mirrors Z.
@@ -42,8 +45,8 @@
 					// The UVs sample a deliberately tiny 2x2 patch of the leather. Blowing up a
 					// few texels over the whole tag keeps its texel density near the mouflon's own,
 					// so it reads as a piece cut from the hide rather than a shrunken HD decal.
-					"from": [ 0.125, 0.25, 0.2 ],
-					"to": [ 0.275, 1.15, 1.0 ],
+					"from": [ 0.08, 0.25, 0.2 ],
+					"to": [ 0.32, 1.15, 1.0 ],
 					"rotationOrigin": [ 0.2, 1.15, 0.6 ],
 					"faces": {
 						"north": { "texture": "#tag", "uv": [ 7, 7, 9, 9 ] },
