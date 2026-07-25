@@ -1,0 +1,44 @@
+{
+	"version": 1,
+	"patches": {
+		"boolean": {
+			"eartags:config/settings.json": {
+				"metalTagProtectsAnimals": "(METAL_PROTECTS) ? true : false",
+				"requireChiselForEarTags": "(REQUIRE_CHISEL) ? true : false",
+				"tagMessages": "(TAG_MESSAGES) ? true : false"
+			}
+		}
+	},
+	"settings": {
+		"boolean": {
+			"METAL_PROTECTS": {
+				"name": "eartags-metal-protects",
+				"ingui": "eartags:setting-metal-protects-name",
+				"weight": 1,
+				"comment": "eartags:setting-metal-protects-comment",
+				"default": true
+			},
+			"REQUIRE_CHISEL": {
+				"name": "eartags-require-chisel",
+				"ingui": "eartags:setting-require-chisel-name",
+				"weight": 2,
+				"comment": "eartags:setting-require-chisel-comment",
+				"default": false
+			},
+			"TAG_MESSAGES": {
+				"name": "eartags-tag-messages",
+				"ingui": "eartags:setting-tag-messages-name",
+				"weight": 3,
+				"comment": "eartags:setting-tag-messages-comment",
+				"default": false
+			}
+		}
+	},
+	"formatting": [
+		{
+			"type": "separator",
+			"weight": 0,
+			"title": "eartags:settings-title"
+		}
+	]
+}

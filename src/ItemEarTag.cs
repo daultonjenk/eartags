@@ -8,23 +8,9 @@ using Vintagestory.API.Server;
 
 namespace EarTags
 {
-    /// <summary>
-    /// A small dyed-leather or beaten-metal tag. Right-click an animal to clip it on the first bare
-    /// ear, sneak + right-click to put it specifically on the right ear.
-    ///
-    /// One class serves both items: everything that differs between them is read off the code, so
-    /// "eartagmetal-copper" needs no class of its own.
-    /// </summary>
     public class ItemEarTag : Item
     {
-        /// <summary>
-        /// The material variant, e.g. "red" from "eartag-red" or "copper" from
-        /// "eartagmetal-copper". Read off the code rather than via Variant, which is a
-        /// Dictionary&lt;,&gt; and so unusable in a source mod (see EarTagsModSystem).
-        /// </summary>
         public string Material { get { return LastCodePart(); } }
-
-        /// <summary>"eartag" or "eartagmetal" - which of the two items this is.</summary>
         public string Kind { get { return FirstCodePart(); } }
 
 
@@ -46,9 +32,6 @@ namespace EarTags
             Entity target = entitySel.Entity;
 
             string side = beh.NextFreeSide(byEntity.Controls.Sneak);
-
-            // Which words this animal's tags get called by is the species' business, not the
-            // item's - the same tag is an ear tag on a sheep and a leg band on a chicken.
             string terms = "eartags:" + beh.Terms;
 
             if (side == null)
@@ -57,8 +40,6 @@ namespace EarTags
                 return;
             }
 
-            // The behavior is on every sheep, but only species listed in attachpoints.json can
-            // actually show a tag. Refuse rather than silently swallowing the tag.
             if (!beh.CanRenderSide(side))
             {
                 Notify(splr, Lang.Get("eartags:unsupported", target.GetName()));
@@ -78,8 +59,6 @@ namespace EarTags
 
             byEntity.World.PlaySoundAt(new AssetLocation("game:sounds/block/leather"), target, null, true, 16);
 
-            // Off unless someone asked for it - see EarTagsConfig. Tagging a flock one animal at a
-            // time would otherwise bury the chat, and the leather sound already says it worked.
             if (api.ModLoader.GetModSystem<EarTagsModSystem>()?.TagMessages == true)
             {
                 Notify(splr, Lang.Get(terms + "-applied",
@@ -90,15 +69,6 @@ namespace EarTags
         }
 
 
-        /// <summary>
-        /// Whether the off hand is holding what this animal needs. Ears want a chisel to punch the
-        /// tag through when the setting is on; a chicken's leg band clips shut and wants nothing,
-        /// which the species' own lang prefix tells us without hard-coding a list of birds.
-        ///
-        /// Nothing is taken from the chisel and nothing is done to the animal. The tool has to be
-        /// in hand, that is all - ear cartilage will not blunt a bronze tip, and an ear tag is not
-        /// a wound the game should be modelling.
-        /// </summary>
         private static bool HasChiselIfNeeded(EntityAgent byEntity, EntityBehaviorEarTaggable beh)
         {
             EarTagsModSystem sys = byEntity.Api.ModLoader.GetModSystem<EarTagsModSystem>();

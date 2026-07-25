@@ -11,16 +11,6 @@ using Vintagestory.API.Server;
 
 namespace EarTags
 {
-    /// <summary>
-    /// Lets an animal wear up to two coloured tags, one per side. The colour per side lives in the
-    /// entity's WatchedAttributes so it syncs to clients and survives save/load, and the tag
-    /// geometry is step-parented onto the animal's ear bone at tesselation time - the same
-    /// mechanism vanilla uses for the mouflon's mane and the boar's tusks.
-    ///
-    /// "Ear" is the common case rather than the only one: which bone, which shape and which words
-    /// all come from the species' entry in attachpoints.json, so the same behaviour puts a band
-    /// round a chicken's leg.
-    /// </summary>
     public class EntityBehaviorEarTaggable : EntityBehavior
     {
         private ICoreClientAPI capi;
@@ -44,8 +34,6 @@ namespace EarTags
 
             if (capi != null)
             {
-                // Re-tesselate as soon as a tag is added or removed, otherwise the change would
-                // only appear the next time the entity's shape happened to be rebuilt.
                 entity.WatchedAttributes.RegisterModifiedListener(EarTagsModSystem.AttrTree, OnTagsChanged);
             }
         }
@@ -57,9 +45,6 @@ namespace EarTags
         }
 
 
-        // ---- tag state -------------------------------------------------------------------
-
-        /// <summary>Material worn on the given ear - a colour or a metal - or null if it is bare.</summary>
         public string GetTag(string side)
         {
             ITreeAttribute tree = entity.WatchedAttributes.GetTreeAttribute(EarTagsModSystem.AttrTree);
@@ -70,10 +55,6 @@ namespace EarTags
         }
 
 
-        /// <summary>
-        /// Which item is on that ear, "eartag" or "eartagmetal". Tags saved before metal existed
-        /// carry no kind, so an absent value reads as leather rather than as nothing.
-        /// </summary>
         public string GetTagKind(string side)
         {
             ITreeAttribute tree = entity.WatchedAttributes.GetTreeAttribute(EarTagsModSystem.AttrTree);
@@ -84,7 +65,6 @@ namespace EarTags
         }
 
 
-        /// <summary>Sets or (with a null material) clears the tag on one ear. Server side only.</summary>
         public void SetTag(string side, string kind, string material)
         {
             ITreeAttribute tree = entity.WatchedAttributes.GetOrAddTreeAttribute(EarTagsModSystem.AttrTree);
@@ -104,20 +84,23 @@ namespace EarTags
         }
 
 
-        /// <summary>Whether any ear carries a metal tag, which is what grants the protection.</summary>
         public bool WearsMetalTag()
         {
+            ITreeAttribute tree = entity.WatchedAttributes.GetTreeAttribute(EarTagsModSystem.AttrTree);
+            if (tree == null) return false;
+
             for (int i = 0; i < EarTagsModSystem.Sides.Length; i++)
             {
                 string side = EarTagsModSystem.Sides[i];
-                if (GetTag(side) != null && GetTagKind(side) == EarTagsModSystem.KindMetal) return true;
+                string material = tree.GetString(side);
+                if (string.IsNullOrEmpty(material)) continue;
+                if (tree.GetString(side + EarTagsModSystem.AttrKindSuffix) == EarTagsModSystem.KindMetal) return true;
             }
 
             return false;
         }
 
 
-        /// <summary>The ear a newly applied tag should go on, or null if both ears are taken.</summary>
         public string NextFreeSide(bool preferRight)
         {
             if (preferRight) return GetTag(EarTagsModSystem.SideRight) == null ? EarTagsModSystem.SideRight : null;
@@ -137,33 +120,12 @@ namespace EarTags
         }
 
 
-        /// <summary>
-        /// Lang key prefix for anything this animal's tags need to say. Species without an entry
-        /// still have to produce a message - they get refused by the item - so this falls back
-        /// rather than returning null.
-        /// </summary>
         public string Terms
         {
             get { return anchors == null ? EarTagsModSystem.DefaultTerms : anchors.TermsOrDefault; }
         }
 
 
-        // ---- protection ------------------------------------------------------------------
-
-        /// <summary>
-        /// A metal tag makes its wearer immune to anything the player does to it. The point is the
-        /// accidents - the cleaver swung one animal too far at harvest time, the punch that lands
-        /// on a sheep instead of the block behind it - so a prize breeder can be marked as
-        /// off limits and stay that way.
-        ///
-        /// Only the player is blocked. Wolves, falls and drowning still work, so a tagged animal
-        /// is protected rather than immortal, and to slaughter one you take the tag off first.
-        ///
-        /// ORDER MATTERS. Entity.ReceiveDamage hands the damage to each behaviour by ref in list
-        /// order, and EntityBehaviorHealth is the one that subtracts it, so zeroing the damage only
-        /// works if this behaviour comes first. That is why the patches insert the server copy at
-        /// /server/behaviors/0 rather than appending it.
-        /// </summary>
         public override void OnEntityReceiveDamage(DamageSource damageSource, ref float damage)
         {
             base.OnEntityReceiveDamage(damageSource, ref damage);
@@ -171,17 +133,13 @@ namespace EarTags
             if (damageSource == null || damage <= 0) return;
             if (damageSource.Type == EnumDamageType.Heal) return;
             if (!IsPlayerCaused(damageSource)) return;
+            if (system == null || !system.MetalTagProtects) return;
             if (!WearsMetalTag()) return;
 
             damage = 0;
         }
 
 
-        /// <summary>
-        /// Whether the player is behind this damage. Source covers a direct hit; the two entity
-        /// fields catch anything the player set going, an arrow being the obvious one - CauseEntity
-        /// is the archer where SourceEntity is the arrow.
-        /// </summary>
         private static bool IsPlayerCaused(DamageSource damageSource)
         {
             if (damageSource.Source == EnumDamageSource.Player) return true;
@@ -189,8 +147,6 @@ namespace EarTags
             return damageSource.SourceEntity is EntityPlayer || damageSource.CauseEntity is EntityPlayer;
         }
 
-
-        // ---- rendering -------------------------------------------------------------------
 
         public override void OnTesselation(ref Shape entityShape, string shapePathForLogging, ref bool shapeIsCloned, ref string[] willDeleteElements)
         {
@@ -202,7 +158,6 @@ namespace EarTags
             string right = GetTag(EarTagsModSystem.SideRight);
             if (left == null && right == null) return;
 
-            // Never modify the shared per-entitytype shape in place.
             if (!shapeIsCloned)
             {
                 entityShape = entityShape.Clone();
@@ -240,14 +195,8 @@ namespace EarTags
                 el.StepParentName = anchor.Bone;
                 ApplyAnchor(el, anchor);
 
-                // The tag borrows vanilla's own dyed leather and ingot textures, so neither the
-                // colours nor the twenty-three metals cost us any art.
                 SetShapeTexture(tagShape, "tag", EarTagsModSystem.MaterialTexture(kind, material));
 
-                // texturePrefixCode keeps our texture key from colliding with the animal's own
-                // ("hide"). Keying it by kind and material rather than by side means the two ears
-                // share one atlas entry when they match, and re-tagging an ear lands on a different
-                // key instead of silently reusing the old material.
                 string prefix = kind + material;
 
                 entityShape.StepParentShape(
@@ -256,32 +205,17 @@ namespace EarTags
                     shapeLocation.ToShortString(),
                     shapePathForLogging,
                     capi.Logger,
-                    // The callback reports the ORIGINAL texture code ("tag"), but SubclassForStepParenting
-                    // has already rewritten the shape's faces to reference prefix + code. Register
-                    // under the prefixed name or the tesselator will not find the mapping.
                     (code, loc) => RegisterEntityTexture(prefix + code, loc),
                     0f
                 );
             }
             catch (Exception e)
             {
-                // A broken tag must never take the whole animal's rendering down with it.
                 capi.Logger.Warning("[eartags] Failed to attach {0} ear tag to {1}: {2}", side, entity.Code, e);
             }
         }
 
 
-        /// <summary>
-        /// Adds a texture to the entity's client texture set so the tesselator can find it.
-        ///
-        /// The texture MUST be inserted into the entity atlas and given a Baked record here. The
-        /// tesselator's TextureSource constructor walks this collection and dereferences
-        /// Baked.TextureSubId on every entry, so handing it a plain unbaked CompositeTexture
-        /// throws a NullReferenceException and takes down the render loop.
-        ///
-        /// Goes through reflection because this collection and Shape.Textures are both
-        /// Dictionary&lt;,&gt;, which a source mod cannot name directly (see EarTagsModSystem).
-        /// </summary>
         private void RegisterEntityTexture(string textureCode, AssetLocation location)
         {
             try
@@ -297,9 +231,6 @@ namespace EarTags
                 object present = dt.GetMethod("ContainsKey")?.Invoke(dict, new object[] { textureCode });
                 if (present is bool && (bool)present) return;
 
-                // A CompositeTexture holds the short form ("block/leather/red"), but the atlas
-                // loads a real file and needs the full asset path. If that does not resolve, fall
-                // back to the location as given rather than silently atlasing the "?" placeholder.
                 AssetLocation texPath = new AssetLocation(location.Domain, "textures/" + location.Path + ".png");
                 bool resolved = capi.Assets.TryGet(texPath) != null;
 
@@ -318,17 +249,6 @@ namespace EarTags
                     return;
                 }
 
-                // GetOrInsertTexture returns true even when it quietly atlases the unknown-texture
-                // placeholder, so compare the position we got back against the atlas's own.
-                object unknownPos = ReadMember(capi.EntityTextureAtlas, "UnknownTexturePosition");
-
-                capi.Logger.Notification(
-                    "[eartags] DIAG {0}: assetFound={1} isUnknownTexPos={2} atlasPage={3} rect={4},{5}-{6},{7}",
-                    texPath, resolved, ReferenceEquals(texPos, unknownPos),
-                    ReadMember(texPos, "atlasTextureId"),
-                    ReadMember(texPos, "x1"), ReadMember(texPos, "y1"),
-                    ReadMember(texPos, "x2"), ReadMember(texPos, "y2"));
-
                 CompositeTexture ct = new CompositeTexture(location);
                 ct.Baked = new BakedCompositeTexture();
                 ct.Baked.BakedName = texPath;
@@ -343,15 +263,9 @@ namespace EarTags
                 }
 
                 setter.Invoke(dict, new object[] { textureCode, ct });
-
-                object stored = dt.GetMethod("ContainsKey")?.Invoke(dict, new object[] { textureCode });
-
-                capi.Logger.Notification("[eartags] Registered texture '{0}' -> {1} (subId {2}, stored {3})",
-                    textureCode, texPath, subId, stored == null ? "unverified" : stored.ToString());
             }
             catch (Exception e)
             {
-                // Leaving the entry out renders the tag untextured, which beats crashing.
                 capi.Logger.Warning("[eartags] Could not register texture {0}: {1}", location, e);
             }
         }
@@ -378,12 +292,6 @@ namespace EarTags
         }
 
 
-        /// <summary>
-        /// Applies the configured offset, rotation and scale. <paramref name="el"/> is the
-        /// invisible origin element that mirrors the ear bone, so translating and rotating it
-        /// carries the whole tag with it. Scale has to go to the children, since the origin
-        /// element's own box is just a frame of reference.
-        /// </summary>
         private static void ApplyAnchor(ShapeElement el, EarTagAnchor anchor)
         {
             for (int i = 0; i < 3; i++)
@@ -408,7 +316,6 @@ namespace EarTags
         }
 
 
-        /// <summary>Scales child geometry about each element's own rotation origin.</summary>
         private static void ScaleChildren(ShapeElement el, double scale)
         {
             if (el.Children == null) return;
@@ -429,13 +336,6 @@ namespace EarTags
         }
 
 
-        /// <summary>
-        /// Re-parses the tag shape on every call, deliberately. Shape.Clone() does not deep-copy
-        /// the elements' face texture references, so caching a template and cloning it lets
-        /// SubclassForStepParenting rewrite the shared original - the texture prefix then
-        /// accumulates on every tesselation ("eartagredeartagredeartagred...tag") and the mapping
-        /// breaks. Parsing a two-element shape is cheap and tesselation is infrequent.
-        /// </summary>
         private Shape LoadTagShape(AssetLocation location)
         {
             IAsset asset = capi.Assets.TryGet(location);
@@ -450,22 +350,28 @@ namespace EarTags
         }
 
 
-        // ---- interaction -----------------------------------------------------------------
-
         public override void OnInteract(EntityAgent byEntity, ItemSlot itemslot, Vec3d hitPosition, EnumInteractMode mode, ref EnumHandling handled)
         {
             base.OnInteract(byEntity, itemslot, hitPosition, mode, ref handled);
 
+            if (mode == EnumInteractMode.Attack
+                && byEntity is EntityPlayer
+                && (system == null || system.MetalTagProtects)
+                && WearsMetalTag())
+            {
+                handled = EnumHandling.PreventDefault;
+                return;
+            }
+
             if (mode != EnumInteractMode.Interact) return;
             if (!byEntity.Controls.Sneak) return;
-            if (itemslot?.Itemstack != null) return;      // bare hand only
+            if (itemslot?.Itemstack != null) return;
             if (GetTag(EarTagsModSystem.SideLeft) == null && GetTag(EarTagsModSystem.SideRight) == null) return;
 
             handled = EnumHandling.PreventDefault;
 
             if (entity.World.Side != EnumAppSide.Server) return;
 
-            // Take the most recently added tag off first: right ear, then left.
             string side = GetTag(EarTagsModSystem.SideRight) != null
                 ? EarTagsModSystem.SideRight
                 : EarTagsModSystem.SideLeft;
@@ -479,7 +385,6 @@ namespace EarTags
 
             if (item != null)
             {
-                // Hand it back rather than destroying it - retagging shouldn't cost leather.
                 ItemStack stack = new ItemStack(item);
                 bool given = plr != null && plr.InventoryManager.TryGiveItemstack(stack);
 
@@ -488,7 +393,6 @@ namespace EarTags
 
             entity.World.PlaySoundAt(new AssetLocation("game:sounds/block/leather"), entity, null, true, 16);
 
-            // Off unless someone asked for it - see EarTagsConfig. The sound is the real feedback.
             if (system != null && system.TagMessages)
             {
                 (plr as IServerPlayer)?.SendMessage(
@@ -507,21 +411,6 @@ namespace EarTags
         }
 
 
-        /// <summary>
-        /// The shared status line, directly under the animal's name. Sitting first is what makes it
-        /// read as a subtitle of the name rather than as an interruption halfway down a list - see
-        /// the client behaviour patch, which puts this behaviour at index 0 for exactly that reason.
-        ///
-        /// It does NOT list the tags. The animal is wearing two of them, in colour, on its head -
-        /// that is a better display than any line of text could be, and repeating it in the panel
-        /// was only ever restating what you could already see. What goes here is the things the
-        /// model cannot show: whether the animal is protected, and how tame it is.
-        ///
-        /// No blank line after it. The panel already puts a gap between the title and the first
-        /// body line - which a mod cannot change, it is the panel's own padding - and adding one
-        /// below as well left the row floating in the middle of two gaps instead of sitting under
-        /// the name.
-        /// </summary>
         private void StatusLine(StringBuilder infotext)
         {
             string badges = Badges();
@@ -531,26 +420,18 @@ namespace EarTags
         }
 
 
-        /// <summary>
-        /// The badge cluster. Protection is ours; the tame state is whatever another mod published
-        /// into the shared tree. Both are whole VTML fragments out of the lang file, so a mod that
-        /// wants a different icon changes en.json rather than code.
-        /// </summary>
         private string Badges()
         {
-            StringBuilder badges = new StringBuilder();
-
-            if (WearsMetalTag()) badges.Append(Lang.Get("eartags:info-protected"));
+            string result = WearsMetalTag() ? Lang.Get("eartags:info-protected") : "";
 
             string tamed = EarTagsModSystem.ReadTamedState(entity);
-
             if (tamed != null)
             {
-                if (badges.Length > 0) badges.Append(Lang.Get("eartags:info-badge-sep"));
-                badges.Append(Lang.Get("eartags:info-tamed-" + tamed));
+                string badge = Lang.Get("eartags:info-tamed-" + tamed);
+                result = result.Length > 0 ? result + Lang.Get("eartags:info-badge-sep") + badge : badge;
             }
 
-            return badges.ToString();
+            return result;
         }
 
 

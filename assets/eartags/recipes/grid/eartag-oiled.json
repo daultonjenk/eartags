@@ -12,7 +12,7 @@
 		},
 		"attributes": {
 			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "game:oilportion-flax" },
+				"requiresContent": { "type": "item", "code": "game:oilportion-*" },
 				"requiresLitres": 0.25
 			}
 		},
@@ -31,7 +31,7 @@
 		},
 		"attributes": {
 			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "game:oilportion-flax" },
+				"requiresContent": { "type": "item", "code": "game:oilportion-*" },
 				"requiresLitres": 0.25
 			}
 		},
@@ -50,7 +50,7 @@
 		},
 		"attributes": {
 			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "game:oilportion-flax" },
+				"requiresContent": { "type": "item", "code": "game:oilportion-*" },
 				"requiresLitres": 0.25
 			}
 		},
@@ -69,7 +69,7 @@
 		},
 		"attributes": {
 			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "game:oilportion-olive" },
+				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-*" },
 				"requiresLitres": 0.25
 			}
 		},
@@ -88,7 +88,7 @@
 		},
 		"attributes": {
 			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "game:oilportion-olive" },
+				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-*" },
 				"requiresLitres": 0.25
 			}
 		},
@@ -107,406 +107,7 @@
 		},
 		"attributes": {
 			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "game:oilportion-olive" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:bowl-*-fired" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-flax" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:woodbucket" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-flax" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:jug-*-fired" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-flax" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:bowl-*-fired" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-rice" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:woodbucket" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-rice" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:jug-*-fired" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-rice" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:bowl-*-fired" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-seed" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:woodbucket" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-seed" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:jug-*-fired" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-seed" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:bowl-*-fired" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-soy" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:woodbucket" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-soy" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:jug-*-fired" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-soy" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:bowl-*-fired" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-sunflower" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:woodbucket" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-sunflower" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:jug-*-fired" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-sunflower" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:bowl-*-fired" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-peanut" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:woodbucket" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-peanut" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:jug-*-fired" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-peanut" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:bowl-*-fired" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-olive" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:woodbucket" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-olive" },
-				"requiresLitres": 0.25
-			}
-		},
-		"output": { "type": "item", "code": "eartags:eartag-{color}", "quantity": 8 }
-	},
-	{
-		"ingredientPattern": "KLW",
-		"width": 3,
-		"height": 1,
-		"shapeless": true,
-		"recipeGroup": 1,
-		"ingredients": {
-			"K": { "type": "item", "tags": ["tool-knife"], "isTool": true },
-			"L": { "type": "item", "code": "game:leather-normal-*", "name": "color", "allowedVariants": [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ], "quantity": 1 },
-			"W": { "type": "block", "code": "game:jug-*-fired" }
-		},
-		"attributes": {
-			"liquidContainerProps": {
-				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-olive" },
+				"requiresContent": { "type": "item", "code": "expandedfoods:foodoilportion-*" },
 				"requiresLitres": 0.25
 			}
 		},

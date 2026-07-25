@@ -31,7 +31,6 @@
 
 	{
 		"match": "goat-angora-*",
-		"mirrorZ": false,
 		"left"  : { "bone": "L ear", "offset": [ 1, 1.1, -0.4 ], "rotation": [ 0, 90, 0 ], "scale": 1.25 },
 		"right" : { "bone": "R ear", "offset": [ 1, 1.1, -0.4 ], "rotation": [ 0, 90, 0 ], "scale": 1.25 }
 	},
@@ -68,14 +67,12 @@
 
 	{
 		"match": "goat-nubian-*",
-		"mirrorZ": false,
 		"left"  : { "bone": "L ear", "offset": [ 1.8, 2.7, -0.45 ], "rotation": [ 0, 90, 0 ], "scale": 1.22 },
 		"right" : { "bone": "R ear", "offset": [ 1.8, 2.7, -0.45 ], "rotation": [ 0, 90, 0 ], "scale": 1.22 }
 	},
 
 	{
 		"match": "goat-sirohi-*",
-		"mirrorZ": false,
 		"left"  : { "bone": "L ear", "offset": [ 1.8, 3.6, -0.45 ], "rotation": [ 0, 90, 0 ], "scale": 1.25 },
 		"right" : { "bone": "R ear", "offset": [ 1.8, 3.6, -0.45 ], "rotation": [ 0, 90, 0 ], "scale": 1.25 }
 	},
@@ -103,7 +100,6 @@
 		"shape": "eartags:shapes/entity/legband.json",
 		"shapeMetal": "eartags:shapes/entity/legband-metal.json",
 		"terms": "legband",
-		"mirrorZ": false,
 		"left"  : { "bone": "leg left", "offset": [ 0, 1.2, 0 ], "rotation": [ 0, 0, 0 ], "scale": 1 },
 		"right" : { "bone": "leg right", "offset": [ 0, 1.2, 0 ], "rotation": [ 0, 0, 0 ], "scale": 1 }
 	},
@@ -113,7 +109,6 @@
 		"shape": "eartags:shapes/entity/legband.json",
 		"shapeMetal": "eartags:shapes/entity/legband-metal.json",
 		"terms": "legband",
-		"mirrorZ": false,
 		"left"  : { "bone": "L feet", "offset": [ 0, 1, 0 ], "rotation": [ 0, 0, 0 ], "scale": 1 },
 		"right" : { "bone": "R feet", "offset": [ 0, 1, 0 ], "rotation": [ 0, 0, 0 ], "scale": 1 }
 	}

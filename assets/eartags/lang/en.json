@@ -97,5 +97,13 @@
 	"legband-removed": "Slipped the band off the {1}'s {0} leg.",
 	"legband-bothfull": "The {0} already has a band on both legs.",
 	"legband-rightfull": "The {0} already has a band on its right leg.",
-	"legband-entityhelp-remove": "Remove leg band"
+	"legband-entityhelp-remove": "Remove leg band",
+
+	"settings-title": "Animal Tags",
+	"setting-metal-protects-name": "Metal tags protect animals",
+	"setting-metal-protects-comment": "Animals wearing a metal tag cannot be harmed by players. Remove the tag to slaughter a tagged animal.",
+	"setting-require-chisel-name": "Require chisel for ear tags",
+	"setting-require-chisel-comment": "A chisel must be held in the off-hand to clip a tag through an ear. Does not apply to leg bands on chickens.",
+	"setting-tag-messages-name": "Tag messages in chat",
+	"setting-tag-messages-comment": "Sends a chat message when a tag is applied or removed. Refusals are always shown regardless of this setting."
 }
