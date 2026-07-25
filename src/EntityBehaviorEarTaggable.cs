@@ -140,6 +140,27 @@ namespace EarTags
         }
 
 
+        public override void OnEntityDeath(DamageSource damageSource)
+        {
+            base.OnEntityDeath(damageSource);
+
+            if (entity.World.Side != EnumAppSide.Server) return;
+
+            foreach (string side in EarTagsModSystem.Sides)
+            {
+                string material = GetTag(side);
+                if (material == null) continue;
+
+                string kind = GetTagKind(side);
+                SetTag(side, null, null);
+
+                Item item = entity.World.GetItem(new AssetLocation("eartags:" + kind + "-" + material));
+                if (item != null)
+                    entity.World.SpawnItemEntity(new ItemStack(item), entity.SidedPos.XYZ.Add(0, 0.5, 0));
+            }
+        }
+
+
         private static bool IsPlayerCaused(DamageSource damageSource)
         {
             if (damageSource.Source == EnumDamageSource.Player) return true;
