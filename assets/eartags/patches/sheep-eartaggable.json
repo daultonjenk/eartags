@@ -1,0 +1,14 @@
+[
+	{
+		file: "game:entities/animal/mammal/hooved/sheep-adult",
+		op: "add",
+		path: "/client/behaviors/-",
+		value: { code: "eartaggable" }
+	},
+	{
+		file: "game:entities/animal/mammal/hooved/sheep-adult",
+		op: "add",
+		path: "/server/behaviors/-",
+		value: { code: "eartaggable" }
+	}
+]

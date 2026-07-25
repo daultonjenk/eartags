@@ -1,0 +1,13 @@
+{
+	"type": "code",
+	"modid": "eartags",
+	"name": "Ear Tags",
+	"authors": [ "Daulton" ],
+	"description": "Craft small dyed-leather ear tags and clip them to your livestock so you can tell individual animals apart at a glance. Ten colours, one per vanilla leather dye, and two ears per animal for a hundred distinct combinations. v1 supports mouflon sheep.",
+	"version": "1.0.0",
+	"side": "universal",
+	"requiredOnClient": true,
+	"dependencies": {
+		"game": "1.22.0"
+	}
+}

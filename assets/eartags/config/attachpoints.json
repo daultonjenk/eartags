@@ -1,0 +1,52 @@
+[
+	// Per-species placement of the ear tag. "match" is a wildcard against the entity code, and the
+	// FIRST matching entry wins - so put narrow patterns above broad ones.
+	//
+	// Coordinates in the tag shape are LOCAL to the named bone ([0,0,0] is the bone's own "from"
+	// corner), so the offsets here are pure nudges on top of that.
+	//
+	// Axis meanings in the ear's local frame, confirmed in game on the mouflon. Every ear bone in
+	// this family carries a mirrored rotationX (+n on the left, -n on the right), which swings the
+	// local axes round the same way:
+	//
+	//   Y = along the ear, 0 at the base by the skull. Positive moves toward the tip.
+	//       SAME sign on both ears.
+	//   Z = vertical once rotated. Positive hangs the tag down on the left ear but UP on the right.
+	//       MIRRORED sign - if one side hangs the wrong way, flip that side only.
+	//   X = ear thickness. Only needed when an ear is thicker than the mouflon's 0.4.
+	//
+	// To nudge a tag: edit the numbers and reload the world. No recompile needed.
+	//
+	// Ear box sizes (X thickness, Y length, Z width) for reference when adding a species:
+	//   mouflon 0.4 x 2.0 x 1.2   bighorn 0.4 x 2.0 x 1.0
+	//   pig eurasian/redriver 0.5 x 1.5 x 1.5   pig warthog 0.5 x 1.5 x 1.0
+
+	{
+		match: "sheep-mouflon-adult-*",
+		left:  { bone: "L Ear", offset: [ 0, 1.1,  0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
+		right: { bone: "R Ear", offset: [ 0, 1.1, -0.6 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
+	},
+
+	{
+		// Same ear length and thickness as the mouflon, but 0.2 narrower, so Z comes in by 0.2.
+		match: "sheep-bighorn-adult-*",
+		left:  { bone: "L Ear", offset: [ 0, 1.1,  0.4 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
+		right: { bone: "R Ear", offset: [ 0, 1.1, -0.4 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
+	},
+
+	{
+		// Warthog ears are the same as the other pigs' but 0.5 narrower. Must sit above "pig-*".
+		match: "pig-warthog-*",
+		left:  { bone: "L Ear", offset: [ 0.05, 0.6,  0.4 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
+		right: { bone: "R Ear", offset: [ 0.05, 0.6, -0.4 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
+	},
+
+	{
+		// Eurasian and red river boars. Shorter, wider, slightly thicker ears than a sheep's:
+		// Y pulls back to suit the 1.5 length, Z pushes out for the 1.5 width, X centres the tag
+		// in the thicker 0.5 ear.
+		match: "pig-*",
+		left:  { bone: "L Ear", offset: [ 0.05, 0.6,  0.9 ], rotation: [ 0, 0, 0 ], scale: 1.25 },
+		right: { bone: "R Ear", offset: [ 0.05, 0.6, -0.9 ], rotation: [ 0, 0, 0 ], scale: 1.25 }
+	}
+]

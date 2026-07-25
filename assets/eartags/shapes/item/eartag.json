@@ -1,0 +1,23 @@
+{
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textures": {
+		"tag": "game:block/leather/plain"
+	},
+	"elements": [
+		{
+			"name": "EarTag",
+			"from": [ 5.5, 0, 5.5 ],
+			"to": [ 10.5, 0.75, 10.5 ],
+			"rotationOrigin": [ 8, 0.375, 8 ],
+			"faces": {
+				"north": { "texture": "#tag", "uv": [ 0, 0, 16, 16 ] },
+				"east":  { "texture": "#tag", "uv": [ 0, 0, 16, 16 ] },
+				"south": { "texture": "#tag", "uv": [ 0, 0, 16, 16 ] },
+				"west":  { "texture": "#tag", "uv": [ 0, 0, 16, 16 ] },
+				"up":    { "texture": "#tag", "uv": [ 0, 0, 16, 16 ] },
+				"down":  { "texture": "#tag", "uv": [ 0, 0, 16, 16 ] }
+			}
+		}
+	]
+}

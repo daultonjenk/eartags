@@ -1,0 +1,30 @@
+[
+	// Declares the ear tag textures on the sheep itself so the engine BAKES them into the entity
+	// texture atlas at asset-load time, exactly as it does for the animal's own hide.
+	//
+	// Registering a texture at runtime (atlas insert + a hand-built BakedCompositeTexture) produces
+	// an entry that looks correct in every observable way - asset resolves, real atlas position,
+	// no missing-mapping error - but still does not render. Declaring it here instead means we
+	// never do runtime texture work at all; the behavior's registration path no-ops because the
+	// code is already present.
+	//
+	// The key must match texturePrefixCode + the tag shape's texture code, i.e. "eartag<colour>" + "tag".
+
+	{
+		file: "game:entities/animal/mammal/hooved/sheep-adult",
+		op: "add",
+		path: "/client/textures",
+		value: {
+			"eartagorangetag": { base: "eartags:block/leather/orange" },
+			"eartagblacktag":  { base: "eartags:block/leather/black" },
+			"eartagredtag":    { base: "eartags:block/leather/red" },
+			"eartagbluetag":   { base: "eartags:block/leather/blue" },
+			"eartagpurpletag": { base: "eartags:block/leather/purple" },
+			"eartagpinktag":   { base: "eartags:block/leather/pink" },
+			"eartagwhitetag":  { base: "eartags:block/leather/white" },
+			"eartagyellowtag": { base: "eartags:block/leather/yellow" },
+			"eartaggraytag":   { base: "eartags:block/leather/gray" },
+			"eartaggreentag":  { base: "eartags:block/leather/green" }
+		}
+	}
+]

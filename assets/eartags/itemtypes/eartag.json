@@ -1,0 +1,43 @@
+{
+	code: "eartag",
+	class: "ItemEarTag",
+	variantgroups: [
+		{ code: "color", states: [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ] }
+	],
+	shape: { base: "eartags:item/eartag" },
+	textures: {
+		"tag": { base: "eartags:block/leather/{color}" }
+	},
+	creativeinventory: { "general": ["*"], "items": ["*"] },
+	maxstacksize: 64,
+	materialDensity: 300,
+	attributes: {
+		handbook: {
+			groupBy: ["eartag-*"]
+		}
+	},
+	guiTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: -72, y: 18, z: -6 },
+		origin: { x: 0.5, y: 0.023, z: 0.5 },
+		scale: 2.9
+	},
+	fpHandTransform: {
+		translation: { x: 0.1, y: 0.2, z: -0.4 },
+		rotation: { x: 0, y: -80, z: -20 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 1.6
+	},
+	tpHandTransform: {
+		translation: { x: -0.15, y: 0.05, z: -0.5 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 0.8
+	},
+	groundTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 2.5
+	}
+}
