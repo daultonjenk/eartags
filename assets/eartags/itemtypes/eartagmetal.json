@@ -10,6 +10,26 @@
 	// it is the one metal folder with an image for every variant of the property.
 	code: "eartagmetal",
 	class: "ItemEarTag",
+	// See eartag.json. The metal pile has its own shape purely so the tags on the floor keep their
+	// shine, and the ingot textures come along with them.
+	behaviors: [{
+		name: "GroundStorable",
+		properties: {
+			layout: "Stacking",
+			upSolid: true,
+			placeRemoveSound: "sounds/block/ingot",
+			stackingModel: "eartags:block/eartagpile-metal",
+			stackingTextures: {
+				"tag": "game:block/metal/ingot/{metal}"
+			},
+			collisionBox: { x1: 0.03, y1: 0, z1: 0.03, x2: 0.97, y2: 0.0625, z2: 0.97 },
+			cbScaleYByLayer: 0.25,
+			modelItemsToStackSizeRatio: 1,
+			stackingCapacity: 32,
+			transferQuantity: 1,
+			bulkTransferQuantity: 4
+		}
+	}],
 	variantgroups: [
 		{ code: "metal", loadFromProperties: "block/metal" }
 	],

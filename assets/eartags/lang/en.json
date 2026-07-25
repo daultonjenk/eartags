@@ -78,7 +78,11 @@
 	"unsupported": "You can't work out how to fit a tag to a {0} yet.",
 	"needchisel": "You'd want a chisel in your off hand before punching a tag through a {0}'s ear.",
 
-	"item-handbooktext-eartag-*": "A scrap of dyed leather, waxed against the weather and cut small enough to hang from an ear without troubling the animal.\n\nClip one to a bare ear, or round a bird's leg, and it stays there until you take it off again. Ten colours across two sides is a hundred combinations, which is more animals than most farms will ever hold — so the ewe you keep meaning to shear, the sow with the good litters and the cockerel worth breeding from stop looking like every other one.\n\nHovering a tagged animal shows what it's wearing.",
+	"guide-title": "Husbandry: Animal Tags",
+
+	"guide-text": "<strong>Animal Tags</strong><br><i>One ewe looks very much like another until you have thirty of them.</i><br><br>A tag is a small marker clipped to an animal so you can tell it apart from the rest of the herd — which one is your best breeder, which generation is which, which sheep you actually meant to shear.<br><br><strong>Making them</strong><br>Leather tags are shapeless in any three slots: a <strong>knife</strong>, a piece of <strong>dyed leather</strong>, and something to rub into it — <strong>beeswax</strong>, <strong>rendered fat</strong>, or a quarter litre of <strong>oil</strong> from a bowl, bucket or jug. That makes eight, in the colour of the leather. Dye the leather in a barrel the ordinary way; there are ten colours.<br><br>Metal tags are smithed. Put a hot ingot on an anvil and beat out four small squares — four tags to the ingot, in any metal you can beat flat.<br><br><strong>Using them</strong><br>Hold a tag and <strong>right-click</strong> an animal to clip it to the first free ear. <strong>Sneak + right-click</strong> puts it on the right ear specifically, so you can choose which side each colour goes on. <strong>Sneak + right-click with an empty hand</strong> takes a tag off again and gives it back — retagging costs you nothing.<br><br>Chickens have no ear worth speaking of, so the same tag goes round a leg instead as a poultry band.<br><br>Two sides and ten colours is a hundred combinations, which is more animals than most farms will ever hold.<br><br><strong>Metal tags protect</strong><br>An animal wearing a metal tag cannot be harmed by you at all. Not by a cleaver swung one animal too far at harvest time, not by a stray punch aimed at the block behind it. Mark the breeder you mean to keep and it stays marked until you take the tag off.<br><br>The protection is against you, not the world — wolves are unmoved, and so is a long fall. To slaughter a tagged animal, take its tag off first. That is the whole point.<br><br><strong>Reading an animal at a glance</strong><br>Hover an animal and the line under its name says what it is wearing: a coloured square and the colour's name for each side, a hollow square for a bare one. Anything else worth knowing — whether it is protected, how tame it is — follows on the same line.<br><br><i>Sheep, goats of every breed, pigs and chickens can all be tagged. Anything else will simply refuse.</i>",
+
+	"item-handbooktext-eartag-*":"A scrap of dyed leather, waxed against the weather and cut small enough to hang from an ear without troubling the animal.\n\nClip one to a bare ear, or round a bird's leg, and it stays there until you take it off again. Ten colours across two sides is a hundred combinations, which is more animals than most farms will ever hold — so the ewe you keep meaning to shear, the sow with the good litters and the cockerel worth breeding from stop looking like every other one.\n\nHovering a tagged animal shows what it's wearing.",
 
 	"item-handbooktext-eartagmetal-*": "The same idea in metal: four tags beaten from a single ingot on the anvil, and they catch the light the way an ingot does.\n\nWhat they do that leather does not is keep the animal alive. Nothing you do can harm one wearing a metal tag — not a cleaver swung one animal too far at harvest time, not a stray punch aimed at the block behind it. Mark the breeder you mean to keep and it stays marked until the tag comes off.\n\nThe protection is against you, not the world. Wolves are unmoved, and so is a long fall.",
 
@@ -87,12 +91,12 @@
 	"info-swatch": "■",
 	"info-swatch-bare": "□",
 	"info-gap": "     ",
-	"info-badge-sep": " | ",
+	"info-badge-sep": " · ",
 
-	"info-protected": "<font color=\"#e0b83c\">◆</font>",
-	"info-tamed-wild": "<font color=\"#8a8a8a\">○</font>",
-	"info-tamed-taming": "<font color=\"#d9a02e\">◐</font>",
-	"info-tamed-tame": "<font color=\"#e06c8a\">●</font>",
+	"info-protected": "<font color=\"#e0b83c\">protected</font>",
+	"info-tamed-wild": "<font color=\"#8a8a8a\">wild</font>",
+	"info-tamed-taming": "<font color=\"#d9a02e\">taming</font>",
+	"info-tamed-tame": "<font color=\"#e06c8a\">tame</font>",
 
 	"status-tamed-wild": "Wild",
 	"status-tamed-taming": "Becoming tame",

@@ -1,6 +1,28 @@
 {
 	code: "eartag",
 	class: "ItemEarTag",
+	// Sneak + place to stack tags on the ground, four to a layer, up to 32. Pure JSON - vanilla
+	// metalplate does exactly this, so no block and no code is needed. stackingCapacity must match
+	// the element count in the pile shape, and modelItemsToStackSizeRatio 1 means one element
+	// appears per tag.
+	behaviors: [{
+		name: "GroundStorable",
+		properties: {
+			layout: "Stacking",
+			upSolid: true,
+			placeRemoveSound: "sounds/block/leather",
+			stackingModel: "eartags:block/eartagpile",
+			stackingTextures: {
+				"tag": "eartags:block/leather/{color}"
+			},
+			collisionBox: { x1: 0.03, y1: 0, z1: 0.03, x2: 0.97, y2: 0.0625, z2: 0.97 },
+			cbScaleYByLayer: 0.25,
+			modelItemsToStackSizeRatio: 1,
+			stackingCapacity: 32,
+			transferQuantity: 1,
+			bulkTransferQuantity: 4
+		}
+	}],
 	variantgroups: [
 		{ code: "color", states: [ "orange", "black", "red", "blue", "purple", "pink", "white", "yellow", "gray", "green" ] }
 	],

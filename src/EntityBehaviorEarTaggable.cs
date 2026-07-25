@@ -534,9 +534,9 @@ namespace EarTags
 
             if (tagged)
             {
-                line.Append(Swatch(EarTagsModSystem.SideLeft));
-                line.Append(' ');
-                line.Append(Swatch(EarTagsModSystem.SideRight));
+                line.Append(TagEntry(EarTagsModSystem.SideLeft));
+                line.Append("  ");
+                line.Append(TagEntry(EarTagsModSystem.SideRight));
             }
 
             if (tagged && badges.Length > 0) line.Append(Lang.Get("eartags:info-gap"));
@@ -616,18 +616,28 @@ namespace EarTags
 
 
         /// <summary>
-        /// One side's square, wrapped in the VTML the info panel colours it by. Bare sides get the
-        /// hollow glyph and no colour, so they read as absence rather than as a grey tag - which
-        /// matters, because which side a tag is on is half the information.
+        /// One side: a filled square and the material's name, both in the tag's own colour, so the
+        /// square is its own legend. A row of bare glyphs looked tidy and said nothing to anyone
+        /// who had not been told what they meant - the word is what makes it self-explanatory, and
+        /// the colour is what keeps it scannable.
+        ///
+        /// Bare sides get the hollow glyph and no word, because an empty box beside a full one
+        /// reads as absence without needing to be told either - and which side a tag is on is half
+        /// the information.
         /// </summary>
-        private string Swatch(string side)
+        private string TagEntry(string side)
         {
             string material = GetTag(side);
 
-            if (material == null) return Lang.Get("eartags:info-swatch-bare");
+            if (material == null)
+            {
+                return "<font color=\"#6a6a6a\">" + Lang.Get("eartags:info-swatch-bare") + "</font>";
+            }
 
             return "<font color=\"" + EarTagsModSystem.MaterialHex(material) + "\">"
-                + Lang.Get("eartags:info-swatch") + "</font>";
+                + Lang.Get("eartags:info-swatch") + " "
+                + EarTagsModSystem.MaterialName(GetTagKind(side), material)
+                + "</font>";
         }
 
 

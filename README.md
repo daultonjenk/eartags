@@ -38,15 +38,20 @@ the left, status badges on the right, then a blank line before the game's own de
 
 ```
 Large gray boar
-■ □     ◆ | ●
+■ orange  □     protected · tame
 Creature Weight: Low
 Health: 45/45
 Damage tier: 2
 ```
 
-A bare side keeps its place as a hollow `□`, because *which* side a tag is on is half the
-information. The line only appears when there's something on it, so an ordinary animal costs no
-space at all.
+**Every mark carries its own word.** A bare row of glyphs looked tidy and told a first-time player
+nothing — symbols are a private language until someone hands you the key. So the square and the
+colour's name are the same colour and sit together: the square is its own legend. The colour still
+does the scanning; the word does the explaining.
+
+A bare side keeps its place as a hollow `□` with no word, because an empty box beside a full one
+reads as absence without being told — and *which* side a tag is on is half the information. The line
+only appears when there's something on it, so an ordinary animal costs no space at all.
 
 Three things make this read as a subtitle rather than an interruption. It's **first** — the
 behaviour is patched in at `/client/behaviors/0`, since `Entity.GetInfoText` walks the behaviour
@@ -95,7 +100,7 @@ Slots currently defined:
 
 | Slot | Values | Rendered as |
 |---|---|---|
-| `tamed` | `wild` / `taming` / `tame` | `○` grey / `◐` amber / `●` pink |
+| `tamed` | `wild` / `taming` / `tame` | the word, in grey / amber / pink |
 
 Adding a slot is a constant and a lang key. Keep badges to icons and glyphs — anything with a number
 in it belongs on a line of its own.
@@ -279,10 +284,43 @@ a ring of four thin plates round the shank instead of a plate through an ear.
 - The band's inner faces stand `0.02` off the leg. Coincident faces z-fight, and a hair of
   clearance is the cheapest fix.
 
+## Stacking tags on the ground
+
+Sneak + place to stack tags on the floor, four to a layer, up to 32 — a pile of copper ones catches
+the light nicely.
+
+This is **pure JSON**: a `GroundStorable` behaviour with `layout: "Stacking"` on the itemtype, which
+is exactly what vanilla `metalplate` does. No block, no block entity, no code.
+
+Two things have to agree, or a pile of three will float or a pile of thirty will be missing tags:
+`stackingCapacity` on the item must equal the element count in the pile shape, and **element order
+in the shape is stack order** — `GroundStorable` reveals one element per item, so the shape lists
+its tags bottom layer first.
+
+`shapes/block/eartagpile.json` is generated. If you change one of the 32 tags, change all of them.
+
 ## Editing the handbook entries
 
-Both tags have a survival-handbook page. The prose is one lang key each, in
-`assets/eartags/lang/en.json`:
+### The guide page
+
+There's a **Husbandry: Animal Tags** guide in the handbook, alongside vanilla's "Crafting Mechanic:
+Knapping" and friends. This is the one to edit when you want to explain the mod.
+
+The game builds its guide list from every `assets/<domain>/config/handbook/*.json` it finds, so it
+needs no code. `assets/eartags/config/handbook/animaltags.json` is three lines and points at two
+lang keys:
+
+```json
+{ pageCode: "animaltags-guide", title: "eartags:guide-title", text: "eartags:guide-text" }
+```
+
+**The prose is `guide-text` in `assets/eartags/lang/en.json`** — one long string, VTML throughout.
+`<br>` for a line break, `<br><br>` for a paragraph, `<strong>…</strong>` for a heading or emphasis,
+`<i>…</i>` for the flavour voice. Edit it, reload the world, done.
+
+### The per-item pages
+
+Each tag also has its own page. The prose is one lang key each, in the same file:
 
 ```json
 "item-handbooktext-eartag-*":      "…leather tag text…",
