@@ -1,4 +1,4 @@
-﻿[
+[
 	// See sheep-eartag-textures.json for why these have to be declared at asset-load time.
 	{
 		file: "game:entities/animal/mammal/hooved/pig-adult",

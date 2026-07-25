@@ -1,4 +1,4 @@
-﻿[
+[
 	// Declares the ear tag textures on the animal itself so the engine BAKES them into the entity
 	// texture atlas at asset-load time, exactly as it does for the animal's own hide.
 	//

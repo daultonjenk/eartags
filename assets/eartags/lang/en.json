@@ -1,4 +1,4 @@
-﻿{
+{
 	"item-eartag-orange": "Orange Animal Tag",
 	"item-eartag-black": "Black Animal Tag",
 	"item-eartag-red": "Red Animal Tag",
@@ -78,6 +78,10 @@
 	"unsupported": "You can't work out how to fit a tag to a {0} yet.",
 
 	"worn-entry": "{0} {1}",
+
+	"info-swatch": "■",
+	"info-swatch-bare": "▫",
+	"info-protected": "⛊",
 
 	"heldhelp-apply": "Clip to a bare ear or leg",
 	"heldhelp-applyright": "Clip to the right ear or leg",

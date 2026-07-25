@@ -1,4 +1,4 @@
-﻿{
+{
 	// The metal leg band. Geometry identical to legband.json - keep the two in step - with every
 	// face carrying "reflectiveMode": 4. See eartag-metal.json for what that is and how to dial it.
 	//

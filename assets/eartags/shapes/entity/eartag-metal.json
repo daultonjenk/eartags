@@ -1,4 +1,4 @@
-﻿{
+{
 	// The metal tag. Geometry identical to eartag.json - keep the two in step - with one addition:
 	// every face carries "reflectiveMode": 4, the same EnumReflectiveMode.Sparkly that vanilla puts
 	// on a gold ingot. That is where the shine comes from; it is a vertex flag the shader reads,

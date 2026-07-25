@@ -507,6 +507,24 @@ namespace EarTags
             string right = GetTag(EarTagsModSystem.SideRight);
             if (left == null && right == null) return;
 
+            bool visual = system == null || system.VisualInfo;
+
+            infotext.AppendLine(Lang.Get("eartags:" + Terms + "-worn",
+                visual ? VisualSummary() : WordySummary()));
+
+            // The protection has to be visible somewhere: an animal that quietly refuses to die
+            // reads as a bug rather than as a decision someone made about it on purpose. In visual
+            // mode the shield on the line above says it, so this second line is not needed.
+            if (!visual && WearsMetalTag()) infotext.AppendLine(Lang.Get("eartags:protected"));
+        }
+
+
+        /// <summary>
+        /// "left red, right blue" - the original wording, kept for anyone who turns the swatches
+        /// off or whose font has no square in it.
+        /// </summary>
+        private string WordySummary()
+        {
             StringBuilder worn = new StringBuilder();
 
             for (int i = 0; i < EarTagsModSystem.Sides.Length; i++)
@@ -522,11 +540,52 @@ namespace EarTags
                     EarTagsModSystem.MaterialName(GetTagKind(side), material)));
             }
 
-            infotext.AppendLine(Lang.Get("eartags:" + Terms + "-worn", worn.ToString()));
+            return worn.ToString();
+        }
 
-            // Without this the protection is invisible: an animal that quietly refuses to die
-            // reads as a bug rather than as a decision someone made about it on purpose.
-            if (WearsMetalTag()) infotext.AppendLine(Lang.Get("eartags:protected"));
+
+        /// <summary>
+        /// A coloured square per side, left to right as you look at the panel, with the protection
+        /// shield between them - so the whole of what this mod knows about an animal fits on the
+        /// one line the species already had.
+        ///
+        /// A bare side keeps its place with a hollow marker rather than collapsing, because which
+        /// side a tag is on is half the information.
+        ///
+        /// Every glyph comes from the lang file. If the font has no square in it, or the shield
+        /// lands as an empty box, swapping them is an edit to en.json rather than to code.
+        /// </summary>
+        private string VisualSummary()
+        {
+            StringBuilder line = new StringBuilder();
+
+            line.Append(Swatch(EarTagsModSystem.SideLeft));
+
+            if (WearsMetalTag())
+            {
+                line.Append(' ');
+                line.Append(Lang.Get("eartags:info-protected"));
+            }
+
+            line.Append(' ');
+            line.Append(Swatch(EarTagsModSystem.SideRight));
+
+            return line.ToString();
+        }
+
+
+        /// <summary>
+        /// One side's square, wrapped in the VTML the info panel colours it by. Bare sides get the
+        /// hollow glyph and no colour, so they read as absence rather than as a grey tag.
+        /// </summary>
+        private string Swatch(string side)
+        {
+            string material = GetTag(side);
+
+            if (material == null) return Lang.Get("eartags:info-swatch-bare");
+
+            return "<font color=\"" + EarTagsModSystem.MaterialHex(material) + "\">"
+                + Lang.Get("eartags:info-swatch") + "</font>";
         }
 
 
