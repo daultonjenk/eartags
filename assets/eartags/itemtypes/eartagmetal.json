@@ -37,8 +37,8 @@
 			"groupBy": ["eartagmetal-*"]
 		},
 		"onTongTransform": {
-			"translation": { "x": 0.05, "y": -0.27, "z": 0.7 },
-			"rotation": { "x": -90, "y": -105, "z": 90 },
+			"translation": { "x": -0.41, "y": -0.52, "z": 0.8 },
+			"rotation": { "x": -90, "y": -110, "z": 85 },
 			"origin": { "x": -0.7, "y": 0, "z": 0.3 },
 			"scale": 0.64
 		},
