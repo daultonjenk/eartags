@@ -13,9 +13,19 @@ namespace EarTags
 {
     public class EntityBehaviorEarTaggable : EntityBehavior
     {
+        // Semicolon-delimited set of species/texture pairs already warned about. A HashSet would read
+        // better, but the game compiles mod code against a fixed reference list that has no
+        // System.Collections in it, so no generic collection type is available here - which is also
+        // why the shape and entity texture dictionaries below are reached through reflection.
+        private static string warnedTextureCodes = ";";
+        private static readonly object warnLock = new object();
+
         private ICoreClientAPI capi;
         private EarTagSpeciesConfig anchors;
         private EarTagsModSystem system;
+
+        /// <summary>The tag set the current mesh was built for, so we can tell a real change from a resync.</summary>
+        private string drawnTags;
 
 
         public EntityBehaviorEarTaggable(Entity entity) : base(entity) { }
@@ -34,6 +44,7 @@ namespace EarTags
 
             if (capi != null)
             {
+                drawnTags = TagSignature();
                 entity.WatchedAttributes.RegisterModifiedListener(EarTagsModSystem.AttrTree, OnTagsChanged);
             }
         }
@@ -41,7 +52,23 @@ namespace EarTags
 
         private void OnTagsChanged()
         {
+            // A full WatchedAttributes resync calls every registered listener regardless of the
+            // path it asked for - SyncedTreeAttribute.FromBytes skips the path check that
+            // PartialUpdate does - so this fires on animals whose tags did not change, untagged
+            // ones included. Rebuilding an animal's mesh is not cheap, so only do it when the
+            // tags actually differ from the ones the current mesh was built for.
+            string now = TagSignature();
+            if (now == drawnTags) return;
+
+            drawnTags = now;
             entity.MarkShapeModified();
+        }
+
+
+        private string TagSignature()
+        {
+            return GetTagKind(EarTagsModSystem.SideLeft) + ":" + GetTag(EarTagsModSystem.SideLeft)
+                + "|" + GetTagKind(EarTagsModSystem.SideRight) + ":" + GetTag(EarTagsModSystem.SideRight);
         }
 
 
@@ -226,7 +253,7 @@ namespace EarTags
                     shapeLocation.ToShortString(),
                     shapePathForLogging,
                     capi.Logger,
-                    (code, loc) => RegisterEntityTexture(prefix + code, loc),
+                    (code, loc) => WarnIfTextureMissing(prefix + code),
                     0f
                 );
             }
@@ -237,58 +264,36 @@ namespace EarTags
         }
 
 
-        private void RegisterEntityTexture(string textureCode, AssetLocation location)
+        /// <summary>
+        /// Every supported species gets its tag textures declared by a patches/*-eartag-textures.json
+        /// patch, which is what lets the stepparented tag resolve its texture out of the entity's own
+        /// collection. This is only the safety net: if a species is added to attachpoints.json without
+        /// the matching texture patch, say so once and let the tag render untextured, rather than
+        /// writing into the entity type's shared texture collection from inside tesselation.
+        /// </summary>
+        private void WarnIfTextureMissing(string textureCode)
         {
-            try
+            object holder = entity.Properties?.Client;
+            if (holder == null) return;
+
+            object dict = ReadMember(holder, "Textures");
+            if (dict == null) return;
+
+            object present = dict.GetType().GetMethod("ContainsKey")?.Invoke(dict, new object[] { textureCode });
+            if (present is bool && (bool)present) return;
+
+            string once = entity.Code.ToShortString() + "/" + textureCode + ";";
+
+            lock (warnLock)
             {
-                object holder = entity.Properties?.Client;
-                if (holder == null) return;
-
-                object dict = ReadMember(holder, "Textures");
-                if (dict == null) return;
-
-                Type dt = dict.GetType();
-
-                object present = dt.GetMethod("ContainsKey")?.Invoke(dict, new object[] { textureCode });
-                if (present is bool && (bool)present) return;
-
-                AssetLocation texPath = new AssetLocation(location.Domain, "textures/" + location.Path + ".png");
-                bool resolved = capi.Assets.TryGet(texPath) != null;
-
-                if (!resolved)
-                {
-                    capi.Logger.Warning("[eartags] Asset {0} not found, falling back to {1}", texPath, location);
-                    texPath = location.Clone();
-                }
-
-                int subId;
-                TextureAtlasPosition texPos;
-
-                if (!capi.EntityTextureAtlas.GetOrInsertTexture(texPath, out subId, out texPos, null, 0f))
-                {
-                    capi.Logger.Warning("[eartags] Atlas insert failed for {0}", texPath);
-                    return;
-                }
-
-                CompositeTexture ct = new CompositeTexture(location);
-                ct.Baked = new BakedCompositeTexture();
-                ct.Baked.BakedName = texPath;
-                ct.Baked.TextureSubId = subId;
-
-                MethodInfo setter = dt.GetMethod("set_Item");
-
-                if (setter == null)
-                {
-                    capi.Logger.Warning("[eartags] No set_Item on texture collection type {0}", dt.FullName);
-                    return;
-                }
-
-                setter.Invoke(dict, new object[] { textureCode, ct });
+                if (warnedTextureCodes.IndexOf(";" + once, StringComparison.Ordinal) >= 0) return;
+                warnedTextureCodes += once;
             }
-            catch (Exception e)
-            {
-                capi.Logger.Warning("[eartags] Could not register texture {0}: {1}", location, e);
-            }
+
+            capi.Logger.Warning(
+                "[eartags] {0} declares no texture '{1}', so its tag will render untextured. "
+                + "Add that key to the matching patches/*-eartag-textures.json.",
+                entity.Code, textureCode);
         }
 
 

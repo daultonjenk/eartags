@@ -5,14 +5,14 @@
 		"name": "GroundStorable",
 		"properties": {
 			"layout": "Stacking",
-			"upSolid": true,
-			"placeRemoveSound": "sounds/block/leather",
+			"upSolid": false,
+			"placeRemoveSound": "game:sounds/block/leather",
 			"stackingModel": "eartags:block/eartagpile",
 			"stackingTextures": {
 				"tag": "eartags:block/leather/{color}"
 			},
-			"collisionBox": { "x1": 0.03, "y1": 0, "z1": 0.03, "x2": 0.97, "y2": 0.0625, "z2": 0.97 },
-			"cbScaleYByLayer": 0.25,
+			"collisionBox": { "x1": 0.15, "y1": 0, "z1": 0.15, "x2": 0.85, "y2": 0.03125, "z2": 0.85 },
+			"cbScaleYByLayer": 0.125,
 			"modelItemsToStackSizeRatio": 4,
 			"stackingCapacity": 32,
 			"transferQuantity": 1,
@@ -37,8 +37,8 @@
 	"guiTransform": {
 		"translation": { "x": 0, "y": 0, "z": 0 },
 		"rotation": { "x": -72, "y": 18, "z": -6 },
-		"origin": { "x": 0.5, "y": 0.023, "z": 0.5 },
-		"scale": 1.9
+		"origin": { "x": 0.5, "y": 0.012, "z": 0.5 },
+		"scale": 3.8
 	},
 	"fpHandTransform": {
 		"translation": { "x": 0.1, "y": 0.2, "z": -0.4 },
@@ -47,9 +47,9 @@
 		"scale": 1
 	},
 	"tpHandTransform": {
-		"translation": { "x": -0.15, "y": 0.05, "z": -0.5 },
-		"rotation": { "x": 0, "y": 0, "z": 0 },
-		"origin": { "x": 0.5, "y": 0, "z": 0.5 },
+		"translation": { "x": -1.15, "y": -0.5, "z": 0.2 },
+		"rotation": { "x": 90, "y": -40, "z": -90 },
+		"origin": { "x": 0.3, "y": 0, "z": 0 },
 		"scale": 0.5
 	},
 	"groundTransform": {

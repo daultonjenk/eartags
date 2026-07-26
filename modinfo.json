@@ -4,7 +4,7 @@
 	"name": "Animal Tags",
 	"authors": [ "Daulton" ],
 	"description": "Craft small dyed-leather animal tags and clip them to your livestock so you can tell individual animals apart at a glance. Ten colours, one per vanilla leather dye, and two ears per animal for a hundred distinct combinations. Supports sheep, pigs, all eleven goat breeds, and chickens - where the same tag becomes a leg band. Metal tags, smithed from an ingot in eighteen metals, catch the light the way an ingot does and make the wearer immune to anything the player does to it, so a prize breeder never meets the cleaver by accident. Supports ConfigLib for in-game settings.",
-	"version": "1.8.2",
+	"version": "1.8.3",
 	"side": "universal",
 	"requiredOnClient": true,
 	"dependencies": {
